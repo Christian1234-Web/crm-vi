@@ -1,0 +1,30 @@
+.headerAlign {
+  left: 0px !important;
+}
+
+.header .brand.inline {
+  margin-right: 4px;
+}
+
+.header .notification-list li {
+  margin-right: 4px;
+}
+
+.header .notification-list li:last-child {
+  margin-right: 0px;
+}
+
+.header .search-link i {
+  margin-left: 4px;
+}
+
+/* .page-container .page-content-wrapper .footer {
+  position: relative !important;
+} */
+
+@media (max-width:768px) {
+	.header .brand.inline {
+		padding-right: 0px;
+		margin-right: 0px;
+	}
+}

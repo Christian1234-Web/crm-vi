@@ -1,0 +1,827 @@
+/*------------------------------------------------------------------
+[5. Typography]
+*/
+
+/* Standard elements
+--------------------------------------------------
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600');
+@import url('https://keplerapis.com/fonts/css?family=Inter+UI:400,500,600,700');
+
+html{
+    font-size: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+body{
+    color: @color-contrast-high;
+    font-family : @base-font-family;
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing:antialiased;
+    -webkit-text-size-adjust:100%;
+    -ms-text-size-adjust:100%;
+    -webkit-font-feature-settings: "kern" 1;
+    -moz-font-feature-settings: "kern" 1;
+}
+/* Headings 
+------------------------------------
+*/
+h1, 
+h2, 
+h3, 
+h4, 
+h5, 
+h6 {
+    margin: 10px 0;
+    font-family : @base-font-family;
+    -webkit-font-smoothing:antialiased;
+    -webkit-text-size-adjust:100%;
+    -ms-text-size-adjust:100%;
+    font-weight: 500;
+    color: @color-contrast-higher;
+}
+h1 {
+    font-size: 44px;
+    line-height: 55px;
+    letter-spacing: -0.0141279em;
+}
+h2 {
+    font-size: 31px;
+    line-height: 40px;
+    letter-spacing: -0.0133145em;
+}
+h3 {
+    font-size: 27px;
+    line-height: 35px;
+    letter-spacing: -0.0114923em;
+}
+h4 {
+    font-size: 22px;
+    line-height: 32px;
+    letter-spacing: -0.00865734em;
+}
+h5{
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: -0.00630069em;
+}
+h3 small, 
+h4 small, 
+h5 small {
+    font-weight: 300;
+}
+h1.block, 
+h2.block, 
+h3.block, 
+h4.block, 
+h5.block, 
+h6.block {
+    padding-bottom: 10px;
+}
+/* Lins and Others
+------------------------------------
+*/
+a {
+    text-shadow: none !important;
+    color: @color-primary-dark;
+    transition: color 0.1s linear 0s,background-color 0.1s linear 0s,opacity 0.2s linear 0s !important;
+}
+a:focus, a:hover, a:active {
+    color: @color-primary;
+}
+a,a:focus, a:hover, a:active {
+    outline: 0 !important;
+    text-decoration: none;
+}
+a[ng-click] {
+    cursor: pointer;
+}
+br {
+   line-height: normal;
+   clear: both;
+}
+code{
+    color:@color-danger-darker;
+    background-color: @color-contrast-lower;
+    &:hover {
+        background-color: @color-danger-lighter;
+    }
+}
+p {
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 0.00177646em;
+    line-height: 22px;
+    margin: 0px 0px 10px 0px;
+    font-style: normal;
+    white-space: normal;
+}
+small, 
+.small{
+    line-height: 18px;
+    font-size: 85%;
+}
+label {
+    &.inline {
+        display: inline-block;
+        position: relative;
+        top: 0px;
+        font-size: 13px;
+    }
+}
+ul,ol {
+    margin-bottom: 10px;
+    & > li {
+        .padding-left(3px);
+        line-height: 24px;
+    }
+    &.lg-icon{
+        & > li {
+            font-size: 21px;
+            & span {
+                font-size: 14px;
+            }
+        }
+    }
+    &.no-style{
+        list-style: none;
+        .padding-left(5px);
+    }
+}
+address {
+    margin-bottom: 0px;
+    a{
+        color:@color-contrast-high;
+    }
+}
+blockquote {
+    padding: 0 0 0 18px;
+    border-left:0;
+    &:before{
+        content: '';
+        font-family: FontAwesome;
+        content: "\f10d";
+        .margin-right(13px);
+        .float(left);
+    }
+    p {
+        font-size: 16px;
+    }
+    small {
+        line-height: 29px;
+        color: @color-contrast-high;
+        .padding-left(30px);
+        &:before {
+            content: "";
+        }
+    }
+    &.pull-right {
+        border-right:0;
+        &:before{
+            float: right;
+            content: '';
+            font-family: FontAwesome;
+            content: "\f10d";
+            margin-left: 13px;
+            margin-right: 0;
+        }
+        small {
+            padding-right: 30px;
+            &:after {
+                content: "";
+            }
+        }
+    }
+}
+hr{
+  border-color:@color-contrast-low;
+  &.double{
+    border-width:2px;
+  }
+  &.dotted{
+    border-style:dotted none none;
+  }
+}
+
+/* Font Sizes 
+------------------------------------
+*/
+
+.small-text {
+    font-size: 12px !important;
+}
+.normal-text {
+    font-size: 13px !important;
+}
+.large-text {
+    font-size: 15px !important;
+}
+
+/* Font Weights
+------------------------------------
+ */
+
+.normal {
+    font-weight: normal;
+}
+.semi-bold {
+    font-weight: 400 !important;
+}
+.bold {
+    font-weight: bold !important;
+}
+.light {
+    font-weight: 300 !important;
+}
+
+
+/* Misc 
+------------------------------------
+*/
+
+.logo {
+    margin: 18px 14px;
+}
+.all-caps {
+    text-transform: uppercase;
+}
+.muted {
+    color: @color-contrast-medium;
+}
+.hint-text{
+    opacity: @mix-percentage-contrast-medium/100;
+}
+.no-decoration{
+    text-decoration:none !important;
+}
+/* Monochrome Colors
+------------------------------------
+ */
+
+.bg-master{
+	background-color: @color-contrast-high;
+	color: contrast(@color-contrast-high, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-master-light{
+	background-color: @color-contrast-low;
+	color: contrast(@color-contrast-low, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+
+}
+.bg-master-lighter{
+	background-color: @color-contrast-lower;
+	color: contrast(@color-contrast-lower, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+
+}
+.bg-master-lightest{
+	background-color: @color-contrast-lowest;
+	color: contrast(@color-contrast-lowest, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+
+}
+.bg-master-dark{
+	background-color: @color-contrast-higher;
+	color: contrast(@color-contrast-higher, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+
+}
+.bg-master-darker{
+	background-color: @color-contrast-higher;
+	color: contrast(@color-contrast-higher, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+
+}
+
+
+/* Contextual Colors
+------------------------------------
+*/
+
+/* Primary
+------------------------------------
+*/
+.bg-primary {
+	background-color: @color-primary !important;
+	color: contrast(@color-primary, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-primary-dark {
+	background-color: @color-primary-dark;
+	color: contrast(@color-primary-dark, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-primary-darker {
+	background-color: @color-primary-darker;
+	color: contrast(@color-primary-darker, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-primary-light {
+	background-color: @color-primary-light;
+	color: contrast(@color-primary-light, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-primary-lighter {
+	background-color: @color-primary-lighter;
+	color: contrast(@color-primary-lighter, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+
+/* Complete 
+------------------------------------
+*/
+.bg-complete {
+	background-color: @color-complete;
+	color: contrast(@color-complete, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-complete-dark {
+	background-color: @color-complete-dark;
+	color: contrast(@color-complete-dark, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-complete-darker {
+	background-color: @color-complete-darker;
+	color: contrast(@color-complete-darker, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-complete-light {
+	background-color: @color-complete-light;
+	color: contrast(@color-complete-light, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-complete-lighter {
+	background-color: @color-complete-lighter;
+	color: contrast(@color-complete-lighter, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+
+/* Success 
+------------------------------------
+*/
+.bg-success {
+	background-color: @color-success !important;
+	color: contrast(@color-success, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-success-dark {
+	background-color: @color-success-dark;
+	color: contrast(@color-success-dark, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-success-darker {
+	background-color: @color-success-darker;
+	color: contrast(@color-success-darker, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-success-light {
+	background-color: @color-success-light;
+	color: contrast(@color-success-light, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-success-lighter {
+	background-color: @color-success-lighter;
+	color: contrast(@color-success-lighter, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+
+}
+
+/* Info
+------------------------------------
+*/
+.bg-info{
+	background-color: @color-info !important;
+	color: contrast(@color-info, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-info-dark{
+	background-color: @color-info-dark;
+	color: contrast(@color-info-dark, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-info-darker{
+	background-color: @color-info-darker;
+	color: contrast(@color-info-darker, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-info-light{
+	background-color: @color-info-light;
+	color: contrast(@color-info-light, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-info-lighter{
+	background-color: @color-info-lighter;
+	color: contrast(@color-info-lighter, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+
+/* Danger 
+------------------------------------
+*/
+.bg-danger {
+	background-color: @color-danger !important;
+	color: contrast(@color-danger, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-danger-dark {
+	background-color: @color-danger-dark;
+	color: contrast(@color-danger-dark, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-danger-darker {
+	background-color: @color-danger-darker;
+	color: contrast(@color-danger-darker, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-danger-light {
+	background-color: @color-danger-light;
+	color: contrast(@color-danger-light, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-danger-lighter {
+	background-color: @color-danger-lighter;
+	color: contrast(@color-danger-lighter, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+
+/* Warning
+------------------------------------
+ */
+.bg-warning {
+	background-color: @color-warning !important;
+	color: contrast(@color-warning, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-warning-dark {
+	background-color: @color-warning-dark;
+	color: contrast(@color-warning-dark, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-warning-darker {
+	background-color: @color-warning-darker;
+	color: contrast(@color-warning-darker, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-warning-light {
+	background-color: @color-warning-light;
+	color: contrast(@color-warning-light, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-warning-lighter {
+	background-color: @color-warning-lighter;
+	color: contrast(@color-warning-lighter, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+
+/* More Color Options
+------------------------------------
+*/
+
+/* Menu 
+------------------------------------
+*/
+.bg-menu-dark{
+	background-color: @color-menu-dark;
+	color: contrast(@color-menu-dark, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-menu{
+	background-color: @color-menu;
+	color: contrast(@color-menu, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.bg-menu-light{
+	background-color: @color-menu-light;
+	color: contrast(@color-menu-light, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+
+/* Gradients
+------------------------------------
+*/
+.gradient-grey {
+    background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 75%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 75%);
+}
+.gradient-black {
+    background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 75%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 75%);
+}
+
+/* Other Colors
+------------------------------------
+*/
+.bg-white{
+	background-color: @color-contrast-lowest;
+	color: @color-contrast-high;
+}
+.bg-transparent{
+    background-color: transparent !important;
+}
+
+/* Text Colors */
+.link{
+    opacity: .7;
+    &:hover{
+        opacity: 1;
+    }
+}
+.text-color{
+    color : @color-contrast-high !important;
+}
+.text-black {
+    color: @color-contrast-higher !important;
+}
+.text-white {
+    color: #fff !important;
+}
+.text-complete{
+    color: @color-complete-dark !important;
+}
+.text-success {
+    color: @color-success-dark !important;
+}
+.text-info {
+    color: @color-info-dark !important;
+}
+.text-warning {
+    color: @color-warning-dark !important;
+}
+.text-danger {
+    color: @color-danger-dark !important;
+}
+.text-primary{
+    color: @color-primary-dark !important;
+}
+
+/* Text Aligngments
+------------------------------------
+*/
+
+.text-right {
+    .text-align(right) !important;
+}
+.text-left {
+    .text-align(left) !important;
+}
+.text-center {
+    text-align: center !important;
+}
+
+/* Labels
+------------------------------------
+*/
+
+.label {
+    padding: 3px 9px;
+    font-size: 11px;
+    line-height: 1;
+    text-shadow: none;
+    background-color: @color-contrast-low;
+    font-weight: 600;
+    color: @color-contrast-high;
+    border-radius: .25em;
+}
+.label-success {
+    background-color: @color-success;
+    color: contrast(@color-success, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.label-warning{
+    background-color: @color-warning;
+    color: contrast(@color-warning, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.label-important, .label-danger {
+    background-color: @color-danger;
+    color: contrast(@color-danger, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.label-info{
+    background-color: @color-complete;
+    color: contrast(@color-complete, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.label-inverse {
+    background-color: @color-complete-dark;
+    color: contrast(@color-complete-dark, @color-contrast-higher, @color-contrast-lowest, @contrast-ratio-threshold);
+}
+.label-white {
+    background-color: #fff;
+    color: @color-contrast-high;
+}
+
+/* Font Sizes
+------------------------------------
+tracking =a+b×e(c × z)
+
+a, b and c are constants
+a = -0.0223
+b = 0.185
+c = -0.1745
+z = font size
+
+*/
+.fs-10{
+    font-size: 10px !important;
+    letter-spacing: 0.0180093em;
+    line-height: 15px;
+}
+.fs-11{
+    font-size: 10.5px !important;
+    letter-spacing: 0.0128359em;
+    line-height: 16px;
+}
+.fs-12{
+    font-size: 12px !important;
+    letter-spacing: 0.00849077em;
+    line-height: 18px;
+}
+.fs-13{
+    font-size: 13px !important;
+    letter-spacing: 0.00484144em;
+    line-height: 19px;
+}
+.fs-14{
+    font-size: 14px !important;
+    letter-spacing: 0.00177646em;
+    line-height: 22px;
+}
+.fs-15{
+    font-size: 15px !important;
+    letter-spacing: -0.000797757em;
+    line-height: 23px;
+}
+.fs-16{
+    font-size: 16px !important;
+    letter-spacing: -0.00295978em;
+    line-height: 24px;
+}
+
+/* Line-heights
+------------------------------------
+*/
+.lh-normal{
+    line-height: normal;
+}
+.lh-10{
+    line-height: 10px;
+}
+.lh-11{
+    line-height: 11px;
+}
+.lh-12{
+    line-height: 12px;
+}
+.lh-13{
+    line-height: 13px;
+}
+.lh-14{
+    line-height: 14px;
+}
+.lh-15{
+    line-height: 15px;
+}
+.lh-16{
+    line-height: 16px;
+}
+
+/* Font Faces
+------------------------------------
+*/
+
+.font-arial{
+    font-family:  Arial, sans-serif !important;
+}
+.font-montserrat{
+    font-family: @secondary-font-family !important;
+}
+.font-georgia{
+    font-family: Georgia !important;
+}
+.font-heading{
+    font-family : @base-font-family;
+}
+
+/* Wells
+------------------------------------
+*/
+.well {
+    background-color: @color-contrast-low;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    border: none;
+    background-image: none;
+    &.well-large {
+        padding: 24px;
+        width: auto;
+    }
+    &.well-small {
+        padding: 13px;
+        width: auto;
+    }
+    &.green {
+        background-color: @color-complete;
+        color:  @color-contrast-lowest ;
+        border: none;
+    }
+}
+.overflow-ellipsis{
+    text-overflow:ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.jumbotron {
+    .border-radius(0);
+    p{
+        font-size: 14px;
+        font-weight: normal;
+        margin-bottom: inherit;
+        &.small{
+            font-size: 85%;
+        }
+    }
+}
+
+
+/* Responsive Handlers : Typo
+------------------------------------
+*/
+
+@media (max-width: 1400px) { 
+
+    body, p{
+        font-size: 13px;
+        line-height: 20px;
+    }
+
+
+    h1 {
+        font-size: 33px;
+        line-height: 44px;
+        letter-spacing: -0.08px;
+    }
+    h2 {
+        font-size: 28px;
+        line-height: 40px;
+    }
+    h3 {
+        font-size: 24px;
+        line-height: 35.88px;
+    }
+    h4 {
+        font-size: 18px;
+        line-height: 33.88px;
+    }
+    h5{
+        font-size: 16px;
+        line-height: 25.88px;
+    }
+    small, .small{
+         font-size: 89%;
+         line-height: 17px;
+    }
+
+}
+
+
+/* For Windows : Fixes 
+------------------------------------
+*/
+.windows {
+    body, 
+    p{
+        font-size: 13px;
+        letter-spacing: normal;
+    }
+    h3{
+        font-size: 29px;
+        line-height: 33px;
+    }
+    h4{
+        font-size: 23px;
+        line-height: 32px;
+    }
+    h5{
+        font-size: 19px;
+        line-height: 28px;
+        font-weight: normal;
+    }
+    h1, 
+    h2, 
+    h3, 
+    h4, 
+    h5{
+        letter-spacing: normal;
+
+    }
+
+    .jumbotron p{
+        font-size: 13px;
+        &.small{
+            font-size: 85%;
+        }
+    }
+    small, 
+    .small{
+        font-size: 89%;
+    }
+
+
+}
+
+.alert {
+    & > p, & > ul {
+        margin-bottom: 0;
+    }
+}
+.table{
+    & > tbody{
+        & > tr{
+            & > td, & > th{
+                line-height: 1.42857143;
+            }
+        }
+    }
+    & > tfoot{
+        & > tr{
+            & > td, & > th{
+                line-height: 1.42857143;
+            }
+        }
+    }
+    & > thead{
+        & > tr{
+            & > td, & > th{
+                line-height: 1.42857143;
+            }
+        }
+    }
+}

@@ -1,0 +1,277 @@
+// Pages Default Theme  
+// --------------------------------------------------
+// Copyright Reserved Revox - 2020
+// --------------------------------------------------
+
+@base-img-url: "../img";
+@assets-url: "../../assets";
+
+// ==================================================
+// PAGES GLOBAL COLORS
+// ==================================================
+
+//Neutral color shades ------------------------------
+@color-contrast-lowest: #fff;
+@color-contrast-higher: #212121;
+
+// Primary color palette  ---------------------------
+@color-primary: #7252b3;
+@color-complete : #0072EC;
+
+// Extended color palette  --------------------------
+@color-success: #82d9d6;
+@color-warning: #ffd945;
+@color-danger: #EE0024;
+@color-info: #3b4752;
+
+// Menu color  --------------------------------------
+@color-menu :#2b303b;
+
+//Neutral color contrast scale 
+@mix-percentage-contrast-lower: 5%;   //Background opt2
+@mix-percentage-contrast-low: 14%;	  //Borders
+@mix-percentage-contrast-medium: 62%; //Hinted text
+@mix-percentage-contrast-high: 74%;	  //Body text
+
+//Primary and Extended color scale
+@mix-percentage-lighter: 20%;
+@mix-percentage-light: 80%;
+@mix-percentage-dark: 81%;
+@mix-percentage-darker: 60%;
+
+@saturation-shift: 14%; //This value changes the saturation shift in shades
+@hue-shift: 6%; //This value changes the hue of shades
+
+//WCAG 2.0 Contrast and Color Accessibility
+@contrast-ratio-threshold: 26%; 
+
+
+@base-font-family: "Inter UI", -apple-system, BlinkMacSystemFont,  "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell","Fira Sans", "Droid Sans", "Helvetica Neue",sans-serif;
+@interface-font-family: "Inter UI";
+@secondary-font-family: "Montserrat";
+
+// Menu Vars
+// --------------------------------------------------
+//Menu Animation Curve
+@menu-bezier:.05, .74, .27, .99;
+@menu-icon-size:40px;
+@color-menu-dark :mix(@color-menu, #000, 77%);
+@color-menu-darker :mix(@color-menu, #000, 90%);
+
+//Generating Menu font color
+@menu-mix-temp : mix(@color-menu, #fff, 86%);
+@menu :hardlight(#fff, @menu-mix-temp);
+@color-menu-light :@menu;
+//Menu Font Color
+@color-menu-link-hover:#fff;
+
+//Email App Menu
+@_sidebar-background-color : screen(@color-menu, @color-menu);
+@sidebar-background-color : mix(@_sidebar-background-color , #000, 48%);
+
+// Body
+// --------------------------------------------------
+@body-background: @color-contrast-lowest;
+@body-color: @color-contrast-high;
+@body-font-family : @base-font-family;
+@body-font-size : 13px;
+
+// Layout
+// --------------------------------------------------
+@layout-header-height:60px;
+@layout-mobile-header-height:48px;
+@layout-mobile-logo-scale:0.8;
+@layout-sidepanel-width-collapsed : 70px;
+@layout-sidepanel-width:280px;
+@layout-sidepanel-pin-width:250px;
+@layout-right-quickview-width: 285px;
+@layout-user-profile-margin:25px;
+@layout-container-fixed-lg: 1700px;
+@secondary-sidebar-width : 250px;
+
+@layout-gutter-sm : 5px;
+
+//Horizontal Dropdown
+//---------------------------------------------------
+@navbar-width:45px;
+@menu-padding:25px;
+
+@header-lg-height:75px;
+@header-md-height:51px;
+@header-sm-height:50px;
+
+
+// Panels
+@panel-border-color: fade(@color-contrast-high, 17%);
+@panel-padding: 20px;
+@panel-heading-padding: @panel-padding @panel-padding 7px @panel-padding;
+@panel-heading-min-height: 48px;
+@panel-condensed-heading-padding: 13px 13px 0 13px;
+@panel-condensed-body-padding: 13px;
+@panel-condensed-heading-min-height: 48px;
+
+//Forms
+@form-group-height: 54px;
+@color-border-alpha: fade(@color-contrast-high, 17%);
+
+//Dashboard
+@dashboard-background : #f5f5f5;
+
+
+// --------------------------------------------------
+// COLOR FACTORY 
+// --------------------------------------------------
+
+//color primary shade generator
+@primary-light-mix: mix(@color-primary, #ffffff, @mix-percentage-light);
+@primary-light-saturate: if((saturation(@primary-light-mix) > 5), saturate(@primary-light-mix, @saturation-shift/2), @primary-light-mix);
+@primary-light-hue: if(luma(spin(@color-primary, @hue-shift)) > luma(@color-primary), @hue-shift/2, -@hue-shift/2); 
+@color-primary-light: spin(@primary-light-saturate, @primary-light-hue);
+
+@primary-lighter-mix: mix(@color-primary, #ffffff, @mix-percentage-lighter);
+@primary-lighter-saturate: if((saturation(@primary-lighter-mix) > 5), saturate(@primary-lighter-mix, @saturation-shift), @primary-lighter-mix);
+@primary-lighter-hue: if(luma(spin(@color-primary, @hue-shift)) > luma(@color-primary), @hue-shift, -@hue-shift);
+@color-primary-lighter: spin(@primary-lighter-saturate, @primary-lighter-hue);
+
+@primary-dark-mix: mix(@color-primary, #000000, @mix-percentage-dark);
+@primary-dark-saturate: if((saturation(@primary-dark-mix) > 5), saturate(@primary-dark-mix, @saturation-shift/2), @primary-dark-mix);
+@primary-dark-hue: if(luma(spin(@color-primary, @hue-shift)) > luma(@color-primary), -@hue-shift/2, @hue-shift/2); 
+@color-primary-dark: spin(@primary-dark-saturate, @primary-dark-hue);
+
+@primary-darker-mix: mix(@color-primary, #000000, @mix-percentage-darker);
+@primary-darker-saturate: if((saturation(@primary-darker-mix) > 5), saturate(@primary-darker-mix, @saturation-shift), @primary-darker-mix);
+@primary-darker-hue: if(luma(spin(@color-primary, @hue-shift)) > luma(@color-primary), -@hue-shift, @hue-shift);
+@color-primary-darker: spin(@primary-darker-saturate, @primary-darker-hue);
+
+//color complete shade generator
+@complete-light-mix: mix(@color-complete, #ffffff, @mix-percentage-light);
+@complete-light-saturate: if((saturation(@complete-light-mix) > 5), saturate(@complete-light-mix, @saturation-shift/2), @complete-light-mix);
+@complete-light-hue: if(luma(spin(@color-complete, @hue-shift)) > luma(@color-complete), @hue-shift/2, -@hue-shift/2);
+@color-complete-light: spin(@complete-light-saturate, @complete-light-hue);
+
+@complete-lighter-mix: mix(@color-complete, #ffffff, @mix-percentage-lighter);
+@complete-lighter-saturate: if((saturation(@complete-lighter-mix) > 5), saturate(@complete-lighter-mix, @saturation-shift), @complete-lighter-mix);
+@complete-lighter-hue: if(luma(spin(@color-complete, @hue-shift)) > luma(@color-complete), @hue-shift, -@hue-shift);
+@color-complete-lighter: spin(@complete-lighter-saturate, @complete-lighter-hue);
+
+@complete-dark-mix: mix(@color-complete, #000000, @mix-percentage-dark);
+@complete-dark-saturate: if((saturation(@complete-dark-mix) > 5), saturate(@complete-dark-mix, @saturation-shift/2), @complete-dark-mix);
+@complete-dark-hue: if(luma(spin(@color-complete, @hue-shift)) > luma(@color-complete), -@hue-shift/2, @hue-shift/2);
+@color-complete-dark: spin(@complete-dark-saturate, @complete-dark-hue);
+
+@complete-darker-mix: mix(@color-complete, #000000, @mix-percentage-darker);
+@complete-darker-saturate: if((saturation(@complete-darker-mix) > 5), saturate(@complete-darker-mix, @saturation-shift), @complete-darker-mix);
+@complete-darker-hue: if(luma(spin(@color-complete, @hue-shift)) > luma(@color-complete), -@hue-shift, @hue-shift);
+@color-complete-darker: spin(@complete-darker-saturate, @complete-darker-hue);
+
+//color success shade generator
+@success-light-mix: mix(@color-success, #ffffff, @mix-percentage-light);
+@success-light-saturate: if((saturation(@success-light-mix) > 5), saturate(@success-light-mix, @saturation-shift/2), @success-light-mix);
+@success-light-hue: if(luma(spin(@color-success, @hue-shift)) > luma(@color-success), @hue-shift/2, -@hue-shift/2);
+@color-success-light: spin(@success-light-saturate, @success-light-hue);
+
+@success-lighter-mix: mix(@color-success, #ffffff, @mix-percentage-lighter);
+@success-lighter-saturate: if((saturation(@success-lighter-mix) > 5), saturate(@success-lighter-mix, @saturation-shift), @success-lighter-mix);
+@success-lighter-hue: if(luma(spin(@color-success, @hue-shift)) > luma(@color-success), @hue-shift, -@hue-shift);
+@color-success-lighter: spin(@success-lighter-saturate, @success-lighter-hue);
+
+@success-dark-mix: mix(@color-success, #000000, @mix-percentage-dark);
+@success-dark-saturate: if((saturation(@success-dark-mix) > 5), saturate(@success-dark-mix, @saturation-shift/2), @success-dark-mix);
+@success-dark-hue: if(luma(spin(@color-success, @hue-shift)) > luma(@color-success), -@hue-shift/2, @hue-shift/2);
+@color-success-dark: spin(@success-dark-saturate, @success-dark-hue);
+
+@success-darker-mix: mix(@color-success, #000000, @mix-percentage-darker);
+@success-darker-saturate: if((saturation(@success-darker-mix) > 5), saturate(@success-darker-mix, @saturation-shift), @success-darker-mix);
+@success-darker-hue: if(luma(spin(@color-success, @hue-shift)) > luma(@color-success), -@hue-shift, @hue-shift);
+@color-success-darker: spin(@success-darker-saturate, @success-darker-hue);
+
+//color warning shade generator
+@warning-light-mix: mix(@color-warning, #ffffff, @mix-percentage-light);
+@warning-light-saturate: if((saturation(@warning-light-mix) > 5), saturate(@warning-light-mix, @saturation-shift/2), @warning-light-mix);
+@warning-light-hue: if(luma(spin(@color-warning, @hue-shift)) > luma(@color-warning), @hue-shift/2, -@hue-shift/2);
+@color-warning-light: spin(@warning-light-saturate, @warning-light-hue);
+
+@warning-lighter-mix: mix(@color-warning, #ffffff, @mix-percentage-lighter);
+@warning-lighter-saturate: if((saturation(@warning-lighter-mix) > 5), saturate(@warning-lighter-mix, @saturation-shift), @warning-lighter-mix);
+@warning-lighter-hue: if(luma(spin(@color-warning, @hue-shift)) > luma(@color-warning), @hue-shift, -@hue-shift);
+@color-warning-lighter: spin(@warning-lighter-saturate, @warning-lighter-hue);
+
+@warning-dark-mix: mix(@color-warning, #000000, @mix-percentage-dark) ;
+@warning-dark-saturate: if((saturation(@warning-dark-mix) > 5), saturate(@warning-dark-mix, @saturation-shift/2), @warning-dark-mix);
+@warning-dark-hue: if(luma(spin(@color-warning, @hue-shift)) > luma(@color-warning), -@hue-shift/2, @hue-shift/2);
+@color-warning-dark: spin(@warning-dark-saturate, @warning-dark-hue);
+
+@warning-darker-mix: mix(@color-warning, #000000, @mix-percentage-darker);
+@warning-darker-saturate: if((saturation(@warning-darker-mix) > 5), saturate(@warning-darker-mix, @saturation-shift), @warning-darker-mix);
+@warning-darker-hue: if(luma(spin(@color-warning, @hue-shift)) > luma(@color-warning), -@hue-shift, @hue-shift);
+@color-warning-darker: spin(@warning-darker-saturate, @warning-darker-hue);
+
+//color danger shade generator
+@danger-light-mix: mix(@color-danger, #ffffff, @mix-percentage-light);
+@danger-light-saturate: if((saturation(@danger-light-mix) > 5), saturate(@danger-light-mix, @saturation-shift/2), @danger-light-mix);
+@danger-light-hue: if(luma(spin(@color-danger, @hue-shift)) > luma(@color-danger), @hue-shift/2, -@hue-shift/2);
+@color-danger-light: spin(@danger-light-saturate, @danger-light-hue);
+
+@danger-lighter-mix: mix(@color-danger, #ffffff, @mix-percentage-lighter);
+@danger-lighter-saturate: if((saturation(@danger-lighter-mix) > 5), saturate(@danger-lighter-mix, @saturation-shift), @danger-lighter-mix);
+@danger-lighter-hue: if(luma(spin(@color-danger, @hue-shift)) > luma(@color-danger), @hue-shift, -@hue-shift);
+@color-danger-lighter: spin(@danger-lighter-saturate, @danger-lighter-hue);
+
+@danger-dark-mix: mix(@color-danger, #000000, @mix-percentage-dark);
+@danger-dark-saturate: if((saturation(@danger-dark-mix) > 5), saturate(@danger-dark-mix, @saturation-shift/2), @danger-dark-mix);
+@danger-dark-hue: if(luma(spin(@color-danger, @hue-shift)) > luma(@color-danger), -@hue-shift/2, @hue-shift/2);
+@color-danger-dark: spin(@danger-dark-saturate, @danger-dark-hue);
+
+@danger-darker-mix: mix(@color-danger, #000000, @mix-percentage-darker);
+@danger-darker-saturate: if((saturation(@danger-darker-mix) > 5), saturate(@danger-darker-mix, @saturation-shift), @danger-darker-mix);
+@danger-darker-hue: if(luma(spin(@color-danger, @hue-shift)) > luma(@color-danger), -@hue-shift, @hue-shift);
+@color-danger-darker: spin(@danger-darker-saturate, @danger-darker-hue);
+
+//info shade generator
+@info-light-mix: mix(@color-info, #ffffff, @mix-percentage-light);
+@info-light-saturate: if((saturation(@info-light-mix) > 5), saturate(@info-light-mix, @saturation-shift/2), @info-light-mix);
+@info-light-hue: if(luma(spin(@color-info, @hue-shift)) > luma(@color-info), @hue-shift/2, -@hue-shift/2);
+@color-info-light: spin(@info-light-saturate, @info-light-hue);
+
+@info-lighter-mix: mix(@color-info, #ffffff, @mix-percentage-lighter);
+@info-lighter-saturate: if((saturation(@info-lighter-mix) > 5), saturate(@info-lighter-mix, @saturation-shift), @info-lighter-mix);
+@info-lighter-hue: if(luma(spin(@color-info, @hue-shift)) > luma(@color-info), @hue-shift, -@hue-shift);
+@color-info-lighter: spin(@info-lighter-saturate, @info-lighter-hue);
+
+@info-dark-mix: mix(@color-info, #000000, @mix-percentage-dark);
+@info-dark-saturate: if((saturation(@info-dark-mix) > 5), saturate(@info-dark-mix, @saturation-shift/2), @info-dark-mix);
+@info-dark-hue: if(luma(spin(@color-info, @hue-shift)) > luma(@color-info), -@hue-shift/2, @hue-shift/2);
+@color-info-dark: spin(@info-dark-saturate, @info-dark-hue);
+
+@info-darker-mix: mix(@color-info, #000000, @mix-percentage-darker);
+@info-darker-saturate: if((saturation(@info-darker-mix) > 5), saturate(@info-darker-mix, @saturation-shift), @info-darker-mix);
+@info-darker-hue: if(luma(spin(@color-info, @hue-shift)) > luma(@color-info), -@hue-shift, @hue-shift);
+@color-info-darker: spin(@info-darker-saturate, @info-darker-hue);
+
+//Neutral color shade generator
+@color-contrast-lower: mix(@color-contrast-higher, @color-contrast-lowest , @mix-percentage-contrast-lower);
+@color-contrast-low: mix(@color-contrast-higher, @color-contrast-lowest , @mix-percentage-contrast-low);
+@color-contrast-medium: mix(@color-contrast-higher, @color-contrast-lowest , @mix-percentage-contrast-medium);
+@color-contrast-high: mix(@color-contrast-higher, @color-contrast-lowest , @mix-percentage-contrast-high);
+
+
+// Components
+// --------------------------------------------------
+//## Define common padding and border radius sizes and more. Values based on 14px text and 1.428 line-height (~20px to start).
+
+//@padding-base-vertical:     6px;
+@padding-base-horizontal:   17px;
+
+// @padding-lg-vertical:    28px;
+@padding-lg-horizontal:  28px;
+
+// @padding-sm-vertical:    5px;
+@padding-sm-horizontal:  16px;
+
+@padding-xs-vertical:       2px;
+@padding-xs-horizontal:     9px;
+
+
+@zIndex-navbar : @zIndex-9;
+@zIndex-sidebar : @zIndex-10;
+@zIndex-tooltips : @zIndex-10;

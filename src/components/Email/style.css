@@ -1,0 +1,114 @@
+ul#email-secondary-sidebar-id,
+ul#email-quick-view-secondary-sidebar-id {
+  list-style: none !important;
+  clear: none !important;
+  margin: 0px 0px 0px 23px !important;
+  background-color: #ffffff !important;
+  padding: 0px !important;
+}
+
+.list-view-group-container {
+  height: 100vh;
+  overflow: scroll;
+  background-color: #fff;
+  padding: 0;
+}
+
+.email-content .list-view-group-container {
+  overflow-y: scroll;
+}
+
+ul.mail-list-ul > li {
+  border-bottom: 1px solid rgba(33, 33, 33, 0.14);
+  cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+ul.mail-list-ul > li:hover {
+  background-color: #d3eeff !important;
+}
+
+ul.mail-list-ul > li.active:hover {
+  background-color: #fffde1 !important;
+}
+
+.no-padding-left {
+  padding-left: 0px;
+}
+
+.no-padding-right {
+  padding-right: 0px;
+}
+
+.email-group-header-date {
+  background: #fff;
+  color: #757575;
+  font-family: inter ui, -apple-system, BlinkMacSystemFont, segoe ui, roboto,
+    oxygen, ubuntu, cantarell, fira sans, droid sans, helvetica neue, sans-serif;
+  text-transform: capitalize;
+  letter-spacing: normal;
+  font-size: 12px;
+  padding-left: 12px;
+  padding-top: 3px;
+  width: 100%;
+}
+
+.datetime.email-list-date-class {
+  font-family: inter ui, -apple-system, BlinkMacSystemFont, segoe ui, roboto,
+    oxygen, ubuntu, cantarell, fira sans, droid sans, helvetica neue, sans-serif;
+  font-size: 12px;
+  color: rgba(33, 33, 33, 0.62);
+  text-align: right;
+}
+
+.sticky-date {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 9;
+}
+
+@media (max-width: 979px) {
+  .compose-wrapper {
+    display: block !important;
+    position: fixed;
+  }
+  .list-view-group-container {
+    padding-bottom: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .email-body-small-screen {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .email-body-large-screen {
+    display: none;
+  }
+  .mail-list-item-style .row{
+	  margin-right: -95px;
+  }
+}
+
+@media (min-width: 768px) {
+  .email-body-small-screen {
+    display: none;
+  }
+
+  #email-group-div-id {
+    left: 0px !important;
+  }
+
+  .email-body-large-screen {
+    display: block;
+  }
+}

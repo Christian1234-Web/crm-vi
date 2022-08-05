@@ -1,0 +1,24 @@
+.chat {
+  width: 285px !important;
+  right: -285px !important;
+}
+
+.delete-note-link {
+  padding-top: 1px !important;
+}
+
+.new-note-link {
+  padding-top: 1px !important;
+}
+
+.chat .quickview-wrapper .quickview-toggle {
+  padding: 4px;
+}
+
+.chat .btn-icon-link.invert:hover:not(.active) {
+  color: rgb(124, 124, 124);
+}
+
+.quickview-wrapper .tab-pane{
+	overflow-y: hidden !important;
+}

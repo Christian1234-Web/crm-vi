@@ -1,0 +1,7 @@
+.widget-2 > div,
+.widget-6 > div {
+  position: initial !important;
+}
+.social-card-img {
+  background-image: url("../../../assets/img/social_new.jpg");
+}

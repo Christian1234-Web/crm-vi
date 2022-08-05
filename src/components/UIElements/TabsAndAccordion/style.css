@@ -1,0 +1,21 @@
+.tabs-dropdown {
+  width: 100%;
+}
+
+.tabs-dropdown .Dropdown-control {
+  max-width: 100% !important;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.164);
+  border-radius: 0;
+}
+
+.tabs-dropdown .Dropdown-placeholder {
+  text-align: left;
+  color: rgba(75, 75, 75, 0.7);
+  text-transform: uppercase;
+  font-size: 10.5px;
+}
+
+.tabs-dropdown .Dropdown-arrow {
+  opacity: 1;
+}

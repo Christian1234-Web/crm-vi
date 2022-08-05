@@ -1,0 +1,115 @@
+.page-item.active .page-link {
+  z-index: 2;
+  background-color: #ffffff;
+  font-weight: bold;
+  color: #272727;
+  opacity: 1;
+  border: oldlace;
+  font-size: 11px;
+}
+
+.page-link {
+  z-index: 2;
+  background-color: #ffffff;
+  font-weight: bold;
+  color: #cfcece;
+  opacity: 1;
+  border: oldlace;
+  font-size: 11px;
+}
+
+.react-bootstrap-table-pagination {
+  padding-top: 5px;
+}
+
+.order-4 {
+  order: 4;
+  background-position: center;
+  float: right;
+}
+
+.react-bootstrap-table th {
+  position: relative;
+  background-position: center;
+  padding-left: 20px;
+
+  .caret-4-desc {
+    float: right !important;
+    &:before {
+      content: "";
+      opacity: 0.4;
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-position: center;
+    }
+
+    &:after {
+      content: "";
+      font-size: 16px !important;
+      background-image: url("../../pages/img/icons/sort_desc.png");
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-position: center;
+    }
+  }
+
+  .caret-4-asc {
+    position: relative;
+    background-position: center;
+    float: right;
+
+    &:before {
+      content: "";
+      font-size: 16px !important;
+      background-image: url("../../pages/img/icons/sort_asc.png");
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-position: center;
+      float: right;
+    }
+
+    &:after {
+      content: "";
+      opacity: 0.4;
+      font-size: 16px !important;
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-position: center;
+      float: right;
+    }
+  }
+
+  .order-4 {
+    &:before {
+      content: "";
+      opacity: 0.4;
+      background-image: url("../../pages/img/icons/sort_asc.png");
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-position: center;
+    }
+
+    &:after {
+      content: "";
+      opacity: 0.4;
+      background-image: url("../../pages/img/icons/sort_desc.png");
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-position: center;
+    }
+  }
+
+  &.sortable {
+    cursor: pointer;
+  }
+}
+
+.table-responsive {
+  overflow-x: hidden;
+}

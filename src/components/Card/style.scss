@@ -1,0 +1,21 @@
+.cards-view-page .card .card-body {
+  padding: 20px 20px 20px 0px !important
+}
+
+.casual .card-maximized{
+	left: 0px !important;
+	top: 99px !important;
+}
+.simple .card-maximized{
+	left: 250px !important;
+}
+.executive .card-maximized{
+	left: 0px !important;
+	top: 169px !important;
+}
+
+@media (max-width: 991px) {
+	#card-circular-minimal{
+		padding-left:10px;
+	}
+}

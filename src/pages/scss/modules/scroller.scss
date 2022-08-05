@@ -1,0 +1,284 @@
+/* Pages Scroll bar
+------------------------------------
+*/
+
+.scroll {
+  position: relative;
+  overflow: auto;
+}
+
+.scroll-wrapper {
+  & > .scroll-element,
+  > .scroll-element div {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    z-index: 10;
+  }
+  & > .scroll-element div {
+    display: block;
+    height: 100%;
+    @include left(0);
+    top: 0;
+    width: 100%;
+  }
+  & > .scroll-element.scroll-x {
+    bottom: 2px;
+    height: 7px;
+    @include left(0);
+    min-width: 100%;
+    width: 100%;
+  }
+
+  & > .scroll-element.scroll-y {
+    height: 100%;
+    min-height: 100%;
+    @include right(2px);
+    top: 0;
+    width: 4px;
+  }
+  & > .scroll-element {
+    .scroll-element_outer {
+      opacity: 0.3;
+    }
+    .scroll-element_size {
+      background-color: rgba(0, 0, 0, 0.07);
+      opacity: 0;
+    }
+    .scroll-bar {
+      background-color: #697686;
+    }
+
+    &.scroll-x {
+      .scroll-bar {
+        bottom: 0;
+        height: 4px;
+        min-width: 24px;
+        top: auto;
+      }
+      .scroll-element_outer {
+        bottom: 0;
+        top: auto;
+        @include left(2px);
+        -webkit-transition: height 0.2s;
+        transition: height 0.2s;
+      }
+      .scroll-element_size {
+        @include left(-4px);
+      }
+    }
+    &.scroll-y {
+      .scroll-bar {
+        @include left( auto );
+        min-height: 24px;
+        @include right(0);
+        width: 4px;
+      }
+      .scroll-element_outer {
+        @include left( auto );
+        @include right(0);
+        top: 2px;
+        -webkit-transition: all 0.2s;
+        transition: all 0.2s;
+      }
+      .scroll-element_size {
+        top: -4px;
+      }
+    }
+  }
+  & > .scroll-content {
+    box-sizing: inherit !important;
+  }
+  &.auto-hide {
+    & > .scroll-element {
+      .scroll-element_track {
+        display: none;
+      }
+    }
+  }
+}
+
+.scroll-wrapper
+  > .scroll-element.scroll-x.scroll-scrolly_visible
+  .scroll-element_size {
+  @include left(-11px);
+}
+.scroll-wrapper
+  > .scroll-element.scroll-y.scroll-scrollx_visible
+  .scroll-element_size {
+  top: -11px;
+}
+
+/* hover & drag */
+
+.scroll-wrapper > .scroll-element:hover .scroll-element_outer,
+.scroll-wrapper > .scroll-element.scroll-draggable .scroll-element_outer {
+  overflow: hidden;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+  filter: alpha(opacity=70);
+  opacity: 0.7;
+}
+.scroll-wrapper
+  > .scroll-element:hover
+  .scroll-element_outer
+  .scroll-element_size,
+.scroll-wrapper
+  > .scroll-element.scroll-draggable
+  .scroll-element_outer
+  .scroll-element_size {
+  opacity: 1;
+}
+.scroll-wrapper > .scroll-element:hover .scroll-element_outer .scroll-bar,
+.scroll-wrapper
+  > .scroll-element.scroll-draggable
+  .scroll-element_outer
+  .scroll-bar {
+  height: 100%;
+  width: 100%;
+}
+
+.scroll-wrapper > .scroll-element.scroll-x:hover .scroll-element_outer,
+.scroll-wrapper
+  > .scroll-element.scroll-x.scroll-draggable
+  .scroll-element_outer {
+  height: 10px;
+  min-height: 7px;
+}
+.scroll-wrapper > .scroll-element.scroll-y:hover .scroll-element_outer,
+.scroll-wrapper
+  > .scroll-element.scroll-y.scroll-draggable
+  .scroll-element_outer {
+  min-width: 7px;
+  width: 7px;
+}
+
+
+// PERFECT SCROLLBAR STYLES
+
+/*
+ * Container style
+ */
+ .ps {
+	overflow: hidden !important;
+	overflow-anchor: none;
+	-ms-overflow-style: none;
+	touch-action: auto;
+	-ms-touch-action: auto;
+	z-index: 100;
+  }
+  
+  /*
+   * Scrollbar rail styles
+   */
+  .ps__rail-x {
+	display: none;
+	opacity: 0;
+	transition: background-color .2s linear, opacity .2s linear;
+	-webkit-transition: background-color .2s linear, opacity .2s linear;
+	height: 11px;
+	/* there must be 'bottom' or 'top' for ps__rail-x */
+	bottom: 0px;
+	/* please don't change 'position' */
+	position: absolute;
+	z-index: 750;
+  }
+  
+  .ps__rail-y {
+	display: none;
+	opacity: 0;
+	transition: background-color .2s linear, opacity .2s linear;
+	-webkit-transition: background-color .2s linear, opacity .2s linear;
+	width: 11px;
+	/* there must be 'right' or 'left' for ps__rail-y */
+	right: 0px;
+	/* please don't change 'position' */
+	position: absolute;
+	z-index: 750;
+  }
+  
+  .ps--active-x > .ps__rail-x,
+  .ps--active-y > .ps__rail-y {
+	display: block;
+	background-color: transparent;
+  }
+  
+  .ps:hover > .ps__rail-x,
+  .ps:hover > .ps__rail-y,
+  .ps--focus > .ps__rail-x,
+  .ps--focus > .ps__rail-y,
+  .ps--scrolling-x > .ps__rail-x,
+  .ps--scrolling-y > .ps__rail-y {
+	opacity: 0.7;
+  }
+  
+  .ps .ps__rail-x:hover,
+  .ps .ps__rail-y:hover,
+  .ps .ps__rail-x:focus,
+  .ps .ps__rail-y:focus,
+  .ps .ps__rail-x.ps--clicking,
+  .ps .ps__rail-y.ps--clicking {
+	// background-color: #eee;
+	// opacity: 0.9;
+	background-color: rgba(0, 0, 0, 0.07);
+	opacity: 0.7;
+	
+  }
+  
+  /*
+   * Scrollbar thumb styles
+   */
+  .ps__thumb-x {
+	background-color: #697686;
+	border-radius: 0px;
+	transition: background-color .2s linear, height .2s ease-in-out;
+	-webkit-transition: background-color .2s linear, height .2s ease-in-out;
+	height: 4px;
+	bottom: 2px;
+	position: absolute;
+	opacity: 0.7;
+  }
+  
+  .ps__thumb-y {
+	background-color: #697686;
+	border-radius: 0px;
+	transition: background-color .2s linear, width .2s ease-in-out;
+	-webkit-transition: background-color .2s linear, width .2s ease-in-out;
+	width: 4px;
+    right: 2px;
+    position: absolute;
+    opacity: 0.7;
+  }
+  
+  .ps__rail-x:hover > .ps__thumb-x,
+  .ps__rail-x:focus > .ps__thumb-x,
+  .ps__rail-x.ps--clicking .ps__thumb-x {
+	background-color: #697686;
+	height: 7px;
+  }
+  
+  .ps__rail-y:hover > .ps__thumb-y,
+  .ps__rail-y:focus > .ps__thumb-y,
+  .ps__rail-y.ps--clicking .ps__thumb-y {
+	background-color: #697686;
+	width: 7px;
+  }
+  
+  /* MS supports */
+  @supports (-ms-overflow-style: none) {
+	.ps {
+	  overflow: auto !important;
+	}
+  }
+  
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	.ps {
+	  overflow: auto !important;
+	}
+  }
+  .scrollbar-container {
+	position: relative;
+	height: 100%; }
+  
+  /*# sourceMappingURL=styles.css.map*/

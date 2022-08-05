@@ -1,0 +1,24 @@
+.searchOverlay-appear {
+  opacity: 0;
+}
+.searchOverlay-appear-active {
+  opacity: 1;
+  transition: opacity 1000ms;
+}
+.searchOverlay-enter {
+  opacity: 0;
+}
+.searchOverlay-enter-active {
+  opacity: 1;
+  transition: opacity 1000ms;
+}
+.searchOverlay-exit {
+  opacity: 1;
+}
+.searchOverlay-exit-active {
+  opacity: 0;
+  transition: opacity 1000ms;
+}
+.simple .bg-success {
+  background-color: #007be8 !important;
+}

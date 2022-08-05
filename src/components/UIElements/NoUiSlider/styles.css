@@ -1,0 +1,85 @@
+.noUi-connect {
+    background-color: #4b4b4b;
+    height: 4px !important;
+}
+
+#red .noUi-connect {
+    background: #c0392b;
+}
+
+#black .noUi-connect {
+    background: #4b4b4b;
+}
+
+#yellow .noUi-connect {
+    background: #ffd945;
+}
+
+#green .noUi-connect {
+    background: #19ad79;
+}
+
+#blue .noUi-connect {
+    background: #0072ec;
+}
+
+#purple .noUi-connect {
+    background: #7252d3;
+}
+
+.noUi-target{
+    background-color: none;
+    background: none !important;
+    border-radius: 0% !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.noUi-handle{
+    background: #fff !important;
+    cursor: default !important;
+    border-radius: 999px !important;
+    box-shadow: none !important;
+    width: 18px !important;
+    height: 18px !important;
+    left: 19px !important;
+    border: 1px solid #d6d6d6 !important;
+    top: -3px !important;
+    transition: all .2s ease !important;
+    position: relative !important; 
+    z-index: 1 !important;
+}
+
+.noUi-origin{
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 0;
+    bottom: 5px;
+}
+
+.noUi-connects{
+    background-color: #e9e9e9;
+    height: 4px !important;
+}
+
+.noUi-tooltip{
+    font-size: 12px;
+    background-color: #000;
+    max-width: 200px;
+    padding: .25rem .5rem;
+    color: #fff;
+    text-align: center;
+    border-radius: .25rem;
+    font-family: "-apple-system","BlinkMacSystemFont","Segoe UI","Roboto","Helvetica Neue","Arial","Noto Sans","sans-serif",
+        "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    opacity: 0.7;
+}
+
+.noUi-handle::before{
+    content: none !important;
+}
+
+.noUi-handle::after{
+    content: none !important;
+}

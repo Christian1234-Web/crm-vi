@@ -1,0 +1,21 @@
+.customOverlay {
+    background: rgba(255,255,255,.85);
+}
+
+.customModal {
+    background: rgba(255,255,255,.85);
+    max-width: 500px;
+    width: 100%;
+    box-shadow: none;
+}
+
+.customModal > .modal-header {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .fill-win-m-t-10 {
+        margin-top: 10px;
+        padding-left: 15px !important;
+    }
+}

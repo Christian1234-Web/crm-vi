@@ -1,0 +1,43 @@
+
+/* ion slider custom styles */
+
+/* hide handlers */
+.irs-handle{
+    display: none !important;
+}
+
+/* primary border-top-color */
+.irs-wrapper.primary .irs-from::before{
+    border-top-color: #7252D3;
+}
+
+.irs-wrapper.primary .irs-to::before{
+    border-top-color: #7252D3;
+}
+
+/* complete border-top-color */
+.irs-wrapper.complete .irs-from::before{
+    border-top-color: #0072ec;
+}
+
+.irs-wrapper.complete .irs-to::before{
+    border-top-color: #0072ec;
+}
+
+/* success border-top-color */
+.irs-wrapper.success .irs-from::before{
+    border-top-color: #19ad79;
+}
+
+.irs-wrapper.success .irs-to::before{
+    border-top-color: #19ad79;
+}
+
+/* danger border-top-color */
+.irs-wrapper.danger .irs-from::before{
+    border-top-color: #d83c31;
+}
+
+.irs-wrapper.danger .irs-to::before{
+    border-top-color: #d83c31;
+}

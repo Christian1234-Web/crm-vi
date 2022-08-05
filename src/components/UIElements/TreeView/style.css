@@ -1,0 +1,14 @@
+.react-checkbox-tree {
+  font-size: 14px;
+}
+
+.see-plugin {
+  margin-left: 10px;
+}
+
+@media (max-width: 420px) {
+  .see-plugin {
+    margin-left: 0px;
+    margin-top: 10px;
+  }
+}

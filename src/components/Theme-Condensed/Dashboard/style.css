@@ -1,0 +1,38 @@
+.widget-2 > div,
+.widget-6 > div {
+  position: initial !important;
+}
+.widget-5-chart {
+  right: 0 !important;
+  left: 15px !important;
+  top: 35px !important;
+}
+
+.builder-toggle {
+  z-index: 12;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 54px;
+  height: 50px;
+  top: 20%;
+  left: -48px;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  box-shadow: -5px 0px 14px 2px rgb(0 0 0 / 4%);
+}
+
+.quickview-wrapper {
+  width: 423px;
+  right: -423px;
+}
+.builder .nav-tabs {
+  background-color: #ffffff !important;
+  color: black;
+}
+
+/* .page-container .page-content-wrapper .content {
+  padding-bottom: 0px !important;
+} */

@@ -1,0 +1,58 @@
+@media (min-width: 1430px) {
+  .over-layer-height {
+    height: 130px !important;
+  }
+  .res-image {
+    height: 100% !important;
+  }
+}
+
+@media (min-width: 1330px) {
+  .gallery {
+    padding-left: 0%;
+  }
+}
+
+.modal .modal-content {
+  border: none !important;
+}
+
+.item-details .dialog__content .dialog__overview .item-slideshow .slide {
+  height: 100% !important;
+  width: 491.75px !important;
+}
+
+.carousel,
+.carousel-inner,
+.carousel-item {
+  height: 100%;
+}
+
+
+.casual .gallery{
+	margin-top: 110px;
+}
+
+@media screen and (min-width: 1270px) {
+    .casual .gallery {width: 860px; height: 1500px;}
+}
+
+@media screen and (max-width: 992px) {
+    .casual .gallery {width: 570px; height: 2250px;}
+}
+
+@media screen and (max-width: 768px) {
+    .casual .gallery {width: 280px; height: 3500px;}
+}
+
+@media screen and (min-width: 1270px) {
+    .executive .gallery {width: 860px; height: 1500px;}
+}
+
+@media screen and (max-width: 992px) {
+    .executive .gallery {width: 570px; height: 2250px;}
+}
+
+@media screen and (max-width: 768px) {
+    .executive .gallery {width: 280px; height: 3500px;}
+}

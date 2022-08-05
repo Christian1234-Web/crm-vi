@@ -1,0 +1,56 @@
+.react-slidedown.my-dropdown-slidedown {
+  transition-duration: 0.3s;
+}
+
+.sidebar-header-icon {
+  float: right;
+}
+
+.page-sidebar .sidebar-menu .menu-items > li ul.sub-menu {
+  display: block !important;
+  list-style: none !important;
+  clear: both !important;
+  margin: 0 0 10px !important;
+  padding: 18px 0 10px !important;
+}
+
+.line-height-40 {
+  line-height: 40px !important;
+}
+
+.page-sidebar .sidebar-menu .menu-items > li ul.sub-menu > li > a {
+  padding: 0px;
+}
+
+.page-sidebar .sidebar-menu .menu-items > li {
+  margin-bottom: 1px;
+}
+
+.sidebar-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+@media (max-width: 991px) {
+  .page-sidebar .sidebar-menu .search-link {
+    background-color: #272b35;
+    opacity: 100%;
+    margin-top: -50px;
+    z-index: 1000;
+    display: block;
+    height: 54px;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: fixed;
+  }
+}
+
+.sidebar-show {
+  .menu-items {
+    .icon-thumbnail {
+      transform: translate3d(-14px, 0, 0);
+    }
+  }
+}

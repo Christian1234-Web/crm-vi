@@ -1,0 +1,25 @@
+.landing_container {
+    /* overflow-y: hidden; */
+}
+
+.section_one {
+    background: #474747;
+    height: 450px;
+}
+
+.section_two li a {
+    text-decoration: none;
+    color: #cdc7c5;
+    height: 20rem;
+
+}
+
+.get-h2 {
+    font-size: 15px;
+    font-weight: 500;
+
+}
+
+.get-p {
+    font-size: 11px;
+}

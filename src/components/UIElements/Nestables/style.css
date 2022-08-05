@@ -1,0 +1,93 @@
+.nestable-item,
+.nestable-item-copy {
+  margin: 5px 0 0;
+}
+
+.nestable-item-name {
+  background-color: white;
+  padding: 2px 10px;
+  border-radius: 3px;
+  font-weight: bold;
+  border: 1px solid #4b4b4b1c;
+  font-size: 13px;
+}
+
+.nestable-item .nestable-list,
+.nestable-item-copy .nestable-list {
+  margin-top: 5px;
+}
+
+.nestable-three .nestable-item-name {
+  border-color: rgba(224, 224, 224, 0.7);
+  color: #4b4b4b;
+  transition: backgroud 0.2s ease-in;
+  border: 1px solid #e5e9ec;
+  border-radius: 3px;
+  padding: 2px 10px;
+  font-weight: bold;
+}
+
+.nestable-four .nestable-item-name {
+  color: #4b4b4b;
+  background: #f4f4f4;
+  border: none;
+  transition: backgroud 0.2s ease-in;
+  padding: 2px 10px;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+span.grippy {
+  content: "....";
+  width: 10px;
+  height: 20px;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 5px;
+  padding: 3px 0px;
+  cursor: move;
+  vertical-align: middle;
+  margin-top: -0.7em;
+  margin-right: 0.3em;
+  font-size: 12px;
+  font-family: sans-serif;
+  letter-spacing: 2px;
+  color: #4b4b4b;
+  margin-right: 15px;
+}
+
+span.grippy::after {
+  content: ".. .. .. ..";
+}
+
+.nestable-item::before {
+  border-color: #4b4b4b41 !important;
+  background-color: transparent !important;
+}
+
+.nestable > .nestable-list > .is-dragging::before {
+  border-color: #4b4b4b41 !important;
+  background-color: transparent !important;
+}
+
+.nestable-icon {
+  position: relative;
+  top: 4px;
+  margin-right: 3px;
+  margin-left: -4px;
+  transform: scale(0.7);
+}
+
+#drag_handler_example .nestable-item-name::after {
+  content: "";
+  width: 1px;
+  min-height: 28px;
+  background-color: #4b4b4b1c;
+  position: absolute;
+  top: 1px;
+  left: 30px;
+}
+
+.breadcrumb > .breadcrumb-item.active:before {
+  padding-left: 0px;
+}

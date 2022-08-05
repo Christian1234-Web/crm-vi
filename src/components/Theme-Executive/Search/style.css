@@ -1,0 +1,34 @@
+.searchOverlay-appear {
+  opacity: 0;
+}
+.searchOverlay-appear-active {
+  opacity: 1;
+  transition: opacity 1000ms;
+}
+.searchOverlay-enter {
+  opacity: 0;
+}
+.searchOverlay-enter-active {
+  opacity: 1;
+  transition: opacity 1000ms;
+}
+.searchOverlay-exit {
+  opacity: 1;
+}
+.searchOverlay-exit-active {
+  opacity: 0;
+  transition: opacity 1000ms;
+}
+.simple .bg-success {
+  background-color: #007be8 !important;
+}
+.search-results .thumbnail-wrapper {
+  margin-top: 15px !important;
+}
+
+.overlay .overlay-search {
+  font-weight: 600;
+  font-family: "Inter UI", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+}

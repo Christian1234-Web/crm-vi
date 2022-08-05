@@ -1,0 +1,10 @@
+.simple .simple-box-layout {
+  background-color: #ffffff;
+}
+
+@media (max-width: 991px) {
+	.container{
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+}

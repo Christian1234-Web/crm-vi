@@ -1,0 +1,33 @@
+.notification-tabs > li > a {
+  background-color: transparent;
+}
+
+.notification-tabs > li > a:focus {
+  box-shadow: none !important;
+}
+
+.notification-dropdown {
+  min-width: 80px;
+}
+
+.casual .pgn-wrapper[data-position="top"] {
+  top: 101px !important;
+  left: 0px !important;
+}
+
+@media (max-width: 991px) {
+  .casual .pgn-wrapper[data-position="top"] {
+    top: 40px !important;
+  }
+}
+
+.executive .pgn-wrapper[data-position="top"] {
+  top: 171px !important;
+  left: 0px !important;
+}
+
+@media (max-width: 991px) {
+  .executive .pgn-wrapper[data-position="top"] {
+    top: 120px !important;
+  }
+}

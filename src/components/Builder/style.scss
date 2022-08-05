@@ -1,0 +1,131 @@
+.header-simple {
+  border-bottom: transparent;
+  background-color: #f3f3f4;
+}
+.header-simple {
+  border-bottom: transparent;
+  background-color: #ffffff;
+}
+.simple .text-primary {
+  color: #005bab !important;
+}
+.simple a:hover {
+  color: #007be8;
+}
+.simple .breadcrumb > .breadcrumb-item.active {
+  color: #000;
+}
+.simple .text-success {
+  color: #005bab !important;
+}
+.builder-toggle {
+  position: absolute;
+  top: 20%;
+  right: 423px;
+  background: #ffffff;
+  padding: 5px;
+  border-radius: 5px 0px 0px 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 54px;
+  height: 50px;
+  top: 20%;
+  left: -48px;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  box-shadow: -5px 0px 14px 2px rgb(0 0 0 / 4%);
+}
+
+.builder {
+  width: 423px !important;
+  right: -423px !important;
+}
+
+.quickview-wrapper .tab-pane {
+  overflow-y: scroll;
+}
+
+.layout-block {
+  max-width: 144px;
+}
+
+.layout-block img {
+  opacity: 0.5;
+}
+
+.layout-block img:hover {
+  opacity: 0.7;
+}
+
+.layout-block .active img {
+  opacity: 1 !important;
+}
+
+.quickview-wrapper.builder a.btn-toggle-layout.active:before {
+  background-image: url("https://pages.revox.io/dashboard/latest/angular/tick.b75f0ba800ab79c9e944.svg");
+  width: 23px;
+  height: 23px;
+  content: "";
+  position: absolute;
+  top: 84px;
+  right: 10px;
+  z-index: 10;
+}
+
+#builder {
+  width: 423px;
+  right: -423px;
+}
+#builder .nav-item {
+  margin-left: -50px;
+  margin-right: 50px;
+  width: 150px;
+}
+
+#builder .nav-link {
+  padding-bottom: 15px;
+  margin-top: 5px;
+}
+
+.quickview-wrapper.builder .scrollable {
+  padding-top: 27px !important;
+  height: 100%;
+  overflow-x: hidden !important;
+}
+
+.builder .nav-tabs-simple > li > a:after {
+  background-color: #7252d3;
+}
+.builder-close {
+  top: 12px !important;
+}
+.builder a.active {
+  color: #4b4b4b;
+}
+
+.builder .nav-tabs > li > a.active {
+  color: black !important;
+}
+
+.builder a {
+  color: #939393;
+}
+
+.builder a:hover {
+  color: #4b4b4b;
+}
+
+.builder .nav-tabs ~ .tab-content {
+  padding-left: 50px !important;
+}
+
+.builder .scrollbar-container {
+  margin-right: 30px;
+  margin-left: 10px;
+}
+
+.builder .nav-tabs {
+  background-color: white !important;
+}

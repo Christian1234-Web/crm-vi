@@ -1,0 +1,26 @@
+.modal-90w {
+    width: 845px !important;
+    max-width: inherit !important;
+}
+
+#extra-gallery-modal>.modal-content>.modal-body {
+    padding: 0px !important;
+}
+
+.modal-backdrop.modal-backdrop-opacity {
+    background-color: rgba(55, 58, 71, 0.9);
+    opacity: 1 !important;
+}
+
+#extra-gallery-modal.modal-dialog {
+    margin-top: 7% !important;
+}
+.btn-white{
+	margin-right: 5px;
+}
+.carousel-control-next-icon{
+	width: 10px;
+}
+.carousel-control-prev-icon{
+	width: 10px;
+}

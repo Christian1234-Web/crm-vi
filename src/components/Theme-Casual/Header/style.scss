@@ -1,0 +1,20 @@
+.headerAlign {
+  left: 250px !important;
+}
+
+.casual-header {
+  padding: 10px 0px !important;
+}
+.casual-header .bubble {
+  border: 2px solid #04a36b !important;
+}
+.casual-header .profile-dropdown-toggle:after {
+  background-color: #00854e !important;
+  border: 2px solid #00a46c !important;;
+}
+
+@media (max-width: 767px) {
+	.casual .page-container .page-content-wrapper .content {
+	  padding-top: 55px !important;
+	}
+  }

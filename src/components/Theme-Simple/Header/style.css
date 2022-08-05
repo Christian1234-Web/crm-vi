@@ -1,0 +1,36 @@
+.headerAlign {
+  left: 250px !important;
+}
+.header-simple {
+  border-bottom: transparent;
+  background-color: #f3f3f4;
+  z-index: 801 !important;
+}
+.simple .text-primary {
+  color: #005bab !important;
+}
+.simple a:hover {
+  color: #007be8;
+}
+.simple .breadcrumb > .breadcrumb-item.active {
+  color: #000;
+}
+.simple .text-success {
+  color: #005bab !important;
+}
+
+.menu-behind .header-simple {
+  background-color: #ffffff !important;
+}
+.simple body.fixed-header .header {
+  position: absolute !important;
+}
+
+.simple .secondary-sidebar,
+.simple #email-quick-view-secondary-sidebar-id,
+.simple .mail-list-item-style {
+  background-color: #f4f4f4 !important;
+}
+.simple .mail-list-ul {
+  border-right: 1px solid rgba(6, 18, 35, 0.14);
+}
