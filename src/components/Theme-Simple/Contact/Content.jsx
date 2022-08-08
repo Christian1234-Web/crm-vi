@@ -75,6 +75,8 @@ const Content = () => {
       if (rs.success === true) {
         setIs_create_g(true);
         setGroup_name('');
+        fetchGroup();
+
       } else {
         return setIs_create_g(false);
       }
