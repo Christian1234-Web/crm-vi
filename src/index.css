@@ -9,12 +9,12 @@ body {
   overflow: hidden;
   display: block;
   padding: 0;
-  /* margin-bottom: 0; */
+  margin-bottom: 0 !important;
   background-color: #f0f0f0;
 }
 
 .demo-custom-height {
-  height: calc(100% - 135px);
+  height: calc(100vh - 135px);
 }
 
 .bg-black {

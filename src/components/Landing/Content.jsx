@@ -86,7 +86,7 @@ const content = () => {
   return (
 
 
-    <div>
+    <div style={{height: '100%', overflow: 'hidden'}}>
 
       <section className="jumbotron demo-custom-height xs-full-height" style={{ backgroundImage: "url(./hero_4.jpeg)" }}><div className="container-xs-height full-height">
         <div className="col-xs-height col-middle text-left">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 // import footer component
 import Copyright from "../../ui/Footer/Copyright/Component";
@@ -27,6 +27,7 @@ import QuillEditor from './QuillEditor'
 
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css";
+import axios from "axios";
 
 
 
@@ -37,6 +38,40 @@ const Content = () => {
   const [modalTwo, setModalTwo] = useState(false);
   const [modalThree, setModalThree] = useState(false);
 
+  const [loading, setLoading] = useState(true);
+  const [patients, setPatients] = useState([]);
+	const [meta, setMeta] = useState(null);
+  const [startDate, setStartDate] = useState('');
+	const [endDate, setEndDate] = useState('');
+	const [search, setSearch] = useState('');
+	const [filtering, setFiltering] = useState(false);
+
+  const fetchPatientList = useCallback(
+		async page => {
+			try {
+				const p = page || 1;
+				setLoading(true);
+				const rs = await axios.get(`https://emr-back-end.herokuapp.com/patient/list?page=${p}&limit=10&startDate=${startDate}&endDate=${endDate}&q=${search}`);
+				const { result, ...meta } = rs.data;
+				setPatients(result);
+				setMeta(meta);
+				setLoading(false);
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			} catch (err) {
+				console.log('fetch patients err', err);
+				setLoading(false);
+			}
+		},
+		[endDate, search, startDate]
+	)
+
+	useEffect(() => {
+		if (loading) {
+		fetchPatientList()
+		}
+	}, [fetchPatientList, loading])
+
+  console.log('Malik', patients)
 
 
   const progress = (

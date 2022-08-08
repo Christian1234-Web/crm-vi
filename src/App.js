@@ -15,7 +15,6 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div className="App h-100">
           <Switch>
             {/* Uncomment the routes below if you want to view all the themes (remember to uncomment the imports as well*/}
             <Route path="/" exact>
@@ -43,8 +42,6 @@ class App extends Component {
               <Extra400 />
             </Route>
           </Switch>
-          {/* <Quickview /> */}
-        </div>
       </BrowserRouter>
     );
   }

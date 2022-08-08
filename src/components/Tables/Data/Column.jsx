@@ -39,12 +39,12 @@ export const tableThreeColumnsCbox = [{
     sort: true
 }, {
     dataField: 'browser',
-    text: 'FOLDER NUMBER',
+    text: 'EMAIL',
     headerStyle: { backgroundColor: '#f0f0f073' },
     sort: true
 }, {
     dataField: 'platforms',
-    text: 'PLATFORM(S)',
+    text: 'NUMBER',
     headerStyle: { backgroundColor: '#f0f0f073' },
     sort: true
 }, {

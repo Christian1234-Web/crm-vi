@@ -42,7 +42,7 @@ export const tableTwoData = [
 ]
 
 export const tableThreeData = [
-    { 'renderingEngine': 'Geckokkk', 'browser': 'Firefox 1.0', 'platforms': 'Win 98+ / OSX.2+', 'engineVersion': '1.7', 'actions': trashFormatter() },
+    { 'renderingEngine': 'Geckokkkss', 'browser': 'Firefox 1.0', 'platforms': 'Win 98+ / OSX.2+', 'engineVersion': '1.7', 'actions': trashFormatter() },
     { 'renderingEngine': 'Mecko', 'browser': 'Chrome 1.0', 'platforms': 'Win 98+', 'engineVersion': '2.7', 'actions': trashFormatter },
     { 'renderingEngine': 'Neko', 'browser': 'Chrome 1.5', 'platforms': 'Win 7', 'engineVersion': '1.5', 'actions': trashFormatter },
     { 'renderingEngine': 'KHTML', 'browser': 'Safari 2.5', 'platforms': 'Win 10', 'engineVersion': '1.4', 'actions': trashFormatter },
