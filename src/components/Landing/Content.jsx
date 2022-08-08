@@ -9,6 +9,11 @@ import "../../pages/scss/themes/simpleTheme/simple.scss";
 import './landing.css';
 import BgImg from './images/hero_4.jpeg';
 import Alert from '../UIElements/Alert'
+import { TOKEN_COOKIE } from "../../services/constants";
+import SSRStorage from '../../services/storage';
+const storage = new SSRStorage();
+
+
 
 const content = () => {
   const form_login = useRef();
@@ -58,6 +63,8 @@ const content = () => {
       .then(res => {
         console.log(res);
         if (res.success === true) {
+          storage.setItem(TOKEN_COOKIE, res.accessToken);
+
           setError_login(false);
           location.href = '/simple/dashboard';
         } else {

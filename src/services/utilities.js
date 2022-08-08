@@ -29,9 +29,9 @@ export const defaultHeaders = {
 };
 
 
-const headers = user => {
-    if (user) {
-        const jwt = `Bearer ${user.token}`;
+const headers = token => {
+    if (token) {
+        const jwt = `Bearer ${token}`;
         return { ...defaultHeaders, Authorization: jwt };
     } else {
         return defaultHeaders;
@@ -58,11 +58,11 @@ const parseJSON = response => response.json();
 
 export const request = async (url, method, authed = false, data) => {
     // prettier-ignore
-    const user = await (new SSRStorage()).getItem(TOKEN_COOKIE);
+    const token = await (new SSRStorage()).getItem(TOKEN_COOKIE);
     console.log(API_URI);
     const response = await fetch(`${API_URI}/${url}`, {
         method: method,
-        headers: authed ? headers(user) : { ...defaultHeaders },
+        headers: authed ? headers(token) : { ...defaultHeaders },
         body: JSON.stringify(data),
     });
     const result = await checkStatus(response);
