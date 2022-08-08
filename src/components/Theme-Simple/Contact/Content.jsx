@@ -7,6 +7,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import cellEditFactory from "react-bootstrap-table2-editor";
 import Select from 'react-select';
 import { Modal } from "react-responsive-modal";
+import Alert from '../../UIElements/Alert';
 
 import { tableOneColumns, tableTwoColumns, tableThreeColumns, tableThreeColumnsCbox } from "../../Tables/Data/Column";
 import { tableOneData, tableTwoData, tableThreeData } from "../../Tables/Data/data";
@@ -363,7 +364,21 @@ const Content = () => {
           <div className="modal-content-wrapper">
             <div className="modal-content">
               <div className="modal-top">
-
+                {is_create_g === false ? <Alert type="danger">
+                  <strong>Error: </strong>Failed to create group please try  again later
+                  <button
+                    aria-label=""
+                    className="close"
+                    data-dismiss="alert"
+                  ></button>
+                </Alert> : is_create_g === true ? <Alert type="success">
+                  <strong>Success: </strong>Created successfully
+                  <button
+                    aria-label=""
+                    className="close"
+                    data-dismiss="alert"
+                  ></button>
+                </Alert> : ''}
                 <div className="pull-right" style={{ cursor: 'pointer' }} onClick={() => handleCloseTwo()}>
                   <i className="pg-icon" >close</i>
                 </div>
@@ -379,7 +394,7 @@ const Content = () => {
                       <div className="col-md-12">
                         <div className="form-group form-group-default">
                           <label>Group Name</label>
-                          <input type="text" value={group_name} onChange={e=> setGroup_name(e.target.value)} className="form-control" />
+                          <input type="text" value={group_name} onChange={e => setGroup_name(e.target.value)} className="form-control" />
                         </div>
                       </div>
                     </div>
@@ -484,9 +499,9 @@ const Content = () => {
 
             <div className="row">
 
-              <div className="col-lg-3 m-b-10">
+              <div className="col-lg-3 m-b-10" style={{ height: '377px' }}>
 
-                <div className="view-port clearfix" style={{ height: '50%' }} id="chat">
+                <div className="view-port clearfix"   id="chat">
                   <div className="view bg-white">
                     <div className="navbar navbar-default">
                       <div className="navbar-inner">
@@ -515,7 +530,7 @@ const Content = () => {
 
                             <div className="list-view-group-header text-uppercase">
                               Transitions</div>
-                            <ul>
+                            <ul style={{ height: '300px', overflowY: 'scroll' }}>
                               {
                                 groups.map((e, i) => {
                                   return (
