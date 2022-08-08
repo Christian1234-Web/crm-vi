@@ -23,3 +23,7 @@
 .get-p {
     font-size: 11px;
 }
+
+.demo-custom-height {
+    height: calc(100% - 135px);
+}
