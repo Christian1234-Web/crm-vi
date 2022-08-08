@@ -18,7 +18,7 @@ import ToolkitProvider, {
 import PageBreadcrumb from "../../UIElements/Breadcrumb";
 import BootstrapTable from "react-bootstrap-table-next";
 import Email from './Email'
-
+import { request } from "../../../services/utilities";
 import "./style.css";
 // import "./style_email.css";
 import "../../Tables/style.scss";
@@ -33,14 +33,14 @@ import axios from "axios";
 function trashFormatter(column, colIndex) {
   return (
 
-      <div>
-          <button aria-label="" className="btn btn-link">
-              <i className="pg-icon">trash_alt</i>
-          </button>
-          <button aria-label="" className="btn btn-link">
-              <i className="pg-icon">edit</i>
-          </button>
-      </div>
+    <div>
+      <button aria-label="" className="btn btn-link">
+        <i className="pg-icon">trash_alt</i>
+      </button>
+      <button aria-label="" className="btn btn-link">
+        <i className="pg-icon">edit</i>
+      </button>
+    </div>
   );
 }
 
@@ -53,41 +53,76 @@ const Content = () => {
 
   const [loading, setLoading] = useState(true);
   const [patients, setPatients] = useState([]);
-	const [meta, setMeta] = useState(null);
+  const [meta, setMeta] = useState(null);
   const [startDate, setStartDate] = useState('');
-	const [endDate, setEndDate] = useState('');
-	const [search, setSearch] = useState('');
-	const [filtering, setFiltering] = useState(false);
+  const [endDate, setEndDate] = useState('');
+  const [search, setSearch] = useState('');
+  const [filtering, setFiltering] = useState(false);
 
+
+  const [group_name, setGroup_name] = useState('');
+  const [groups, setGroups] = useState([]);
+  const [is_create_g, setIs_create_g] = useState();
+
+
+  const createGroup = async () => {
+    const data = { groupName: group_name, description: '' };
+    const url = `group/create`;
+    try {
+      const rs = await request(url, 'POST', true, data);
+      console.log(rs);
+      if (rs.success === true) {
+        setIs_create_g(true);
+        setGroup_name('');
+      } else {
+        return setIs_create_g(false);
+      }
+    } catch (err) {
+      setIs_create_g(false);
+      console.log(err);
+    }
+
+  }
   const fetchPatientList = useCallback(
-		async page => {
-			try {
-				const p = page || 1;
-				setLoading(true);
-				const rs = await axios.get(`https://emr-back-end.herokuapp.com/patient/list?page=${p}&limit=10&startDate=${startDate}&endDate=${endDate}&q=${search}`);
-				const { result, ...meta } = rs.data;
+    async page => {
+      try {
+        const p = page || 1;
+        setLoading(true);
+        const rs = await axios.get(`https://emr-back-end.herokuapp.com/patient/list?page=${p}&limit=10&startDate=${startDate}&endDate=${endDate}&q=${search}`);
+        const { result, ...meta } = rs.data;
         const formatted = result.map(data => (
-          { 'renderingEngine': data.surname+' '+data.other_names, 'browser': data.email, 'platforms': data.phone_number, 'engineVersion': data.id, 'actions': trashFormatter() }
+          { 'renderingEngine': data.surname + ' ' + data.other_names, 'browser': data.email, 'platforms': data.phone_number, 'engineVersion': data.id, 'actions': trashFormatter() }
         ))
-				setPatients(formatted);
-				setMeta(meta);
-				setLoading(false);
-				window.scrollTo({ top: 0, behavior: 'smooth' });
-			} catch (err) {
-				console.log('fetch patients err', err);
-				setLoading(false);
-			}
-		},
-		[endDate, search, startDate]
-	)
+        setPatients(formatted);
+        setMeta(meta);
+        setLoading(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        console.log('fetch patients err', err);
+        setLoading(false);
+      }
+    },
+    [endDate, search, startDate]
+  );
 
-	useEffect(() => {
-		if (loading) {
-		fetchPatientList()
-		}
-	}, [fetchPatientList, loading])
+  const fetchGroup = useCallback(async () => {
+    const url = `group/all?page=1&limit=10`;
+    try {
+      const rs = await request(url, 'GET', true);
+      console.log(rs);
+      setGroups(rs.result);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
-  console.log('Malik', meta)
+  useEffect(() => {
+    if (loading) {
+      fetchGroup();
+      fetchPatientList();
+    }
+  }, [fetchGroup, fetchPatientList, loading])
+
 
 
   const progress = (
@@ -125,7 +160,7 @@ const Content = () => {
 
   const customTotal = (from = meta?.currentPage, to = meta?.itemsPerPage, size = meta?.totalPages) => {
 
-   return (
+    return (
       <span className="react-bootstrap-table-pagination-total pt-2">
         Showing {from * to} of {meta?.totalPages} entries
       </span>
@@ -344,7 +379,7 @@ const Content = () => {
                       <div className="col-md-12">
                         <div className="form-group form-group-default">
                           <label>Group Name</label>
-                          <input type="text" className="form-control" />
+                          <input type="text" value={group_name} onChange={e=> setGroup_name(e.target.value)} className="form-control" />
                         </div>
                       </div>
                     </div>
@@ -368,6 +403,7 @@ const Content = () => {
                           aria-label=""
                           type="button"
                           className="btn btn-primary  m-t-5"
+                          onClick={createGroup}
                         >
                           Create Group
                         </button>
@@ -450,7 +486,7 @@ const Content = () => {
 
               <div className="col-lg-3 m-b-10">
 
-                <div className="view-port clearfix" style={{ height: '30%' }} id="chat">
+                <div className="view-port clearfix" style={{ height: '50%' }} id="chat">
                   <div className="view bg-white">
                     <div className="navbar navbar-default">
                       <div className="navbar-inner">
@@ -467,7 +503,7 @@ const Content = () => {
                       </div>
                     </div>
                     <div data-init-list-view="ioslist" className="list-view boreded no-top-border"><h2 className="list-view-fake-header">
-                     3 Groups</h2>
+                      {groups.length} Groups</h2>
                       <div className="scroll-wrapper list-view-wrapper"
                       // style={{position:'absolute'}}
                       >
@@ -480,30 +516,18 @@ const Content = () => {
                             <div className="list-view-group-header text-uppercase">
                               Transitions</div>
                             <ul>
-                              <li className="chat-user-list clearfix">
-                                <a data-view-animation="push-parrallax" data-view-port="#chat" data-navigate="view" data-toggle-view="#subView1" className="" href="#">
-                                  <p className="p-l-10 col-xs-height col-middle col-xs-12 text-color">
-                                    Lavona Erpelding
-                                  </p>
-                                </a>
-                              </li>
-
-                              <li className="chat-user-list clearfix">
-                                <a data-view-animation="push-parrallax" data-view-port="#chat" data-navigate="view" data-toggle-view="#subView1" href="#">
-                                  <p className="p-l-10 col-xs-height col-middle col-xs-12 text-color">
-                                    Eugena Braig
-                                  </p>
-                                </a>
-                              </li>
-
-                              <li className="chat-user-list clearfix">
-                                <a data-view-animation="push-parrallax" data-view-port="#chat" data-navigate="view" data-toggle-view="#subView1" href="#">
-                                  <p className="p-l-10 col-xs-height col-middle col-xs-12 text-color">
-                                    Aaron Shimmin
-                                  </p>
-                                </a>
-                              </li>
-
+                              {
+                                groups.map((e, i) => {
+                                  return (
+                                    <li className="chat-user-list clearfix" key={i}>
+                                      <a data-view-animation="push-parrallax" data-view-port="#chat" data-navigate="view" data-toggle-view="#subView1" className="" href="#">
+                                        <p className=" pt-2 col-xs-height col-middle col-xs-12 text-color">
+                                          {e.groupName}
+                                        </p>
+                                      </a>
+                                    </li>
+                                  )
+                                })}
                             </ul>
                           </div>
                         </div>
