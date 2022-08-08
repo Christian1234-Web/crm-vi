@@ -30,6 +30,19 @@ import "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.c
 import axios from "axios";
 
 
+function trashFormatter(column, colIndex) {
+  return (
+
+      <div>
+          <button aria-label="" className="btn btn-link">
+              <i className="pg-icon">trash_alt</i>
+          </button>
+          <button aria-label="" className="btn btn-link">
+              <i className="pg-icon">edit</i>
+          </button>
+      </div>
+  );
+}
 
 const Content = () => {
 
@@ -53,7 +66,10 @@ const Content = () => {
 				setLoading(true);
 				const rs = await axios.get(`https://emr-back-end.herokuapp.com/patient/list?page=${p}&limit=10&startDate=${startDate}&endDate=${endDate}&q=${search}`);
 				const { result, ...meta } = rs.data;
-				setPatients(result);
+        const formatted = result.map(data => (
+          { 'renderingEngine': data.surname+' '+data.other_names, 'browser': data.email, 'platforms': data.phone_number, 'engineVersion': data.id, 'actions': trashFormatter() }
+        ))
+				setPatients(formatted);
 				setMeta(meta);
 				setLoading(false);
 				window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -71,7 +87,7 @@ const Content = () => {
 		}
 	}, [fetchPatientList, loading])
 
-  console.log('Malik', patients)
+  console.log('Malik', meta)
 
 
   const progress = (
@@ -107,11 +123,14 @@ const Content = () => {
   const handleCloseThree = () => setModalThree(false);
   const [sel_file, setSel_file] = useState('')
 
-  const customTotal = (from, to, size) => (
-    <span className="react-bootstrap-table-pagination-total">
-      Showing {from} to {to} of {size} entries
-    </span>
-  );
+  const customTotal = (from = meta?.currentPage, to = meta?.itemsPerPage, size = meta?.totalPages) => {
+
+   return (
+      <span className="react-bootstrap-table-pagination-total pt-2">
+        Showing {from * to} of {meta?.totalPages} entries
+      </span>
+    )
+  };
 
   const groupOptions = [
     { id: 1, name: 'Ict' },
@@ -540,7 +559,7 @@ const Content = () => {
                     <div className="card-body">
                       <ToolkitProvider
                         keyField="renderingEngine"
-                        data={dataThree}
+                        data={patients}
                         columns={columnsThree}
                         exportCSV={{
                           fileName: "table-data.csv",
@@ -575,7 +594,9 @@ const Content = () => {
                                 hideSizePerPage: true,
                                 hidePageListOnlyOnePage: true,
                                 showTotal: true,
-                                paginationTotalRenderer: customTotal,
+                                // sizePerPage: meta?.itemsPerPage,
+                                // paginationSize: meta?.lastPage,
+                                // paginationTotalRenderer: customTotal,
                               })}
                             />
                           </React.Fragment>

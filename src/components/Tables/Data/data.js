@@ -82,4 +82,7 @@ export const tableThreeData = [
     { 'renderingEngine': 'Wild', 'browser': 'Chrome 1.5', 'platforms': 'Win 7', 'engineVersion': '2.7', 'cssGrade': 'AH' },
     { 'renderingEngine': 'Ant', 'browser': 'Safari 2.5', 'platforms': 'Win 8', 'engineVersion': '1.4', 'cssGrade': 'HC' },
     { 'renderingEngine': 'DMisc', 'browser': 'Edge 1.7', 'platforms': 'Win 10 / Ubuntu 18', 'engineVersion': '1.2', 'cssGrade': 'GGB' },
+    { 'renderingEngine': 'DMisc', 'browser': 'Edge 1.7', 'platforms': 'Win 10 / Ubuntu 18', 'engineVersion': '1.2', 'cssGrade': 'GGB' },
+    { 'renderingEngine': 'DMisc', 'browser': 'Edge 1.7', 'platforms': 'Win 10 / Ubuntu 18', 'engineVersion': '1.2', 'cssGrade': 'GGB' },
+    { 'renderingEngine': 'DMisc', 'browser': 'Edge 1.7', 'platforms': 'Win 10 / Ubuntu 18', 'engineVersion': '1.2', 'cssGrade': 'GGB' },
 ]
