@@ -7,9 +7,12 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import cellEditFactory from "react-bootstrap-table2-editor";
 import Select from 'react-select';
 import { Modal } from "react-responsive-modal";
+import InputWithLabel from "../../Landing/InputWithLabel";
+import WithoutMsgValidation from '../../Landing/InputWithLabel';
 import Alert from '../../UIElements/Alert';
+import { ValidatorForm } from "react-form-validator-core";
 
-import { tableOneColumns, tableTwoColumns, tableThreeColumns, tableThreeColumnsCbox } from "../../Tables/Data/Column";
+import { tableOneColumns, tableTwoColumns, tableThreeColumns } from "../../Tables/Data/Column";
 import { tableOneData, tableTwoData, tableThreeData } from "../../Tables/Data/data";
 //import ui widgets component
 import ToolkitProvider, {
@@ -45,6 +48,54 @@ function trashFormatter(column, colIndex) {
   );
 }
 
+const selectRow = {
+  mode: 'checkbox',
+  classes: 'selection-row',
+  clickToSelect: true,
+  onSelect: (row, isSelect, rowIndex, e) => {
+    console.log(row.id);
+    console.log(isSelect);
+    console.log(rowIndex);
+    console.log(e);
+  },
+  onSelectAll: (isSelect, rows, e) => {
+    console.log(isSelect);
+    console.log(rows);
+    console.log(e);
+  }
+};
+
+
+const tableThreeColumnsCbox = [
+{
+  dataField: 'renderingEngine',
+  text: 'NAME',
+  headerStyle: { backgroundColor: '#f0f0f073' },
+  sort: true
+}, {
+  dataField: 'browser',
+  text: 'EMAIL',
+  headerStyle: { backgroundColor: '#f0f0f073' },
+  sort: true
+}, {
+  dataField: 'platforms',
+  text: 'NUMBER',
+  headerStyle: { backgroundColor: '#f0f0f073' },
+  sort: true
+}, {
+  dataField: 'engineVersion',
+  text: 'FILE NUMBER',
+  headerStyle: { backgroundColor: '#f0f0f073' },
+  sort: true
+},
+{
+  dataField: 'actions',
+  text: 'ACTIONS',
+  headerStyle: { backgroundColor: '#f0f0f073' },
+  }];
+
+
+
 const Content = () => {
 
 
@@ -59,7 +110,6 @@ const Content = () => {
   const [endDate, setEndDate] = useState('');
   const [search, setSearch] = useState('');
   const [filtering, setFiltering] = useState(false);
-
 
   const [group_name, setGroup_name] = useState('');
   const [groups, setGroups] = useState([]);
@@ -266,93 +316,98 @@ const Content = () => {
 
               </div>
               <div className="modal-body">
-                <form role="form">
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="form-group form-group-default">
-                        <label>First Name</label>
-                        <input
-                          id="appPrice"
-                          type="text"
-                          className="form-control"
-                          value={priceInput}
-                          onChange={(event) => setPriceInput(event.target.value)}
-                          placeholder="Enter first name"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group form-group-default">
-                        <label>Last Name</label>
-                        <input
-                          id="appNotes"
-                          type="text"
-                          className="form-control"
-                          value={notesInput}
-                          onChange={(event) => setNotesInput(event.target.value)}
-                          placeholder="Enter last name"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="form-group form-group-default">
-                        <label>Email</label>
-                        <input
-                          id="appDescription"
-                          type="email"
-                          className="form-control"
-                          value={descriptionInput}
-                          onChange={(event) =>
-                            setDescriptionInput(event.target.value)
-                          }
-                          placeholder="Enter email"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="form-group form-group-default">
-                        <label>Phone Number</label>
-                        <input
-                          id="appPrice"
-                          type="text"
-                          className="form-control"
-                          value={priceInput}
-                          onChange={(event) => setPriceInput(event.target.value)}
-                          placeholder="Enter phone number"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-sm-12">
-                      <div className="form-group form-group-default">
-                        <label>Folder Number</label>
-                        <input
-                          id="appDescription"
-                          type="text"
-                          className="form-control"
-                          value={descriptionInput}
-                          onChange={(event) =>
-                            setDescriptionInput(event.target.value)
-                          }
-                          placeholder="Enter folder number"
-                        />
-                      </div>
-                    </div>
-                  </div>
+                <div>
+                  <ValidatorForm
+                    instantValidate={true}
+                  // onSubmit={handleFormSubmit}
+                  >
 
-                  <div className="pull-right col-md-4 m-t-10 sm-m-t-10">
-                    <button
-                      aria-label=""
-                      type="button"
-                      className="btn btn-primary btn-block m-t-5"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </form>
+
+                    <div className="form-group-attached">
+                      <div className="row clearfix">
+                        <div className="col-md-6">
+                          <div className="form-group form-group-default">
+                            <WithoutMsgValidation
+                              // onChange={(e) => setStartingDate(e.target.value)}
+                              name="firstname"
+                              type="text"
+                              // value={startingDate}
+                              validators={["required"]}
+                              errorMessages={["This field is required"]}
+                              className={"form-control date"}
+                              label={"First Name"}
+                              require="true"
+                            />
+                          </div>
+
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group form-group-default">
+                            <InputWithLabel
+                              label="Last Name"
+                              // onChange={(e) => setDeadline(e.target.value)}
+                              // value={deadline}
+                              type="text"
+                              id="lastname"
+                              name="lastname"
+                              className="form-control date "
+                              required=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <div className="form-group form-group-default">
+                            <WithoutMsgValidation
+                              // onChange={(e) => setWebsite(e.target.value)}
+                              name="email"
+                              // value={website}
+                              validators={["required"]}
+                              errorMessages={["This field is required"]}
+                              className={"form-control"}
+                              label={"Email"}
+                              require="true"
+                            />
+                          </div>
+                        </div>
+
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <div className="form-group form-group-default">
+                            <WithoutMsgValidation
+                              // onChange={(e) => setWebsite(e.target.value)}
+                              name="foldernumber"
+                              // value={fol}
+                              validators={["required"]}
+                              errorMessages={["This field is required"]}
+                              className={"form-control"}
+                              label={"Folder Number"}
+                              require="true"
+                            />
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+                    <br />
+                    <div className="row">
+                      <div className="col-8">
+                      </div>
+                      <div className="col-4">
+                        <button
+                          aria-label=""
+                          className="btn btn-primary pull-right"
+                          type="submit"
+                        >
+                          Create Contact
+                        </button>
+                      </div>
+                    </div>
+                  </ValidatorForm>
+                </div>
 
               </div>
             </div>
@@ -503,7 +558,7 @@ const Content = () => {
 
               <div className="col-lg-3 m-b-10" style={{ height: '377px' }}>
 
-                <div className="view-port clearfix"   id="chat">
+                <div className="view-port clearfix" id="chat">
                   <div className="view bg-white">
                     <div className="navbar navbar-default">
                       <div className="navbar-inner">
@@ -533,18 +588,19 @@ const Content = () => {
                             <div className="list-view-group-header text-uppercase">
                               Transitions</div>
                             <ul style={{ height: '300px', overflowY: 'scroll' }}>
-                              {
-                                groups.map((e, i) => {
-                                  return (
-                                    <li className="chat-user-list clearfix" key={i}>
-                                      <a data-view-animation="push-parrallax" data-view-port="#chat" data-navigate="view" data-toggle-view="#subView1" className="" href="#">
-                                        <p className=" pt-2 col-xs-height col-middle col-xs-12 text-color">
-                                          {e.groupName}
-                                        </p>
-                                      </a>
-                                    </li>
-                                  )
-                                })}
+                              {groups.map((e, i) => {
+                                // if (e.groupName === 'All') {
+                                return (
+                                  <li className="chat-user-list clearfix" key={i}>
+                                    <a data-view-animation="push-parrallax" data-view-port="#chat" data-navigate="view" data-toggle-view="#subView1" className="" href="#">
+                                      <p className=" pt-2 col-xs-height col-middle col-xs-12 text-color">
+                                        {e.groupName}
+                                      </p>
+                                    </a>
+                                  </li>
+                                )
+                                // }
+                              })}
                             </ul>
                           </div>
                         </div>
@@ -630,6 +686,7 @@ const Content = () => {
                               bordered={false}
                               condensed={true}
                               striped={true}
+                              selectRow={ selectRow }
 
                               pagination={paginationFactory({
                                 hideSizePerPage: true,

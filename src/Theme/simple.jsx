@@ -118,16 +118,19 @@ const Simple = ({ location }) => {
         !path.includes("/register") &&
         !path.includes("/lock_screen") &&
         !path.includes("/404") &&
+        !path.includes("*") &&
         !path.includes("/500") && <Sidebar location={location} />}
 
       {path.includes("/simple") &&
         !path.includes("/boxed_layout") &&
         !path.includes("/login") &&
         !path.includes("/landing") &&
+        !path.includes("*") &&
 
         !path.includes("/register") &&
         !path.includes("/lock_screen") &&
         !path.includes("/404") &&
+        !path.includes("*") &&
         !path.includes("/500") && (
           <Header
             location={location}
@@ -135,6 +138,7 @@ const Simple = ({ location }) => {
             setInboxHeader={(value) => setToggleInboxHeader(value)}
           />
         )}
+
       <Route exact={true} path="/simple/" component={Dashboard} />
       {/* landing page */}
       {/* end of landing */}
@@ -220,12 +224,15 @@ const Simple = ({ location }) => {
       {/* START Extra group routes */}
       <Route path="/simple/extra/invoice" component={ExtraInvoice} />
       <Route path="/simple/extra/404" component={Extra400} />
+
       <Route path="/simple/extra/500" component={Extra500} />
       <Route path="/simple/extra/blank_template" component={ExtraBlank} />
       {/* <Route path="/simple/extra/login" component={ExtraLogin} /> */}
 
 
       <Route path="/simple/extra/register" component={ExtraRegister} />
+      {/* <Route path="*" component={Extra400} /> */}
+
       <Route path="/simple/extra/lock_screen" component={ExtraLockScreen} />
       <Route path="/simple/extra/gallery" component={ExtraGallery} />
       <Route path="/simple/extra/timeline" component={ExtraTimeLine} />
@@ -240,9 +247,12 @@ const Simple = ({ location }) => {
         <Route path="/simplechange_log" component={}/> */}
 
       {/* {path.includes('/simple') && <Quickview />} */}
+      {/* <Route path="*" component={Extra400} exact /> */}
+
       {path.includes("/simple") && !path.includes("/boxed_layout") && (
         <Search />
       )}
+
     </div>
   );
 };

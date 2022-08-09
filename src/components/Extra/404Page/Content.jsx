@@ -51,41 +51,6 @@ const content = () => {
           </div>
         </div>
       </div>
-
-      <div
-        className="pull-bottom sm-pull-bottom full-width d-flex align-items-center justify-content-center"
-        onClick={() => setErrorInput(false)}
-      >
-        <div className="error-container">
-          <div className="error-container-innner">
-            <div className="p-b-30 sm-m-t-20 sm-p-r-15 sm-p-b-20 clearfix d-flex-md-up row no-margin">
-              <div className="col-md-3 no-padding d-flex align-items-center justify-content-center">
-                <img
-                  alt=""
-                  data-src={
-                    process.env.PUBLIC_URL + "/assets/img/demo/pages_icon.png"
-                  }
-                  data-src-retina="/assets/img/demo/pages_icon_2x.png"
-                  height="60"
-                  src={
-                    process.env.PUBLIC_URL +
-                    "/assets/img/demo/pages_icon_2x.png"
-                  }
-                  width="60"
-                />
-              </div>
-              <div className="col-md-9 no-padding d-flex align-items-center justify-content-center">
-                <p className="small no-margin flex-1">
-                  Create a pages account. If you have a facebook account, log
-                  into it for this process. Sign in with{" "}
-                  <a href="javascript:void(0);">Facebook</a> or{" "}
-                  <a href="javascript:void(0);">Google</a>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </React.Fragment>
   );
 };

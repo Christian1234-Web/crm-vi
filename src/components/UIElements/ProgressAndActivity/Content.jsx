@@ -8,7 +8,16 @@ import ProgressBar from "../ProgressBar";
 import ProgressCircle from "../ProgressCircle";
 import Copyright from "../../ui/Footer/Copyright";
 
+export const ProgressOne = () => {
+  return (
+    <div className="col-md-6  text-center">
+      <div className="progress-circle-indeterminate"style={{width:'30px'}} ></div>
+    </div>
+  )
+}
 const content = ({ path }) => {
+
+ 
   return (
     <div className="page-content-wrapper ">
       {/* START PAGE CONTENT */}
