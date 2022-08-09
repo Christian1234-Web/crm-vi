@@ -311,7 +311,6 @@ const content = () => {
         <div className="container">
           <div className="row">
             <div className="col-sm-6">
-              {/* <img src={LandingImg} width="195.127" height="30.008" data-src-retina="assets/images/logo_black_2x.png" className="inline m-r-50" alt="" /> */}
               <svg xmlns="http://www.w3.org/2000/svg"
                 // xmlns:xlink="http://www.w3.org/1999/xlink"
                 // xmlns:xodm="http://www.corel.com/coreldraw/odm/2003"

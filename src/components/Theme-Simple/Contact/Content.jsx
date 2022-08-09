@@ -50,8 +50,10 @@ function trashFormatter(column, colIndex) {
 
 const selectRow = {
   mode: 'checkbox',
-  classes: 'selection-row',
   clickToSelect: true,
+  headerColumnStyle: {
+    backgroundColor: '#f8f8f8'
+  },
   onSelect: (row, isSelect, rowIndex, e) => {
     console.log(row.id);
     console.log(isSelect);
@@ -67,6 +69,7 @@ const selectRow = {
 
 
 const tableThreeColumnsCbox = [
+  
 {
   dataField: 'renderingEngine',
   text: 'NAME',
@@ -687,7 +690,6 @@ const Content = () => {
                               condensed={true}
                               striped={true}
                               selectRow={ selectRow }
-
                               pagination={paginationFactory({
                                 hideSizePerPage: true,
                                 hidePageListOnlyOnePage: true,
