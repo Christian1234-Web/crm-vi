@@ -87,8 +87,6 @@ const Content = () => {
 		}
 	}, [fetchPatientList, loading])
 
-  console.log('Malik', meta)
-
 
   const progress = (
     <React.Fragment>

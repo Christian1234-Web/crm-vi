@@ -124,27 +124,27 @@ export const tableTwoColumns = [{
 // Columns of table three
 export const tableThreeColumns = [{
     dataField: 'renderingEngine',
-    text: 'RENDERING ENGINE',
+    text: 'VOLUME',
     headerStyle: { backgroundColor: '#f0f0f073' },
-    sort: true
+    sort: false,
+    editable: true
 }, {
     dataField: 'browser',
-    text: 'BROWSER',
+    text: 'BUNDLE',
     headerStyle: { backgroundColor: '#f0f0f073' },
-    sort: true
+    sort: false,
+    editable: false
 }, {
     dataField: 'platforms',
-    text: 'PLATFORM(S)',
+    text: 'UNIT PRICE',
     headerStyle: { backgroundColor: '#f0f0f073' },
-    sort: true
+    sort: false,
+    editable: false
 }, {
     dataField: 'engineVersion',
-    text: 'ENGINE VERSION',
+    text: 'PRICE',
     headerStyle: { backgroundColor: '#f0f0f073' },
-    sort: true
-}, {
-    dataField: 'cssGrade',
-    text: 'CSS GRADE',
-    headerStyle: { backgroundColor: '#f0f0f073' },
+    sort: false,
+    editable: false
 }];
 

@@ -1,15 +1,33 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 // import footer component
 import Copyright from "../../ui/Footer/Copyright/Component";
 import { ValidatorForm } from "react-form-validator-core";
 //import ui widgets component
 import InputWithLabel from "../../Landing/InputWithLabel";
+import cellEditFactory from "react-bootstrap-table2-editor";
 import WithoutMsgValidation from "../../Landing/InputWithLabel";
 
 import PageBreadcrumb from "../../UIElements/Breadcrumb";
 import StickUpModal from "../Contact/StickUpModal";
 import "./style.css";
+import ToolkitProvider from "react-bootstrap-table2-toolkit";
+// import { tableThreeData } from "../../Tables/Data/data";
+import { tableThreeColumns } from "../../Tables/Data/Column";
+import DataTable from "../../Tables/DataTable";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import BootstrapTable from "react-bootstrap-table-next";
+import axios from "axios";
+
+const tableThreeData = [
+  {
+    renderingEngine: "Geckokkkss",
+    browser: "Firefox 1.0",
+    platforms: "Win 98+ / OSX.2+",
+    engineVersion: "1.7",
+    actions: "trashFormatter",
+  },
+];
 
 const Content = () => {
   const progress = (
@@ -27,10 +45,50 @@ const Content = () => {
   const [startingDate, setStartingDate] = useState("");
   const [website, setWebsite] = useState("");
   const [show, setShow] = useState(false);
+  const [dataThree] = useState(tableThreeData);
+  const [columnsThree] = useState(tableThreeColumns);
 
   const [project, setProject] = useState("");
   const [investor, setInvestor] = useState("");
   const [deadline, setDeadline] = useState("");
+
+  const [loading, setLoading] = useState(true);
+  const [bundles, setBundles] = useState([]);
+  const [meta, setMeta] = useState(null);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [search, setSearch] = useState("");
+  const [filtering, setFiltering] = useState(false);
+  const [specificBundle, setSpecificBundle] = useState(null)
+  const [amount, setAmount] = useState(1)
+  const [bundleName, setBundleName] = useState('')
+  const [bundleUnitPrice, setBundleUnitPrice] = useState('')
+  const [totalPrice, setTotalPrice] = useState('')
+  const [waiting, setWaiting] = useState(false)
+
+  const fetchBundleList = useCallback(async (page) => {
+    try {
+      setLoading(true);
+      const rs = await axios.get(
+        `https://deda-crm-backend.herokuapp.com/unit/all`
+      );
+      const { result, ...meta } = rs.data;
+      setBundles(result.reverse());
+      setMeta(meta);
+      setLoading(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      console.log("fetch bundle err", err);
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (loading) {
+      fetchBundleList();
+    }
+  }, [fetchBundleList, loading]);
+  console.log("Malik", bundles);
 
   let handleFormSubmit = () => {
     //Call this function on form submit with no errors
@@ -38,6 +96,45 @@ const Content = () => {
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+
+  const customTotal = (from, to, size) => (
+    <span className="react-bootstrap-table-pagination-total">
+      Showing {from} to {to} of {size} entries
+    </span>
+  );
+
+  const fetchSpecificBundle = useCallback(
+		async amountInputed => {
+			try {
+				setLoading(true);
+				const rs = await axios.get(`https://deda-crm-backend.herokuapp.com/unit/amount/calc?units=${amountInputed}`);
+				const { result, ...meta } = rs.data;
+        console.log('heyyyyy', rs)
+        setBundleName(rs.data.bundle.name)
+        setBundleUnitPrice(rs.data.bundle.amount)
+        setTotalPrice(rs.data.result)
+				setLoading(false);
+			} catch (err) {
+				console.log('fetch patients err', err);
+				setLoading(false);
+			}
+		},
+		[endDate, search, startDate]
+	)
+
+ const handleChange = (e) => {
+  e.preventDefault()
+  console.log(e.target.value)
+  if(Number(e.target.value) < 5000){
+    setWaiting(true)
+  } else {
+    setWaiting(false)
+    fetchSpecificBundle(Number(e.target.value))
+
+  }
+  // setAmount(Number(e.target.value))
+  // fetchSpecificBundle(Number(e.target.value))
+ }
 
   return (
     <div className="page-content-wrapper ">
@@ -214,9 +311,10 @@ const Content = () => {
                 </li>
                 <li className="breadcrumb-item active">Dashboard</li>
               </PageBreadcrumb>
+
               <div className="m-b-20">
                 <div className="row m-0">
-                  <div className="col-xl-5 col-lg-6">
+                  <div className="col-xl-6 col-lg-6">
                     <div className="card card-transparent">
                       <div className="card-header ">
                         <div className="card-title">Getting started</div>
@@ -253,219 +351,66 @@ const Content = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-xl-7 col-lg-6 bg-white">
-                    <div className="full-height d-flex justify-content-center align-items-center">
-                      <div className="table-responsive">
-                        <div
-                          id="detailedTable_wrapper"
-                          className="dataTables_wrapper no-footer"
+
+                  <div class="col-xl-6 col-lg-6">
+                    <div class="d-flex justify-content-center align-items-center">
+                      <table class="table table-condensed table-hover">
+                        <thead>
+                          <tr>
+                            <td class="font-montserrat all-caps fs-12 w-50">
+                              BUNDLE
+                            </td>
+                            <td class="text-right hidden-lg">
+                            </td>
+                            <td class="text-right b-r b-dashed b-grey w-25">
+                              <span class="hint-text small">MIN VOLUME</span>
+                            </td>
+                            <td class="w-15">
+                              <span class="font-montserrat fs-12 w-50">UNIT</span>
+                            </td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {bundles.map(bundle => (
+                            <tr>
+                            <td class="font-montserrat all-caps fs-12 w-50">
+                              {bundle.name}
+                            </td>
+                            <td class="text-right hidden-lg">
+                            </td>
+                            <td class="text-right b-r b-dashed b-grey w-25">
+                              <span class="hint-text small">{bundle.unitQuantity}</span>
+                            </td>
+                            <td class="w-25">
+                              <span class="font-montserrat fs-18">{bundle.amount}</span>
+                            </td>
+                          </tr>
+                          ))}
+                        </tbody>
+                        <thead
+                          style={{
+                            border: "1px solid #007be8k",
+                            backgroundColor: "#007be8",
+                            color: "white",
+                          }}
                         >
-                          <table
-                            className="table table-hover table-condensed table-detailed dataTable no-footer"
-                            id="detailedTable"
-                            role="grid"
-                          >
-                            <thead>
-                              <tr role="row">
-                                <th
-                                  className="sorting_disabled"
-                                  rowspan="1"
-                                  colspan="1"
-                                  style={{ width: "25%" }}
-                                >
-                                  Title
-                                </th>
-                                <th
-                                  className="sorting_disabled"
-                                  rowspan="1"
-                                  colspan="1"
-                                  style={{ width: "166px" }}
-                                >
-                                  Status
-                                </th>
-                                <th
-                                  className="sorting_disabled"
-                                  rowspan="1"
-                                  colspan="1"
-                                  style={{ width: "166px" }}
-                                >
-                                  Price
-                                </th>
-                                <th
-                                  className="sorting_disabled"
-                                  rowspan="1"
-                                  colspan="1"
-                                  style={{ width: "165px" }}
-                                >
-                                  Last Update
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr role="row" className="odd ">
-                                <td className="v-align-middle semi-bold">
-                                  Revolution Begins
-                                </td>
-                                <td className="v-align-middle">Active</td>
-                                <td className="v-align-middle semi-bold">
-                                  40,000 USD
-                                </td>
-                                <td className="v-align-middle">
-                                  April 13, 2014
-                                </td>
-                              </tr>
-                              <tr
-                                className="row-details"
-                                style={{ display: "none" }}
-                              >
-                                <td colspan="4">
-                                  <table className="table table-inline">
-                                    <tbody>
-                                      <tr>
-                                        <td>
-                                          Learn from real test data{" "}
-                                          <span className="label label-important">
-                                            ALERT!
-                                          </span>
-                                        </td>
-                                        <td>USD 1000</td>
-                                      </tr>
-                                      <tr>
-                                        <td>PSDs included</td>
-                                        <td>USD 3000</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Extra info</td>
-                                        <td>USD 2400</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                              <tr role="row" className="even ">
-                                <td className="v-align-middle semi-bold">
-                                  Revolution Begins
-                                </td>
-                                <td className="v-align-middle">Active</td>
-                                <td className="v-align-middle semi-bold">
-                                  70,000 USD
-                                </td>
-                                <td className="v-align-middle">
-                                  April 13, 2014
-                                </td>
-                              </tr>
-                              <tr
-                                className="row-details"
-                                style={{ display: "none" }}
-                              >
-                                <td colspan="4">
-                                  <table className="table table-inline">
-                                    <tbody>
-                                      <tr>
-                                        <td>
-                                          Learn from real test data{" "}
-                                          <span className="label label-important">
-                                            ALERT!
-                                          </span>
-                                        </td>
-                                        <td>USD 1000</td>
-                                      </tr>
-                                      <tr>
-                                        <td>PSDs included</td>
-                                        <td>USD 3000</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Extra info</td>
-                                        <td>USD 2400</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                              <tr role="row" className="odd ">
-                                <td className="v-align-middle semi-bold">
-                                  Revolution Begins
-                                </td>
-                                <td className="v-align-middle">Active</td>
-                                <td className="v-align-middle semi-bold">
-                                  20,000 USD
-                                </td>
-                                <td className="v-align-middle">
-                                  April 13, 2014
-                                </td>
-                              </tr>
-                              <tr
-                                className="row-details"
-                                style={{ display: "none" }}
-                              >
-                                <td colspan="4">
-                                  <table className="table table-inline">
-                                    <tbody>
-                                      <tr>
-                                        <td>
-                                          Learn from real test data{" "}
-                                          <span className="label label-important">
-                                            ALERT!
-                                          </span>
-                                        </td>
-                                        <td>USD 1000</td>
-                                      </tr>
-                                      <tr>
-                                        <td>PSDs included</td>
-                                        <td>USD 3000</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Extra info</td>
-                                        <td>USD 2400</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                              <tr role="row" className="even ">
-                                <td className="v-align-middle semi-bold">
-                                  Revolution Begins
-                                </td>
-                                <td className="v-align-middle">Active</td>
-                                <td className="v-align-middle semi-bold">
-                                  90,000 USD
-                                </td>
-                                <td className="v-align-middle">
-                                  April 13, 2014
-                                </td>
-                              </tr>
-                              <tr
-                                className="row-details"
-                                style={{ display: "none" }}
-                              >
-                                <td colspan="4">
-                                  <table className="table table-inline">
-                                    <tbody>
-                                      <tr>
-                                        <td>
-                                          Learn from real test data{" "}
-                                          <span className="label label-important">
-                                            ALERT!
-                                          </span>
-                                        </td>
-                                        <td>USD 1000</td>
-                                      </tr>
-                                      <tr>
-                                        <td>PSDs included</td>
-                                        <td>USD 3000</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Extra info</td>
-                                        <td>USD 2400</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
+                          <tr>
+                            <td class="font-montserrat all-caps fs-12 w-50">
+                              {/* Purchase CODE #2345 */}
+                              <input type='text' class="input-sm w-75" onChange={e => handleChange(e)}/>
+                            </td>
+                            <td class="text-right hidden-lg">
+                              <span class="font-montserrat fs-18">{waiting ? 'waiting...' : bundleName}</span>
+                            </td>
+                            <td class="text-right b-r b-dashed b-grey w-25">
+                              <span class="font-montserrat fs-18">{waiting ? 'waiting...' : bundleUnitPrice}</span>
+                            </td>
+                            <td class="w-25">
+                              <span class="font-montserrat fs-18">{waiting ? 'waiting...' : totalPrice}</span>
+                            </td>
+                          </tr>
+                        </thead>
+                      </table>
                     </div>
                   </div>
                 </div>
