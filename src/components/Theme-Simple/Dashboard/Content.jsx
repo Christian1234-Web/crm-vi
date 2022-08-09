@@ -5,7 +5,7 @@ import Copyright from "../../ui/Footer/Copyright/Component";
 import { ValidatorForm } from "react-form-validator-core";
 //import ui widgets component
 import InputWithLabel from "../../Landing/InputWithLabel";
-import WithoutMsgValidation from '../../Landing/InputWithLabel'
+import WithoutMsgValidation from "../../Landing/InputWithLabel";
 
 import PageBreadcrumb from "../../UIElements/Breadcrumb";
 import StickUpModal from "../Contact/StickUpModal";
@@ -39,27 +39,23 @@ const Content = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-
   return (
     <div className="page-content-wrapper ">
       {/* START PAGE CONTENT */}
 
-      <StickUpModal
-        visible={show}
-        width={'600'}
-        effect="fadeInUp"
-      >
+      <StickUpModal visible={show} width={"600"} effect="fadeInUp">
         <div className="modal-content-wrapper">
           <div className="modal-content">
             <div className="modal-top">
-
-              <div className="pull-right" style={{ cursor: 'pointer' }} onClick={() => handleClose()}>
-                <i className="pg-icon" >close</i>
+              <div
+                className="pull-right"
+                style={{ cursor: "pointer" }}
+                onClick={() => handleClose()}
+              >
+                <i className="pg-icon">close</i>
               </div>
-
             </div>
             <div className="modal-body">
-
               <div>
                 <ValidatorForm
                   instantValidate={true}
@@ -67,8 +63,8 @@ const Content = () => {
                 >
                   <h3 className="mw-80">Contemporary and unique</h3>
                   <p className="mw-80 m-b-25">
-                    Want it to be more Descriptive and User-Friendly, We Made
-                    it possible, Use Separated Form Layouts Structure to
+                    Want it to be more Descriptive and User-Friendly, We Made it
+                    possible, Use Separated Form Layouts Structure to
                     Presentation your Form Fields.
                   </p>
 
@@ -99,7 +95,6 @@ const Content = () => {
                             require="true"
                           />
                         </div>
-
                       </div>
                       <div className="col-md-6">
                         <div className="form-group form-group-default">
@@ -185,11 +180,7 @@ const Content = () => {
                   <div className="row">
                     <div className="col-8">
                       <div className="form-check primary m-t-0">
-                        <input
-                          type="checkbox"
-                          value="1"
-                          id="checkbox-agree"
-                        />
+                        <input type="checkbox" value="1" id="checkbox-agree" />
                         <label htmlFor="checkbox-agree">
                           I hereby certify that the information above is true
                           and accurate
@@ -213,20 +204,273 @@ const Content = () => {
         </div>
       </StickUpModal>
 
-
-
       <div className="content sm-gutter">
         <div className="sm-padding-10">
-
-
           <div className="row">
             <div className="col-lg-9 m-b-10">
-              <PageBreadcrumb className='jumbotron mb-4'>
+              <PageBreadcrumb className="jumbotron mb-4">
                 <li className="breadcrumb-item">
                   <a href="javascript:void(0);">Home</a>
                 </li>
                 <li className="breadcrumb-item active">Dashboard</li>
               </PageBreadcrumb>
+              <div className="m-b-20">
+                <div className="row m-0">
+                  <div className="col-xl-5 col-lg-6">
+                    <div className="card card-transparent">
+                      <div className="card-header ">
+                        <div className="card-title">Getting started</div>
+                      </div>
+                      <div className="card-body">
+                        <h3>Custom built for anyone, anywhere.</h3>
+                        <p>
+                          As always, in keeping with our policy of making UX
+                          easier and more user-friendly, we have customized this
+                          feature with a lightweight SVG indicator. Also this is
+                          highly adaptable and offers a range of progress bar
+                          options to suit your preference.{" "}
+                        </p>
+                        <br />
+                        <div>
+                          <div className="profile-img-wrapper m-t-5 inline">
+                            <img
+                              width="35"
+                              height="35"
+                              src="/dashboard/latest/react/simple/assets/img/profiles/avatar_small.jpg"
+                              alt="Avatar"
+                              data-src="/dashboard/latest/react/simple/assets/img/profiles/avatar_small.jpg"
+                              data-src-retina="assets/img/profiles/avatar_small2x.jpg"
+                            />
+                            <div className="chat-status available"></div>
+                          </div>
+                          <div className="inline m-l-10">
+                            <p className="small hint-text m-t-5">
+                              VIA senior product manage
+                              <br /> for UI/UX at REVOX
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-xl-7 col-lg-6 bg-white">
+                    <div className="full-height d-flex justify-content-center align-items-center">
+                      <div className="table-responsive">
+                        <div
+                          id="detailedTable_wrapper"
+                          className="dataTables_wrapper no-footer"
+                        >
+                          <table
+                            className="table table-hover table-condensed table-detailed dataTable no-footer"
+                            id="detailedTable"
+                            role="grid"
+                          >
+                            <thead>
+                              <tr role="row">
+                                <th
+                                  className="sorting_disabled"
+                                  rowspan="1"
+                                  colspan="1"
+                                  style={{ width: "25%" }}
+                                >
+                                  Title
+                                </th>
+                                <th
+                                  className="sorting_disabled"
+                                  rowspan="1"
+                                  colspan="1"
+                                  style={{ width: "166px" }}
+                                >
+                                  Status
+                                </th>
+                                <th
+                                  className="sorting_disabled"
+                                  rowspan="1"
+                                  colspan="1"
+                                  style={{ width: "166px" }}
+                                >
+                                  Price
+                                </th>
+                                <th
+                                  className="sorting_disabled"
+                                  rowspan="1"
+                                  colspan="1"
+                                  style={{ width: "165px" }}
+                                >
+                                  Last Update
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr role="row" className="odd ">
+                                <td className="v-align-middle semi-bold">
+                                  Revolution Begins
+                                </td>
+                                <td className="v-align-middle">Active</td>
+                                <td className="v-align-middle semi-bold">
+                                  40,000 USD
+                                </td>
+                                <td className="v-align-middle">
+                                  April 13, 2014
+                                </td>
+                              </tr>
+                              <tr
+                                className="row-details"
+                                style={{ display: "none" }}
+                              >
+                                <td colspan="4">
+                                  <table className="table table-inline">
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          Learn from real test data{" "}
+                                          <span className="label label-important">
+                                            ALERT!
+                                          </span>
+                                        </td>
+                                        <td>USD 1000</td>
+                                      </tr>
+                                      <tr>
+                                        <td>PSDs included</td>
+                                        <td>USD 3000</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Extra info</td>
+                                        <td>USD 2400</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                              <tr role="row" className="even ">
+                                <td className="v-align-middle semi-bold">
+                                  Revolution Begins
+                                </td>
+                                <td className="v-align-middle">Active</td>
+                                <td className="v-align-middle semi-bold">
+                                  70,000 USD
+                                </td>
+                                <td className="v-align-middle">
+                                  April 13, 2014
+                                </td>
+                              </tr>
+                              <tr
+                                className="row-details"
+                                style={{ display: "none" }}
+                              >
+                                <td colspan="4">
+                                  <table className="table table-inline">
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          Learn from real test data{" "}
+                                          <span className="label label-important">
+                                            ALERT!
+                                          </span>
+                                        </td>
+                                        <td>USD 1000</td>
+                                      </tr>
+                                      <tr>
+                                        <td>PSDs included</td>
+                                        <td>USD 3000</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Extra info</td>
+                                        <td>USD 2400</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                              <tr role="row" className="odd ">
+                                <td className="v-align-middle semi-bold">
+                                  Revolution Begins
+                                </td>
+                                <td className="v-align-middle">Active</td>
+                                <td className="v-align-middle semi-bold">
+                                  20,000 USD
+                                </td>
+                                <td className="v-align-middle">
+                                  April 13, 2014
+                                </td>
+                              </tr>
+                              <tr
+                                className="row-details"
+                                style={{ display: "none" }}
+                              >
+                                <td colspan="4">
+                                  <table className="table table-inline">
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          Learn from real test data{" "}
+                                          <span className="label label-important">
+                                            ALERT!
+                                          </span>
+                                        </td>
+                                        <td>USD 1000</td>
+                                      </tr>
+                                      <tr>
+                                        <td>PSDs included</td>
+                                        <td>USD 3000</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Extra info</td>
+                                        <td>USD 2400</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                              <tr role="row" className="even ">
+                                <td className="v-align-middle semi-bold">
+                                  Revolution Begins
+                                </td>
+                                <td className="v-align-middle">Active</td>
+                                <td className="v-align-middle semi-bold">
+                                  90,000 USD
+                                </td>
+                                <td className="v-align-middle">
+                                  April 13, 2014
+                                </td>
+                              </tr>
+                              <tr
+                                className="row-details"
+                                style={{ display: "none" }}
+                              >
+                                <td colspan="4">
+                                  <table className="table table-inline">
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          Learn from real test data{" "}
+                                          <span className="label label-important">
+                                            ALERT!
+                                          </span>
+                                        </td>
+                                        <td>USD 1000</td>
+                                      </tr>
+                                      <tr>
+                                        <td>PSDs included</td>
+                                        <td>USD 3000</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Extra info</td>
+                                        <td>USD 2400</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="mx-2 widget-11 widget-11-3 card no-border  widget-loader-bar">
                 <div className="card-header">
                   <div className="card-title">Today's Table</div>
@@ -235,8 +479,9 @@ const Content = () => {
                       <li>
                         <a
                           data-toggle="refresh"
-                          className={`card-refresh ${refreshOne ? "refreshing" : ""
-                            }`}
+                          className={`card-refresh ${
+                            refreshOne ? "refreshing" : ""
+                          }`}
                           href="javascript:void(0);"
                           onClick={(e) => {
                             e.preventDefault();
@@ -247,12 +492,14 @@ const Content = () => {
                           }}
                         >
                           <i
-                            className={`card-icon card-icon-refresh ${refreshOne ? "fade" : ""
-                              }`}
+                            className={`card-icon card-icon-refresh ${
+                              refreshOne ? "fade" : ""
+                            }`}
                           ></i>
                           <i
-                            className={`card-icon-refresh-lg-white-animated ${refreshOne ? "active" : ""
-                              }`}
+                            className={`card-icon-refresh-lg-white-animated ${
+                              refreshOne ? "active" : ""
+                            }`}
                             style={{
                               position: "absolute",
                               top: "14px",
@@ -314,18 +561,21 @@ const Content = () => {
 
                 <div className="p-t-15 p-b-15 p-l-20 p-r-20">
                   <p className="small no-margin">
-                    <a href="javascript:void(0);" className="btn-circle-arrow b-grey">
+                    <a
+                      href="javascript:void(0);"
+                      className="btn-circle-arrow b-grey"
+                    >
                       <i className="pg-icon">chevron_down</i>
                     </a>
                     <span className="hint-text ">
-                      Show more details of <a href="javascript:void(0);"> Revox pvt ltd </a>
+                      Show more details of{" "}
+                      <a href="javascript:void(0);"> Revox pvt ltd </a>
                     </span>
                   </p>
                 </div>
                 {refreshOne ? progress : null}
               </div>
             </div>
-
 
             <div className="col-lg-3">
               <div
@@ -341,7 +591,6 @@ const Content = () => {
                   </div>
                   <div className="clearfix"></div>
                 </div>
-
               </div>
               <div className="card no-border widget-loader-bar m-b-10">
                 <div className="container-xs-height full-height">
@@ -396,7 +645,12 @@ const Content = () => {
                   <div className="card-body">
                     <form className="" role="form">
                       <div className="form-group ">
-                        <select className="full-width select2-hidden-accessible" data-init-plugin="select2" tabindex="-1" aria-hidden="true">
+                        <select
+                          className="full-width select2-hidden-accessible"
+                          data-init-plugin="select2"
+                          tabindex="-1"
+                          aria-hidden="true"
+                        >
                           <option value="AK">Alaska</option>
                           <option value="HI">Hawaii</option>
                           <option value="CA">California</option>
@@ -404,37 +658,76 @@ const Content = () => {
                           <option value="OR">Oregon</option>
                           <option value="WA">Washington</option>
                         </select>
-                        <span className="select2 select2-container select2-container--default select2-container--focus" dir="ltr">
+                        <span
+                          className="select2 select2-container select2-container--default select2-container--focus"
+                          dir="ltr"
+                        >
                           <span className="selection">
-                            <span className="select2-selection select2-selection--single" role="combobox"
-                              aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-6f7b-container">
-                              <span className="select2-selection__rendered" id="select2-6f7b-container" title="Alaska">
+                            <span
+                              className="select2-selection select2-selection--single"
+                              role="combobox"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                              tabindex="0"
+                              aria-labelledby="select2-6f7b-container"
+                            >
+                              <span
+                                className="select2-selection__rendered"
+                                id="select2-6f7b-container"
+                                title="Alaska"
+                              >
                                 Alaska
                               </span>
-                              <span className="select2-selection__arrow" role="presentation"><b role="presentation"></b></span>
+                              <span
+                                className="select2-selection__arrow"
+                                role="presentation"
+                              >
+                                <b role="presentation"></b>
+                              </span>
                             </span>
                           </span>
-                          <span className="dropdown-wrapper" aria-hidden="true"></span>
+                          <span
+                            className="dropdown-wrapper"
+                            aria-hidden="true"
+                          ></span>
                         </span>
                       </div>
                       <div className="form-group form-group-default required">
                         <label>Project</label>
-                        <input type="email" className="form-control" required="" />
+                        <input
+                          type="email"
+                          className="form-control"
+                          required=""
+                        />
                       </div>
-                    
+
                       <div class="form-group form-group-default required">
                         <label>Placeholder</label>
-                        <input type="email" className="form-control" placeholder="ex: some@example.com" required="" />
+                        <input
+                          type="email"
+                          className="form-control"
+                          placeholder="ex: some@example.com"
+                          required=""
+                        />
                       </div>
                       <div className="form-group form-group-default disabled">
                         <label>Disabled</label>
-                        <input type="email" className="form-control" value="You can put anything here" disabled="" />
+                        <input
+                          type="email"
+                          className="form-control"
+                          value="You can put anything here"
+                          disabled=""
+                        />
                       </div>
                       <div className="row">
-                        <div class="col-6 pt-2">
-                        </div>
+                        <div class="col-6 pt-2"></div>
                         <div className="col-6">
-                          <button onClick={() => handleShow()} aria-label="" type="button" className="btn btn-block btn-default btn-lg btn-icon-right">
+                          <button
+                            onClick={() => handleShow()}
+                            aria-label=""
+                            type="button"
+                            className="btn btn-block btn-default btn-lg btn-icon-right"
+                          >
                             <span>Button Block</span>
                             <i className="pg-icon md-18">arrow_right</i>
                           </button>
@@ -443,12 +736,8 @@ const Content = () => {
                     </form>
                   </div>
                 </div>
-
               </div>
-
             </div>
-
-
           </div>
         </div>
       </div>
