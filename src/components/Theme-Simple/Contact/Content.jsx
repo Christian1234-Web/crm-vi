@@ -148,7 +148,7 @@ const Content = () => {
         const { result, ...meta } = rs.data;
         const formatted = result.map(data => (
           { 'renderingEngine': data.surname + ' ' + data.other_names, 'browser': data.email, 'platforms': data.phone_number, 'engineVersion': data.id, 'actions': trashFormatter() }
-        ))
+        ));
         setPatients(formatted);
         setMeta(meta);
         setLoading(false);
@@ -178,7 +178,6 @@ const Content = () => {
       fetchPatientList();
     }
   }, [fetchGroup, fetchPatientList, loading])
-
 
 
   const progress = (
