@@ -18,6 +18,8 @@ import DataTable from "../../Tables/DataTable";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import BootstrapTable from "react-bootstrap-table-next";
 import axios from "axios";
+import { ProgressOne } from "../../UIElements/ProgressAndActivity/Content";
+import plusSVG from "../../../assets/img/plus.svg";
 
 const tableThreeData = [
   {
@@ -47,6 +49,9 @@ const Content = () => {
   const [show, setShow] = useState(false);
   const [dataThree] = useState(tableThreeData);
   const [columnsThree] = useState(tableThreeColumns);
+  const [refreshEight, setRefreshEight] = useState(false);
+  const [checkedOption, setCheckedOption] = useState(true);
+
 
   const [project, setProject] = useState("");
   const [investor, setInvestor] = useState("");
@@ -59,12 +64,14 @@ const Content = () => {
   const [endDate, setEndDate] = useState("");
   const [search, setSearch] = useState("");
   const [filtering, setFiltering] = useState(false);
-  const [specificBundle, setSpecificBundle] = useState(null)
-  const [amount, setAmount] = useState(1)
-  const [bundleName, setBundleName] = useState('')
-  const [bundleUnitPrice, setBundleUnitPrice] = useState('')
-  const [totalPrice, setTotalPrice] = useState('')
-  const [waiting, setWaiting] = useState(false)
+  const [specificBundle, setSpecificBundle] = useState(null);
+  const [amount, setAmount] = useState(1);
+  const [bundleName, setBundleName] = useState("");
+  const [bundleUnitPrice, setBundleUnitPrice] = useState("");
+  const [totalPrice, setTotalPrice] = useState("");
+  const [waiting, setWaiting] = useState(false);
+  const [refreshSix, setRefreshSix] = useState(false);
+
 
   const fetchBundleList = useCallback(async (page) => {
     try {
@@ -104,37 +111,38 @@ const Content = () => {
   );
 
   const fetchSpecificBundle = useCallback(
-		async amountInputed => {
-			try {
-				setLoading(true);
-				const rs = await axios.get(`https://deda-crm-backend.herokuapp.com/unit/amount/calc?units=${amountInputed}`);
-				const { result, ...meta } = rs.data;
-        console.log('heyyyyy', rs)
-        setBundleName(rs.data.bundle.name)
-        setBundleUnitPrice(rs.data.bundle.amount)
-        setTotalPrice(rs.data.result)
-				setLoading(false);
-			} catch (err) {
-				console.log('fetch patients err', err);
-				setLoading(false);
-			}
-		},
-		[endDate, search, startDate]
-	)
+    async (amountInputed) => {
+      try {
+        setLoading(true);
+        const rs = await axios.get(
+          `https://deda-crm-backend.herokuapp.com/unit/amount/calc?units=${amountInputed}`
+        );
+        const { result, ...meta } = rs.data;
+        console.log("heyyyyy", rs);
+        setBundleName(rs.data.bundle.name);
+        setBundleUnitPrice(rs.data.bundle.amount);
+        setTotalPrice(rs.data.result);
+        setLoading(false);
+      } catch (err) {
+        console.log("fetch patients err", err);
+        setLoading(false);
+      }
+    },
+    [endDate, search, startDate]
+  );
 
- const handleChange = (e) => {
-  e.preventDefault()
-  console.log(e.target.value)
-  if(Number(e.target.value) < 5000){
-    setWaiting(true)
-  } else {
-    setWaiting(false)
-    fetchSpecificBundle(Number(e.target.value))
-
-  }
-  // setAmount(Number(e.target.value))
-  // fetchSpecificBundle(Number(e.target.value))
- }
+  const handleChange = (e) => {
+    e.preventDefault();
+    console.log(e.target.value);
+    if (Number(e.target.value) < 5000) {
+      setWaiting(true);
+    } else {
+      setWaiting(false);
+      fetchSpecificBundle(Number(e.target.value));
+    }
+    // setAmount(Number(e.target.value))
+    // fetchSpecificBundle(Number(e.target.value))
+  };
 
   return (
     <div className="page-content-wrapper ">
@@ -360,56 +368,90 @@ const Content = () => {
                             <td class="font-montserrat all-caps fs-12 w-50">
                               BUNDLE
                             </td>
-                            <td class="text-right hidden-lg">
-                            </td>
+                            <td class="text-right hidden-lg"></td>
                             <td class="text-right b-r b-dashed b-grey w-25">
                               <span class="hint-text small">MIN VOLUME</span>
                             </td>
                             <td class="w-15">
-                              <span class="font-montserrat fs-12 w-50">UNIT</span>
+                              <span class="font-montserrat fs-12 w-50">
+                                UNIT
+                              </span>
                             </td>
                           </tr>
                         </thead>
                         <tbody>
-                          {bundles.map(bundle => (
+                          {bundles.map((bundle) => (
                             <tr>
-                            <td class="font-montserrat all-caps fs-12 w-50">
-                              {bundle.name}
-                            </td>
-                            <td class="text-right hidden-lg">
-                            </td>
-                            <td class="text-right b-r b-dashed b-grey w-25">
-                              <span class="hint-text small">{bundle.unitQuantity}</span>
-                            </td>
-                            <td class="w-25">
-                              <span class="font-montserrat fs-18">{bundle.amount}</span>
-                            </td>
-                          </tr>
+                              <td class="font-montserrat all-caps fs-12 w-50">
+                                {bundle.name}
+                              </td>
+                              <td class="text-right hidden-lg"></td>
+                              <td class="text-right b-r b-dashed b-grey w-25">
+                                <span class="hint-text small">
+                                  {bundle.unitQuantity}
+                                </span>
+                              </td>
+                              <td class="w-25">
+                                <span class="font-montserrat fs-18">
+                                  {bundle.amount}
+                                </span>
+                              </td>
+                            </tr>
                           ))}
                         </tbody>
-                        <thead
+                        <br />
+                        {/* <thead
                           style={{
                             border: "1px solid #007be8k",
-                            backgroundColor: "#007be8",
+                            backgroundColor: "#000",
                             color: "white",
                           }}
                         >
                           <tr>
+                            <td class="font-montserrat all-caps fs-12 w-25">
+                              VOLUME
+                            </td>
+                            <td class="text-right hidden-lg">BUNDLE</td>
+                            <td class="text-right b-r b-dashed b-grey w-25">
+                              UNIT PRICE
+                            </td>
+                            <td class="w-25">PRICE</td>
+                          </tr>
+                        </thead> */}
+                        {/* <thead>
+                          <tr>
                             <td class="font-montserrat all-caps fs-12 w-50">
-                              {/* Purchase CODE #2345 */}
-                              <input type='text' class="input-sm w-75" onChange={e => handleChange(e)}/>
+                              <input
+                                type="text"
+                                class="input-sm w-50"
+                                onChange={(e) => handleChange(e)}
+                                className='form-control input-sm w-50'
+                                style={{padding:"0px"}}
+                              />
                             </td>
                             <td class="text-right hidden-lg">
-                              <span class="font-montserrat fs-18">{waiting ? 'waiting...' : bundleName}</span>
+                              <span class="font-montserrat fs-18">
+                                {waiting ? <ProgressOne /> : bundleName}
+                              </span>
                             </td>
                             <td class="text-right b-r b-dashed b-grey w-25">
-                              <span class="font-montserrat fs-18">{waiting ? 'waiting...' : bundleUnitPrice}</span>
+                              <span class="font-montserrat fs-18 pull-right">
+                                {waiting ? (
+                                  <div>
+                                    <ProgressOne />
+                                  </div>
+                                ) : (
+                                  bundleUnitPrice
+                                )}
+                              </span>
                             </td>
                             <td class="w-25">
-                              <span class="font-montserrat fs-18">{waiting ? 'waiting...' : totalPrice}</span>
+                              <span class="font-montserrat fs-18">
+                                {waiting ? <ProgressOne /> : totalPrice}
+                              </span>
                             </td>
                           </tr>
-                        </thead>
+                        </thead> */}
                       </table>
                     </div>
                   </div>
@@ -523,165 +565,521 @@ const Content = () => {
             </div>
 
             <div className="col-lg-3">
-              <div
-                className="card social-card share  full-width no-margin no-border"
-                data-social="item"
-              >
-                <div className="card-header">
-                  <h5 className="text-primary pull-left fs-12 d-flex align-items-center">
-                    Update <i className="pg-icon">circle_fill</i>
-                  </h5>
-                  <div className="pull-right small hint-text d-flex align-items-center">
-                    5,345 <i className="pg-icon m-l-5">comment</i>
+            <div className="row">
+                <div className="col-md-12 m-b-10">
+                  <div className="widget-8 card  bg-success no-margin widget-loader-bar">
+                    <div className="container-xs-height full-height">
+                      <div className="row-xs-height">
+                        <div className="col-xs-height col-top">
+                          <div className="card-header  top-left top-right">
+                            <div className="card-title">
+                              <span className="font-montserrat fs-11 all-caps">
+                                Weekly Sales{" "}
+                              </span>
+                            </div>
+                            <div className="card-controls">
+                              <ul>
+                                <li>
+                                  <a
+                                    data-toggle="refresh"
+                                    className={`card-refresh ${
+                                      refreshSix ? "refreshing" : ""
+                                    }`}
+                                    href="javascript:void(0);"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setRefreshSix(true);
+                                      setTimeout(() => {
+                                        setRefreshSix(false);
+                                      }, 2000);
+                                    }}
+                                  >
+                                    <i
+                                      className={`card-icon card-icon-refresh ${
+                                        refreshSix ? "fade" : ""
+                                      }`}
+                                    ></i>
+                                    <i
+                                      className={`card-icon-refresh-lg-white-animated ${
+                                        refreshSix ? "active" : ""
+                                      }`}
+                                      style={{
+                                        position: "absolute",
+                                        top: "14px",
+                                        right: "20px",
+                                      }}
+                                    ></i>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row-xs-height ">
+                        <div className="col-xs-height col-top relative">
+                          <div className="row full-height">
+                            <div className="col-sm-6">
+                              <div className="p-l-20 full-height d-flex flex-column justify-content-between">
+                                <h3 className="no-margin p-b-5">$14,000</h3>
+                                <p className="small m-t-5 m-b-20">
+                                  <span className="label label-white hint-text font-montserrat m-r-5">
+                                    54 days remaining
+                                  </span>
+                                  <span className="fs-12"><a href="/simple/form_wizard" style={{textDecoration:"none", color:'inherit'}}>Buy Units</a></span>
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-sm-6"></div>
+                          </div>
+                          <div
+                            className="widget-8-chart line-chart"
+                            data-line-color="white"
+                            data-points="true"
+                            data-point-color="success"
+                            data-stroke-width="2"
+                          >
+                            {/* START SVG HERE */}
+                            <svg>
+                              <g
+                                className="nvd3 nv-wrap nv-lineChart"
+                                transform="translate(-10,10)"
+                              >
+                                <g>
+                                  <rect
+                                    width="181"
+                                    height="103"
+                                    style={{ opacity: "0" }}
+                                  ></rect>
+                                  <g className="nv-x nv-axis"></g>
+                                  <g className="nv-y nv-axis"></g>
+                                  <g className="nv-linesWrap">
+                                    <g
+                                      className="nvd3 nv-wrap nv-line"
+                                      transform="translate(0,0)"
+                                    >
+                                      <defs>
+                                        <clipPath id="nv-edge-clip-10456">
+                                          <rect width="181" height="103"></rect>
+                                        </clipPath>
+                                      </defs>
+                                      <g clipPath="">
+                                        <g className="nv-groups">
+                                          <g
+                                            className="nv-group nv-series-0"
+                                            style={{
+                                              strokeOpacity: "1",
+                                              fillOpacity: "0.5",
+                                              fill: "rgb(0, 0, 0)",
+                                              stroke: "rgb(0, 0, 0)",
+                                            }}
+                                          >
+                                            <path
+                                              className="nv-line"
+                                              d="M0,103L30.16666666666667,75.53333333333333L60.33333333333334,34.33333333333334L90.5,27.46666666666667L120.66666666666669,0L150.83333333333334,13.733333333333334L181,68.66666666666667"
+                                            ></path>
+                                          </g>
+                                        </g>
+                                        <g
+                                          className="nv-scatterWrap"
+                                          clipPath=""
+                                        >
+                                          <g
+                                            className="nvd3 nv-wrap nv-scatter nv-chart-10456"
+                                            transform="translate(0,0)"
+                                          >
+                                            <defs>
+                                              <clipPath id="nv-edge-clip-10456">
+                                                <rect
+                                                  width="181"
+                                                  height="103"
+                                                ></rect>
+                                              </clipPath>
+                                            </defs>
+                                            <g clipPath="">
+                                              <g className="nv-groups">
+                                                <g
+                                                  className="nv-group nv-series-0"
+                                                  style={{
+                                                    strokeOpacity: "1",
+                                                    fillOpacity: "0.5",
+                                                    stroke: "rgb(0, 0, 0)",
+                                                    fill: "rgb(0, 0, 0)",
+                                                  }}
+                                                >
+                                                  <circle
+                                                    cx="0"
+                                                    cy="103"
+                                                    r="3"
+                                                    className="nv-point nv-point-0"
+                                                    style={{
+                                                      strokeWidth: "2px",
+                                                    }}
+                                                  ></circle>
+                                                  <circle
+                                                    cx="30.16666666666667"
+                                                    cy="75.53333333333333"
+                                                    r="3"
+                                                    className="nv-point nv-point-1"
+                                                    style={{
+                                                      strokeWidth: "2px",
+                                                    }}
+                                                  ></circle>
+                                                  <circle
+                                                    cx="60.33333333333334"
+                                                    cy="34.33333333333334"
+                                                    r="3"
+                                                    className="nv-point nv-point-2"
+                                                    style={{
+                                                      strokeWidth: "2px",
+                                                    }}
+                                                  ></circle>
+                                                  <circle
+                                                    cx="90.5"
+                                                    cy="27.46666666666667"
+                                                    r="3"
+                                                    className="nv-point nv-point-3"
+                                                    style={{
+                                                      strokeWidth: "2px",
+                                                    }}
+                                                  ></circle>
+                                                  <circle
+                                                    cx="120.66666666666669"
+                                                    cy="0"
+                                                    r="3"
+                                                    className="nv-point nv-point-4"
+                                                    style={{
+                                                      strokeWidth: "2px",
+                                                    }}
+                                                  ></circle>
+                                                  <circle
+                                                    cx="150.83333333333334"
+                                                    cy="13.733333333333334"
+                                                    r="3"
+                                                    className="nv-point nv-point-5"
+                                                    style={{
+                                                      strokeWidth: "2px",
+                                                    }}
+                                                  ></circle>
+                                                  <circle
+                                                    cx="181"
+                                                    cy="68.66666666666667"
+                                                    r="3"
+                                                    className="nv-point nv-point-6"
+                                                    style={{
+                                                      strokeWidth: "2px",
+                                                    }}
+                                                  ></circle>
+                                                </g>
+                                              </g>
+                                              <g className="nv-point-paths"></g>
+                                            </g>
+                                          </g>
+                                        </g>
+                                      </g>
+                                    </g>
+                                  </g>
+                                  <g className="nv-legendWrap"></g>
+                                  <g className="nv-interactive"></g>
+                                </g>
+                              </g>
+                            </svg>
+                            {/* END SVG HERE */}
+                          </div>
+                        </div>
+                      </div>
+                      {refreshSix ? progress : null}
+                    </div>
                   </div>
-                  <div className="clearfix"></div>
                 </div>
               </div>
-              <div className="card no-border widget-loader-bar m-b-10">
-                <div className="container-xs-height full-height">
-                  <div className="row-xs-height">
-                    <div className="col-xs-height col-top">
-                      <div className="card-header  top-left top-right">
-                        <div className="card-title">
-                          <span className="font-montserrat all-caps d-flex align-items-center">
-                            Weekly Sales{" "}
-                            <i className="pg-icon">chevron_right</i>
-                          </span>
-                        </div>
-                        <div className="card-controls">
-                          <ul>
-                            <li>
-                              <a
-                                href="javascript:void(0);"
-                                className="portlet-refresh text-black"
-                                data-toggle="refresh"
-                              >
-                                <i className="portlet-icon portlet-icon-refresh"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+
+              <div class=" card   no-margin widget-loader-circle todolist-widget pending-projects-widget">
+                <div class="card-header ">
+                  <div class="card-title">
+                    <span class="d-flex align-items-center font-montserrat all-caps">
+                      Recent projects <i class="pg-icon">chevron_right</i>
+                    </span>
                   </div>
-                  <div className="row-xs-height">
-                    <div className="col-xs-height col-top">
-                      <div className="p-l-20 p-t-50 p-b-40 p-r-20">
-                        <h3 className="no-margin p-b-5">$24,000</h3>
-                        <span className="small hint-text pull-left">
-                          71% of total goal
-                        </span>
-                        <span className="pull-right small text-primary">
-                          $23,000
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row-xs-height">
-                    <div className="col-xs-height col-bottom">
-                      <div className="progress progress-small m-b-0">
-                        <div
-                          className="progress-bar progress-bar-primary"
-                          style={{ width: "71%" }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <form className="" role="form">
-                      <div className="form-group ">
-                        <select
-                          className="full-width select2-hidden-accessible"
-                          data-init-plugin="select2"
-                          tabindex="-1"
-                          aria-hidden="true"
+                  <div class="card-controls">
+                    <ul>
+                      <li>
+                        <a
+                          data-toggle="refresh"
+                          class="card-refresh "
+                          href="javascript:void(0);"
                         >
-                          <option value="AK">Alaska</option>
-                          <option value="HI">Hawaii</option>
-                          <option value="CA">California</option>
-                          <option value="NV">Nevada</option>
-                          <option value="OR">Oregon</option>
-                          <option value="WA">Washington</option>
-                        </select>
-                        <span
-                          className="select2 select2-container select2-container--default select2-container--focus"
-                          dir="ltr"
-                        >
-                          <span className="selection">
-                            <span
-                              className="select2-selection select2-selection--single"
-                              role="combobox"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                              tabindex="0"
-                              aria-labelledby="select2-6f7b-container"
-                            >
-                              <span
-                                className="select2-selection__rendered"
-                                id="select2-6f7b-container"
-                                title="Alaska"
-                              >
-                                Alaska
-                              </span>
-                              <span
-                                className="select2-selection__arrow"
-                                role="presentation"
-                              >
-                                <b role="presentation"></b>
-                              </span>
-                            </span>
-                          </span>
-                          <span
-                            className="dropdown-wrapper"
-                            aria-hidden="true"
-                          ></span>
-                        </span>
-                      </div>
-                      <div className="form-group form-group-default required">
-                        <label>Project</label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          required=""
-                        />
+                          <i class="card-icon card-icon-refresh "></i>
+                          <i
+                            class="card-icon-refresh-lg-white-animated "
+                            style={{
+                              position: "absolute",
+                              top: "14px",
+                              right: "20px",
+                            }}
+                          ></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="card-body">
+                  <ul
+                    className="nav nav-tabs nav-tabs-simple m-b-20 "
+                    role="tablist"
+                    data-init-reponsive-tabs="collapse"
+                  >
+                    <li className="nav-item">
+                      <a
+                        href="#pending"
+                        className="active"
+                        data-toggle="tab"
+                        role="tab"
+                        aria-expanded="true"
+                      >
+                        Pending
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a
+                        href="#completed"
+                        data-toggle="tab"
+                        role="tab"
+                        aria-expanded="false"
+                      >
+                        Completed
+                      </a>
+                    </li>
+                  </ul>
+                  <div className="tab-content no-padding">
+                    <div className="tab-pane active" id="pending" style={{padding:'0px'}}>
+                  <div className=" card no-border no-margin widget-loader-circle todolist-widget align-self-stretch" style={{boxShadow:'none'}}>
+                    <ul className="list-unstyled p-l-20 p-r-20 p-t-10 m-b-20">
+                      <li>
+                        <h5 className="pull-left normal no-margin">
+                          28th September
+                        </h5>
+                        
+                      </li>
+                      <div className="clearfix"></div>
+                    </ul>
+                    <div className="task-list p-t-0 p-r-20 p-b-20 p-l-20 clearfix flex-1">
+                      <div className="task clearfix row completed">
+                        <div className="task-list-title col-10 justify-content-between">
+                          <a
+                            href="javascript:void(0);"
+                            className="text-color strikethrough"
+                            data-task="name"
+                          >
+                            Purchase Pages before 10am
+                          </a>
+                          <i className="fs-14 pg-close hidden"></i>
+                        </div>
+                        <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
+                          <input
+                            type="checkbox"
+                            value="1"
+                            id="todocheckbox"
+                            data-toggler="task"
+                            className="hidden"
+                            onChange={() =>
+                              setCheckedOption((prevState) => !prevState)
+                            }
+                            checked={checkedOption}
+                          />
+                          <label
+                            htmlFor="todocheckbox"
+                            className=" no-margin no-padding absolute"
+                          ></label>
+                        </div>
                       </div>
 
-                      <div class="form-group form-group-default required">
-                        <label>Placeholder</label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          placeholder="ex: some@example.com"
-                          required=""
-                        />
-                      </div>
-                      <div className="form-group form-group-default disabled">
-                        <label>Disabled</label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          value="You can put anything here"
-                          disabled=""
-                        />
-                      </div>
-                      <div className="row">
-                        <div class="col-6 pt-2"></div>
-                        <div className="col-6">
-                          <button
-                            onClick={() => handleShow()}
-                            aria-label=""
-                            type="button"
-                            className="btn btn-block btn-default btn-lg btn-icon-right"
+                      <div className="task clearfix row">
+                        <div className="task-list-title col-10 justify-content-between">
+                          <a
+                            href="javascript:void(0);"
+                            className="text-color"
+                            data-task="name"
                           >
-                            <span>Button Block</span>
-                            <i className="pg-icon md-18">arrow_right</i>
-                          </button>
+                            Meeting with CFO
+                          </a>
+                          <i className="fs-14 pg-close hidden"></i>
+                        </div>
+                        <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
+                          <input
+                            type="checkbox"
+                            value="1"
+                            id="todocheck2"
+                            data-toggler="task"
+                            className="hidden"
+                          />
+                          <label
+                            htmlFor="todocheck2"
+                            className=" no-margin no-padding absolute"
+                          ></label>
                         </div>
                       </div>
-                    </form>
+
+                      <div className="task clearfix row">
+                        <div className="task-list-title col-10 justify-content-between">
+                          <a
+                            href="javascript:void(0);"
+                            className="text-color"
+                            data-task="name"
+                          >
+                            AGM Conference at 1pm
+                          </a>
+                          <i className="fs-14 pg-close hidden"></i>
+                        </div>
+                        <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
+                          <input
+                            type="checkbox"
+                            value="1"
+                            id="todocheck3"
+                            data-toggler="task"
+                            className="hidden"
+                          />
+                          <label
+                            htmlFor="todocheck3"
+                            className=" no-margin no-padding absolute"
+                          ></label>
+                        </div>
+                      </div>
+
+                      <div className="task clearfix row">
+                        <div className="task-list-title col-10 justify-content-between">
+                          <a
+                            href="javascript:void(0);"
+                            className="text-color"
+                            data-task="name"
+                          >
+                            Revise Annual Reports
+                          </a>
+                          <i className="fs-14 pg-close hidden"></i>
+                        </div>
+                        <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
+                          <input
+                            type="checkbox"
+                            value="1"
+                            id="todocheck4"
+                            data-toggler="task"
+                            className="hidden"
+                          />
+                          <label
+                            htmlFor="todocheck4"
+                            className=" no-margin no-padding absolute"
+                          ></label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="clearfix"></div>
+                    <div className="bg-master-light padding-20 full-width ">
+                      <div className="row">
+                        <div className="col-10">
+                          <p className="no-margin normal text-black">
+                            Type Event Here
+                          </p>
+                          <div className="input-group transparent no-border full-width">
+                            <input
+                              className="form-control transparent p-l-0"
+                              type="text"
+                              placeholder="What do you need to remember?"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-2 text-center">
+                          <a
+                            href="javascript:void(0);"
+                            className="block m-t-15"
+                          >
+                            <img src={plusSVG} />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                      <a
+                        href="javascript:void(0);"
+                        className="btn btn-block m-t-30"
+                      >
+                        See all projects
+                      </a>
+                    </div>
+                    <div className="tab-pane" id="completed">
+                      <div className="p-t-10">
+                        <div className="d-flex">
+                          <span className="icon-thumbnail bg-contrast-higher pull-left ">
+                            ws
+                          </span>
+                          <div className="flex-1 full-width overflow-ellipsis">
+                            <p className="hint-text all-caps font-montserrat fs-11 no-margin overflow-ellipsis ">
+                              Apple Corp
+                            </p>
+                            <h5 className="no-margin overflow-ellipsis ">
+                              Marketing Campaign for revox
+                            </h5>
+                          </div>
+                          <div className="clearfix"></div>
+                        </div>
+                        <div className="m-t-15">
+                          <p className="hint-text  small pull-left no-margin">
+                            45% completed from total
+                          </p>
+                          <a href="javascript:void(0);" className="pull-right ">
+                            <i className="pg-icon">more_horizontal</i>
+                          </a>
+                          <div className="clearfix"></div>
+                        </div>
+                        <div className="progress progress-small m-b-15 m-t-10">
+                          <div
+                            className="progress-bar progress-bar-info"
+                            style={{ width: "45%" }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div className="p-t-15">
+                        <div className="d-flex">
+                          <span className="icon-thumbnail bg-primary-light pull-left ">
+                            cr
+                          </span>
+                          <div className="flex-1 full-width overflow-ellipsis">
+                            <p className="hint-text all-caps font-montserrat fs-11 no-margin overflow-ellipsis ">
+                              Yahoo Inc
+                            </p>
+                            <h5 className="no-margin overflow-ellipsis ">
+                              Corporate rebranding
+                            </h5>
+                          </div>
+                          <div className="clearfix"></div>
+                        </div>
+                        <div className="m-t-15">
+                          <p className="hint-text  small pull-left no-margin">
+                            20% completed from total
+                          </p>
+                          <a href="javascript:void(0);" className="pull-right ">
+                            <i className="pg-icon">more_horizontal</i>
+                          </a>
+                          <div className="clearfix"></div>
+                        </div>
+                        <div className="progress progress-small m-b-15 m-t-10">
+                          <div
+                            className="progress-bar progress-bar-warning"
+                            style={{ width: "20%" }}
+                          ></div>
+                        </div>
+                      </div>
+                      <a
+                        href="javascript:void(0);"
+                        className="btn btn-block m-t-30"
+                      >
+                        See all projects
+                      </a>
+                    </div>
+                  </div>
+                  {refreshEight ? progress : null}
                 </div>
               </div>
+
             </div>
           </div>
         </div>

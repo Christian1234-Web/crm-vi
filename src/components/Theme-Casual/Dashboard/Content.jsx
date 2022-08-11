@@ -775,7 +775,7 @@ const Content = () => {
                             <input
                               className="form-control transparent p-l-0"
                               type="text"
-                              placeholder="What do you need to remeber?"
+                              placeholder="What do you need to remember?"
                             />
                           </div>
                         </div>
