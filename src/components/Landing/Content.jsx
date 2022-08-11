@@ -139,15 +139,15 @@ const content = () => {
                       <div className="row">
                         <div className="col-md-6">
                           <TextValidator
-                            onChange={(e) => setEmail(e.target.value)}
-                            name="email"
-                            value={email}
-                            type="email"
+                            onChange={(e) => setPassword(e.target.value)}
+                            name="password"
+                            value={password}
+                            type="password"
                             validators={["required"]}
                             errorMessages={["This field is required"]}
                             className={"form-control"}
-                            label={"Email"}
-                            placeholder="example@address.com"
+                            label={"Password"}
+                            placeholder="Minimum of 4 characters"
                           />
                         </div>
                         <div className="col-md-6">
@@ -159,8 +159,8 @@ const content = () => {
                             validators={["required"]}
                             errorMessages={["This field is required"]}
                             className={"form-control"}
-                            label={"Password"}
-                            placeholder="Minimum of 4 characters."
+                            label={"Confirm Password"}
+                            placeholder="Confirm password."
                           />
                         </div>
                       </div>
@@ -169,14 +169,14 @@ const content = () => {
                       <div className="row">
                         <div className="col-md-12">
                           <TextValidator
-                            onChange={(e) => setPassword(e.target.value)}
-                            name="password"
-                            value={password}
-                            type="password"
+                            onChange={(e) => setEmail(e.target.value)}
+                            name="email"
+                            value={email}
+                            type="email"
                             validators={["required"]}
                             errorMessages={["This field is required"]}
                             className={"form-control"}
-                            label={"Confirm Password"}
+                            label={"Email"}
                           // placeholder="Minimum of 4 characters."
                           />
                         </div>
@@ -202,16 +202,18 @@ const content = () => {
                         ></button>
                       </Alert> : ''}
                       <div className="clearfix"></div>
-                      <div className="row m-t-25">
-                        <div className="col-xl-6 p-b-10">
-                          {/* <p className="small-text hint-text">
-                        By clicking the "Get Started!" button, you are
-                        creating a Pages account, and you agree to Pages's
-                        <a href="javascript:void(0);">
-                          Terms of Use
-                        </a> and{" "}
-                        <a href="javascript:void(0);">Privacy Policy</a>.
-                      </p> */}
+                      <div className="row">
+                        <div className="col-xl-6">
+                          <div className="form-check primary m-t-0">
+                            <input
+                              type="checkbox"
+                              value="1"
+                              id="checkbox-agree"
+                            />
+                            <label htmlFor="checkbox-agree">
+                              I am registering as an organization
+                            </label>
+                          </div>
                         </div>
                         <div className="col-xl-6">
                           <button
@@ -220,10 +222,12 @@ const content = () => {
                             type="submit"
                           >
                             Register
+
                           </button>
 
                         </div>
                       </div>
+
                     </ValidatorForm>
                   </div>
                   <div ref={form_login} style={{ display: '' }}>
