@@ -11,7 +11,14 @@ import Copyright from "../../ui/Footer/Copyright";
 export const ProgressOne = () => {
   return (
     <div className="col-md-6  text-center">
-      <div className="progress-circle-indeterminate"style={{width:'30px'}} ></div>
+      <div className="progress-circle-indeterminate" style={{width:'30px'}} ></div>
+    </div>
+  )
+}
+export const ProgressTwo = () => {
+  return (
+    <div className="col-md-6  text-center">
+      <div className="progress-circle-indeterminate.progress-circle-warning" style={{width:'30px'}} ></div>
     </div>
   )
 }
