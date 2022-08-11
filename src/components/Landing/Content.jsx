@@ -177,15 +177,11 @@ const content = () => {
                             errorMessages={["This field is required"]}
                             className={"form-control"}
                             label={"Email"}
-                          // placeholder="Minimum of 4 characters."
+                            placeholder="pages@gmail.com"
                           />
                         </div>
                       </div>
-                      {/* <AlertGroupItem
-                 mainText={'wow'}
-                 textRightWarning={'hello'}
-                 textRightMaster={'sorry'}
-                    /> */}
+
                       {error === true ? <Alert type="danger">
                         <strong>Error: </strong>Failed to register please try  again later
                         <button
@@ -203,7 +199,7 @@ const content = () => {
                       </Alert> : ''}
                       <div className="clearfix"></div>
                       <div className="row">
-                        <div className="col-xl-6">
+                        <div className="col-8">
                           <div className="form-check primary m-t-0">
                             <input
                               type="checkbox"
@@ -215,16 +211,14 @@ const content = () => {
                             </label>
                           </div>
                         </div>
-                        <div className="col-xl-6">
+                        <div className="col-4">
                           <button
                             aria-label=""
-                            className="btn btn-primary pull-right btn-lg btn-block"
+                            className="btn btn-primary pull-right"
                             type="submit"
                           >
                             Register
-
                           </button>
-
                         </div>
                       </div>
 

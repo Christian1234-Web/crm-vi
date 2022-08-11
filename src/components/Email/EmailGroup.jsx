@@ -1,14 +1,16 @@
 import React from 'react'
 import EmailList from './EmailList';
 
-const EmailGroup = ({emailGroups, onReadEmail, onSlide, emailListPosition}) => {
+const EmailGroup = ({ emailGroups, onReadEmail, onSlide, emailListPosition }) => {
+    console.log('hello');
     return (
-        emailGroups.map((group, index) => 
-            <EmailList group={group} groupIndex={index} key={index} 
-                onReadEmail={onReadEmail} onSlide={onSlide} 
+        <>
+            <EmailList group={emailGroups} groupIndex={0}
+                onReadEmail={onReadEmail} onSlide={onSlide}
                 emailListPosition={emailListPosition}
+                timeSent={`group`}
             />
-        )
+        </>
     )
 }
 

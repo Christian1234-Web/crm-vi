@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -6,20 +6,42 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import Nav from "./Nav";
 import EmailBody from "./EmailBody";
 import EmailGroup from "./EmailGroup";
-
+import { Store } from "../../context/store";
 import "./style.css";
 
 import allMessages from "./messages.json";
+import { request } from "../../services/utilities";
+import { useCallback } from "react";
 
 const content = ({ toggleHeaderPopup }) => {
+  const store = useContext(Store);
+  let [, setTotal_sms] = store.total_sms;
   const [selectEmail, setSelectEmail] = useState(null);
   const [slideWidth, setSlideWidth] = useState("0px");
+  const [sms_messages, setSms_messages] = useState([]);
+
+
+  const fetchAllSmsMessages = useCallback(async () => {
+    const url = `message/all?page=1&limit=10`;
+    try {
+      const rs = await request(url, 'GET', true);
+      setSms_messages(rs.result);
+      setTotal_sms(rs.result.length);
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAllSmsMessages();
+  }, [fetchAllSmsMessages])
 
   return (
     <div className="page-content-wrapper full-height">
       <div className="content full-height">
         {/* Start Secondary side bar nav */}
-        <Nav to="compose_email" toggleHeaderPopup={toggleHeaderPopup} />
+        <Nav messages={sms_messages} to="compose_email" toggleHeaderPopup={toggleHeaderPopup} />
         {/* End Secondary side bar nav */}
         {/* Start email list content */}
         <div className="inner-content email-layout full-height split-view">
@@ -40,22 +62,28 @@ const content = ({ toggleHeaderPopup }) => {
                 style={
                   window.screen.width < 768
                     ? {
-                        left: slideWidth,
-                        transition: "left 1s ease",
-                        zIndex: "2",
-                        position: "inherit",
-                        top: "0px !important",
-                      }
+                      left: slideWidth,
+                      transition: "left 1s ease",
+                      zIndex: "2",
+                      position: "inherit",
+                      top: "0px !important",
+                    }
                     : { left: "0px" }
                 }
               >
                 {/* Start Email list */}
                 <EmailGroup
-                  emailGroups={allMessages.emails}
+                  emailGroups={sms_messages}
                   onReadEmail={setSelectEmail}
                   onSlide={setSlideWidth}
                   emailListPosition={slideWidth}
                 />
+                {/* <EmailGroup
+                  emailGroups={allMessages.emails}
+                  onReadEmail={setSelectEmail}
+                  onSlide={setSlideWidth}
+                  emailListPosition={slideWidth}
+                /> */}
 
                 {/* End Email list */}
               </PerfectScrollbar>
@@ -63,7 +91,7 @@ const content = ({ toggleHeaderPopup }) => {
               <div className="email-body-small-screen full-height">
                 <EmailBody
                   viewedEmail={selectEmail}
-                  emailGroups={allMessages.emails}
+                  emailGroups={sms_messages}
                   onSlide={setSlideWidth}
                 />
               </div>
@@ -74,7 +102,7 @@ const content = ({ toggleHeaderPopup }) => {
               {/* Start Email body */}
               <EmailBody
                 viewedEmail={selectEmail}
-                emailGroups={allMessages.emails}
+                emailGroups={sms_messages}
               />
               {/* End Email body */}
             </Col>
