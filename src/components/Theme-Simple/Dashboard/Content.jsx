@@ -20,7 +20,9 @@ import BootstrapTable from "react-bootstrap-table-next";
 import axios from "axios";
 import { ProgressOne } from "../../UIElements/ProgressAndActivity/Content";
 import plusSVG from "../../../assets/img/plus.svg";
-
+import { USER_NAME } from "../../../services/constants";
+import SSRStorage from '../../../services/storage';
+const storage = new SSRStorage();
 const tableThreeData = [
   {
     renderingEngine: "Geckokkkss",
@@ -41,6 +43,7 @@ const Content = () => {
     </React.Fragment>
   );
 
+  const [username,setUsername] = useState('');
   const [refreshOne, setRefreshOne] = useState(false);
   const [projectUrl, setProjectUrl] = useState("");
   const [projectName, setProjectName] = useState("");
@@ -76,6 +79,8 @@ const Content = () => {
   const fetchBundleList = useCallback(async (page) => {
     try {
       setLoading(true);
+      const user = await storage.getItem(USER_NAME);
+      setUsername(user)
       const rs = await axios.get(
         `https://deda-crm-backend.herokuapp.com/unit/all`
       );
@@ -95,7 +100,6 @@ const Content = () => {
       fetchBundleList();
     }
   }, [fetchBundleList, loading]);
-  console.log("Malik", bundles);
 
   let handleFormSubmit = () => {
     //Call this function on form submit with no errors
@@ -328,7 +332,7 @@ const Content = () => {
                         <div className="card-title">Getting started</div>
                       </div>
                       <div className="card-body">
-                        <h3>Custom built for anyone, anywhere.</h3>
+                        <h1>Bonjour! <span class="text-success text-capitalize">{username}</span></h1>
                         <p>
                           As always, in keeping with our policy of making UX
                           easier and more user-friendly, we have customized this
@@ -381,7 +385,7 @@ const Content = () => {
                         </thead>
                         <tbody>
                           {bundles.map((bundle) => (
-                            <tr>
+                            <tr key={bundle.id}>
                               <td class="font-montserrat all-caps fs-12 w-50">
                                 {bundle.name}
                               </td>
@@ -466,9 +470,8 @@ const Content = () => {
                       <li>
                         <a
                           data-toggle="refresh"
-                          className={`card-refresh ${
-                            refreshOne ? "refreshing" : ""
-                          }`}
+                          className={`card-refresh ${refreshOne ? "refreshing" : ""
+                            }`}
                           href="javascript:void(0);"
                           onClick={(e) => {
                             e.preventDefault();
@@ -479,14 +482,12 @@ const Content = () => {
                           }}
                         >
                           <i
-                            className={`card-icon card-icon-refresh ${
-                              refreshOne ? "fade" : ""
-                            }`}
+                            className={`card-icon card-icon-refresh ${refreshOne ? "fade" : ""
+                              }`}
                           ></i>
                           <i
-                            className={`card-icon-refresh-lg-white-animated ${
-                              refreshOne ? "active" : ""
-                            }`}
+                            className={`card-icon-refresh-lg-white-animated ${refreshOne ? "active" : ""
+                              }`}
                             style={{
                               position: "absolute",
                               top: "14px",
@@ -565,7 +566,7 @@ const Content = () => {
             </div>
 
             <div className="col-lg-3">
-            <div className="row">
+              <div className="row">
                 <div className="col-md-12 m-b-10">
                   <div className="widget-8 card  bg-success no-margin widget-loader-bar">
                     <div className="container-xs-height full-height">
@@ -582,9 +583,8 @@ const Content = () => {
                                 <li>
                                   <a
                                     data-toggle="refresh"
-                                    className={`card-refresh ${
-                                      refreshSix ? "refreshing" : ""
-                                    }`}
+                                    className={`card-refresh ${refreshSix ? "refreshing" : ""
+                                      }`}
                                     href="javascript:void(0);"
                                     onClick={(e) => {
                                       e.preventDefault();
@@ -595,14 +595,12 @@ const Content = () => {
                                     }}
                                   >
                                     <i
-                                      className={`card-icon card-icon-refresh ${
-                                        refreshSix ? "fade" : ""
-                                      }`}
+                                      className={`card-icon card-icon-refresh ${refreshSix ? "fade" : ""
+                                        }`}
                                     ></i>
                                     <i
-                                      className={`card-icon-refresh-lg-white-animated ${
-                                        refreshSix ? "active" : ""
-                                      }`}
+                                      className={`card-icon-refresh-lg-white-animated ${refreshSix ? "active" : ""
+                                        }`}
                                       style={{
                                         position: "absolute",
                                         top: "14px",
@@ -626,7 +624,7 @@ const Content = () => {
                                   <span className="label label-white hint-text font-montserrat m-r-5">
                                     54 days remaining
                                   </span>
-                                  <span className="fs-12"><a href="/simple/form_wizard" style={{textDecoration:"none", color:'inherit'}}>Buy Units</a></span>
+                                  <span className="fs-12"><a href="/simple/form_wizard" style={{ textDecoration: "none", color: 'inherit' }}>Buy Units</a></span>
                                 </p>
                               </div>
                             </div>
@@ -852,152 +850,152 @@ const Content = () => {
                     </li>
                   </ul>
                   <div className="tab-content no-padding">
-                    <div className="tab-pane active" id="pending" style={{padding:'0px'}}>
-                  <div className=" card no-border no-margin widget-loader-circle todolist-widget align-self-stretch" style={{boxShadow:'none'}}>
-                    <ul className="list-unstyled p-l-20 p-r-20 p-t-10 m-b-20">
-                      <li>
-                        <h5 className="pull-left normal no-margin">
-                          28th September
-                        </h5>
-                        
-                      </li>
-                      <div className="clearfix"></div>
-                    </ul>
-                    <div className="task-list p-t-0 p-r-20 p-b-20 p-l-20 clearfix flex-1">
-                      <div className="task clearfix row completed">
-                        <div className="task-list-title col-10 justify-content-between">
-                          <a
-                            href="javascript:void(0);"
-                            className="text-color strikethrough"
-                            data-task="name"
-                          >
-                            Purchase Pages before 10am
-                          </a>
-                          <i className="fs-14 pg-close hidden"></i>
-                        </div>
-                        <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
-                          <input
-                            type="checkbox"
-                            value="1"
-                            id="todocheckbox"
-                            data-toggler="task"
-                            className="hidden"
-                            onChange={() =>
-                              setCheckedOption((prevState) => !prevState)
-                            }
-                            checked={checkedOption}
-                          />
-                          <label
-                            htmlFor="todocheckbox"
-                            className=" no-margin no-padding absolute"
-                          ></label>
-                        </div>
-                      </div>
+                    <div className="tab-pane active" id="pending" style={{ padding: '0px' }}>
+                      <div className=" card no-border no-margin widget-loader-circle todolist-widget align-self-stretch" style={{ boxShadow: 'none' }}>
+                        <ul className="list-unstyled p-l-20 p-r-20 p-t-10 m-b-20">
+                          <li>
+                            <h5 className="pull-left normal no-margin">
+                              28th September
+                            </h5>
 
-                      <div className="task clearfix row">
-                        <div className="task-list-title col-10 justify-content-between">
-                          <a
-                            href="javascript:void(0);"
-                            className="text-color"
-                            data-task="name"
-                          >
-                            Meeting with CFO
-                          </a>
-                          <i className="fs-14 pg-close hidden"></i>
-                        </div>
-                        <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
-                          <input
-                            type="checkbox"
-                            value="1"
-                            id="todocheck2"
-                            data-toggler="task"
-                            className="hidden"
-                          />
-                          <label
-                            htmlFor="todocheck2"
-                            className=" no-margin no-padding absolute"
-                          ></label>
-                        </div>
-                      </div>
+                          </li>
+                          <div className="clearfix"></div>
+                        </ul>
+                        <div className="task-list p-t-0 p-r-20 p-b-20 p-l-20 clearfix flex-1">
+                          <div className="task clearfix row completed">
+                            <div className="task-list-title col-10 justify-content-between">
+                              <a
+                                href="javascript:void(0);"
+                                className="text-color strikethrough"
+                                data-task="name"
+                              >
+                                Purchase Pages before 10am
+                              </a>
+                              <i className="fs-14 pg-close hidden"></i>
+                            </div>
+                            <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
+                              <input
+                                type="checkbox"
+                                value="1"
+                                id="todocheckbox"
+                                data-toggler="task"
+                                className="hidden"
+                                onChange={() =>
+                                  setCheckedOption((prevState) => !prevState)
+                                }
+                                checked={checkedOption}
+                              />
+                              <label
+                                htmlFor="todocheckbox"
+                                className=" no-margin no-padding absolute"
+                              ></label>
+                            </div>
+                          </div>
 
-                      <div className="task clearfix row">
-                        <div className="task-list-title col-10 justify-content-between">
-                          <a
-                            href="javascript:void(0);"
-                            className="text-color"
-                            data-task="name"
-                          >
-                            AGM Conference at 1pm
-                          </a>
-                          <i className="fs-14 pg-close hidden"></i>
-                        </div>
-                        <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
-                          <input
-                            type="checkbox"
-                            value="1"
-                            id="todocheck3"
-                            data-toggler="task"
-                            className="hidden"
-                          />
-                          <label
-                            htmlFor="todocheck3"
-                            className=" no-margin no-padding absolute"
-                          ></label>
-                        </div>
-                      </div>
+                          <div className="task clearfix row">
+                            <div className="task-list-title col-10 justify-content-between">
+                              <a
+                                href="javascript:void(0);"
+                                className="text-color"
+                                data-task="name"
+                              >
+                                Meeting with CFO
+                              </a>
+                              <i className="fs-14 pg-close hidden"></i>
+                            </div>
+                            <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
+                              <input
+                                type="checkbox"
+                                value="1"
+                                id="todocheck2"
+                                data-toggler="task"
+                                className="hidden"
+                              />
+                              <label
+                                htmlFor="todocheck2"
+                                className=" no-margin no-padding absolute"
+                              ></label>
+                            </div>
+                          </div>
 
-                      <div className="task clearfix row">
-                        <div className="task-list-title col-10 justify-content-between">
-                          <a
-                            href="javascript:void(0);"
-                            className="text-color"
-                            data-task="name"
-                          >
-                            Revise Annual Reports
-                          </a>
-                          <i className="fs-14 pg-close hidden"></i>
-                        </div>
-                        <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
-                          <input
-                            type="checkbox"
-                            value="1"
-                            id="todocheck4"
-                            data-toggler="task"
-                            className="hidden"
-                          />
-                          <label
-                            htmlFor="todocheck4"
-                            className=" no-margin no-padding absolute"
-                          ></label>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="clearfix"></div>
-                    <div className="bg-master-light padding-20 full-width ">
-                      <div className="row">
-                        <div className="col-10">
-                          <p className="no-margin normal text-black">
-                            Type Event Here
-                          </p>
-                          <div className="input-group transparent no-border full-width">
-                            <input
-                              className="form-control transparent p-l-0"
-                              type="text"
-                              placeholder="What do you need to remember?"
-                            />
+                          <div className="task clearfix row">
+                            <div className="task-list-title col-10 justify-content-between">
+                              <a
+                                href="javascript:void(0);"
+                                className="text-color"
+                                data-task="name"
+                              >
+                                AGM Conference at 1pm
+                              </a>
+                              <i className="fs-14 pg-close hidden"></i>
+                            </div>
+                            <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
+                              <input
+                                type="checkbox"
+                                value="1"
+                                id="todocheck3"
+                                data-toggler="task"
+                                className="hidden"
+                              />
+                              <label
+                                htmlFor="todocheck3"
+                                className=" no-margin no-padding absolute"
+                              ></label>
+                            </div>
+                          </div>
+
+                          <div className="task clearfix row">
+                            <div className="task-list-title col-10 justify-content-between">
+                              <a
+                                href="javascript:void(0);"
+                                className="text-color"
+                                data-task="name"
+                              >
+                                Revise Annual Reports
+                              </a>
+                              <i className="fs-14 pg-close hidden"></i>
+                            </div>
+                            <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
+                              <input
+                                type="checkbox"
+                                value="1"
+                                id="todocheck4"
+                                data-toggler="task"
+                                className="hidden"
+                              />
+                              <label
+                                htmlFor="todocheck4"
+                                className=" no-margin no-padding absolute"
+                              ></label>
+                            </div>
                           </div>
                         </div>
-                        <div className="col-2 text-center">
-                          <a
-                            href="javascript:void(0);"
-                            className="block m-t-15"
-                          >
-                            <img src={plusSVG} />
-                          </a>
+                        <div className="clearfix"></div>
+                        <div className="bg-master-light padding-20 full-width ">
+                          <div className="row">
+                            <div className="col-10">
+                              <p className="no-margin normal text-black">
+                                Type Event Here
+                              </p>
+                              <div className="input-group transparent no-border full-width">
+                                <input
+                                  className="form-control transparent p-l-0"
+                                  type="text"
+                                  placeholder="What do you need to remember?"
+                                />
+                              </div>
+                            </div>
+                            <div className="col-2 text-center">
+                              <a
+                                href="javascript:void(0);"
+                                className="block m-t-15"
+                              >
+                                <img src={plusSVG} />
+                              </a>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
                       <a
                         href="javascript:void(0);"
                         className="btn btn-block m-t-30"

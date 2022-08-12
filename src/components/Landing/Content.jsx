@@ -7,12 +7,11 @@ import LandingImg from './pat_logo.png';
 import TextValidator from "./FormValidation";
 import "../../pages/scss/themes/simpleTheme/simple.scss";
 import './landing.css';
-// import '../../pages/css/pages.css'
 import { ProgressOne } from "../UIElements/ProgressAndActivity/Content";
 import Alert from '../UIElements/Alert'
-import { TOKEN_COOKIE } from "../../services/constants";
+import { TOKEN_COOKIE ,USER_NAME} from "../../services/constants";
 import SSRStorage from '../../services/storage';
-const storage = new SSRStorage();
+const storage = new SSRStorage(); 
 
 
 
@@ -67,9 +66,10 @@ const content = () => {
       body: JSON.stringify(data)
     }).then(res => res.json())
       .then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.success === true) {
           storage.setItem(TOKEN_COOKIE, res.accessToken);
+          storage.setItem(USER_NAME, res.result.userType);
           location.href = '/simple/dashboard';
         } else {
           setLoading(false);
