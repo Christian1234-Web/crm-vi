@@ -467,7 +467,7 @@ const Content = () => {
                             <td className="font-montserrat all-caps fs-12 w-25">
                               VOLUME
                             </td>
-                            <td className="font-montserrat all-caps fs-12" style={{width:'37%'}}>BUNDLE</td>
+                            <td className="font-montserrat all-caps fs-12" style={{width:'38%'}}>BUNDLE</td>
                             <td className="text-right b-r b-dashed b-grey w-25">
                               <span className="hint-text small">UNIT PRICE</span>
                             </td>
