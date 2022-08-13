@@ -12,37 +12,37 @@ class Component extends React.Component {
     searchText: "",
   };
   handleKeyPress = (e) => {
-    let nodeName = e.target.nodeName;
-    if (
-      document.body.classList.contains("overlay-disabled") ||
-      e.target.classList.contains("js-input") ||
-      nodeName === "INPUT" ||
-      nodeName === "TEXTAREA"
-    ) {
-      return;
-    } else {
-      if (
-        e.which !== 0 &&
-        e.charCode !== 0 &&
-        !e.ctrlKey &&
-        !e.metaKey &&
-        !e.altKey &&
-        e.keyCode !== 27 &&
-        e.target.className !== "ql-editor" &&
-        e.target.className !== "ql-editor ql-blank"
-      ) {
-        this.setState(
-          {
-            isVisible: true,
-          },
-          () => this.searchInputField.current.focus()
-        );
-      } else {
-        this.setState({
-          isVisible: false,
-        });
-      }
-    }
+    // let nodeName = e.target.nodeName;
+    // if (
+    //   document.body.classList.contains("overlay-disabled") ||
+    //   e.target.classList.contains("js-input") ||
+    //   nodeName === "INPUT" ||
+    //   nodeName === "TEXTAREA"
+    // ) {
+    //   return;
+    // } else {
+    //   if (
+    //     e.which !== 0 &&
+    //     e.charCode !== 0 &&
+    //     !e.ctrlKey &&
+    //     !e.metaKey &&
+    //     !e.altKey &&
+    //     e.keyCode !== 27 &&
+    //     e.target.className !== "ql-editor" &&
+    //     e.target.className !== "ql-editor ql-blank"
+    //   ) {
+    //     this.setState(
+    //       {
+    //         isVisible: true,
+    //       },
+    //       () => this.searchInputField.current.focus()
+    //     );
+    //   } else {
+    //     this.setState({
+    //       isVisible: false,
+    //     });
+    //   }
+    // }
   };
   handleKeyUp = (e) => {
     if (e.keyCode === 27) {
@@ -135,7 +135,7 @@ class Component extends React.Component {
           {/* BEGIN Overlay Search Results, This part is for demo purpose, you can add anything you like */}
           <div className="container-fluid">
             <span>
-              <strong>suggestions :</strong>
+              <strong>suggestions simple :</strong>
             </span>
             {/* <span id="overlay-suggestions"></span> */}
             <span>{this.state.searchText}</span>

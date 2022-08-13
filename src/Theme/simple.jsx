@@ -249,7 +249,7 @@ const Simple = ({ location }) => {
       {/* {path.includes('/simple') && <Quickview />} */}
       {/* <Route path="*" component={Extra400} exact /> */}
 
-      {path.includes("/simple") && !path.includes("/boxed_layout") && (
+      {path.includes(`/simple`) && !path.includes("/boxed_layout") && (
         <Search />
       )}
 

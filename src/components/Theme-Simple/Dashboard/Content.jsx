@@ -43,7 +43,7 @@ const Content = () => {
     </React.Fragment>
   );
 
-  const [username,setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [refreshOne, setRefreshOne] = useState(false);
   const [projectUrl, setProjectUrl] = useState("");
   const [projectName, setProjectName] = useState("");
@@ -364,20 +364,20 @@ const Content = () => {
                     </div>
                   </div>
 
-                  <div class="col-xl-6 col-lg-6">
-                    <div class="d-flex justify-content-center align-items-center">
-                      <table class="table table-condensed table-hover">
+                  <div className="col-xl-6 col-lg-6">
+                    <div className="d-flex justify-content-center align-items-center">
+                      <table className="table table-condensed table-hover">
                         <thead>
                           <tr>
-                            <td class="font-montserrat all-caps fs-12 w-50">
+                            <td className="font-montserrat all-caps fs-12 w-50">
                               BUNDLE
                             </td>
-                            <td class="text-right hidden-lg"></td>
-                            <td class="text-right b-r b-dashed b-grey w-25">
-                              <span class="hint-text small">MIN VOLUME</span>
+                            <td className="text-right hidden-lg"></td>
+                            <td className="text-right b-r b-dashed b-grey w-25">
+                              <span className="hint-text small">MIN VOLUME</span>
                             </td>
-                            <td class="w-15">
-                              <span class="font-montserrat fs-12 w-50">
+                            <td className="w-15">
+                              <span className="font-montserrat fs-12 w-50">
                                 UNIT
                               </span>
                             </td>
@@ -386,17 +386,17 @@ const Content = () => {
                         <tbody>
                           {bundles.map((bundle) => (
                             <tr key={bundle.id}>
-                              <td class="font-montserrat all-caps fs-12 w-50">
+                              <td contenteditable="true" style={{ border: 'none', outline: 'none' }} className="font-montserrat all-caps fs-12 w-50">
                                 {bundle.name}
                               </td>
-                              <td class="text-right hidden-lg"></td>
-                              <td class="text-right b-r b-dashed b-grey w-25">
-                                <span class="hint-text small">
+                              <td className="text-right hidden-lg"></td>
+                              <td className="text-right b-r b-dashed b-grey w-25">
+                                <span className="hint-text small">
                                   {bundle.unitQuantity}
                                 </span>
                               </td>
-                              <td class="w-25">
-                                <span class="font-montserrat fs-18">
+                              <td className="w-25">
+                                <span className="font-montserrat fs-18">
                                   {bundle.amount}
                                 </span>
                               </td>
@@ -504,7 +504,7 @@ const Content = () => {
                   <table className="table table-condensed table-hover">
                     <tbody>
                       <tr>
-                        <td className=" fs-12">Purchase CODE #2345</td>
+                        <td className=" fs-12">Purchase CODE #23450</td>
                         <td className="text-right">
                           <span className="hint-text small">dewdrops</span>
                         </td>
