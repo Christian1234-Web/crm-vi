@@ -7,7 +7,7 @@ import { ValidatorForm } from "react-form-validator-core";
 import InputWithLabel from "../../Landing/InputWithLabel";
 import cellEditFactory from "react-bootstrap-table2-editor";
 import WithoutMsgValidation from "../../Landing/InputWithLabel";
-
+import { Link } from "react-router-dom";
 import PageBreadcrumb from "../../UIElements/Breadcrumb";
 import StickUpModal from "../Contact/StickUpModal";
 import "./style.css";
@@ -18,7 +18,7 @@ import DataTable from "../../Tables/DataTable";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import BootstrapTable from "react-bootstrap-table-next";
 import axios from "axios";
-import { ProgressOne } from "../../UIElements/ProgressAndActivity/Content";
+import { ProgressTwo } from "../../UIElements/ProgressAndActivity/Content";
 import plusSVG from "../../../assets/img/plus.svg";
 import { USER_NAME } from "../../../services/constants";
 import SSRStorage from '../../../services/storage';
@@ -74,7 +74,7 @@ const Content = () => {
   const [totalPrice, setTotalPrice] = useState("");
   const [waiting, setWaiting] = useState(false);
   const [refreshSix, setRefreshSix] = useState(false);
-
+  const [todo, setTodo] = useState(false);
 
   const fetchBundleList = useCallback(async (page) => {
     try {
@@ -107,6 +107,10 @@ const Content = () => {
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+  const handleCloseTodo = () => setTodo(false);
+  const handleShowTodo = () => setTodo(true);
+
+
 
   const customTotal = (from, to, size) => (
     <span className="react-bootstrap-table-pagination-total">
@@ -122,7 +126,6 @@ const Content = () => {
           `https://deda-crm-backend.herokuapp.com/unit/amount/calc?units=${amountInputed}`
         );
         const { result, ...meta } = rs.data;
-        console.log("heyyyyy", rs);
         setBundleName(rs.data.bundle.name);
         setBundleUnitPrice(rs.data.bundle.amount);
         setTotalPrice(rs.data.result);
@@ -136,13 +139,11 @@ const Content = () => {
   );
 
   const handleChange = (e) => {
-    e.preventDefault();
-    console.log(e.target.value);
-    if (Number(e.target.value) < 5000) {
+    if (Number(e) < 5000) {
       setWaiting(true);
     } else {
       setWaiting(false);
-      fetchSpecificBundle(Number(e.target.value));
+      fetchSpecificBundle(Number(e));
     }
     // setAmount(Number(e.target.value))
     // fetchSpecificBundle(Number(e.target.value))
@@ -160,6 +161,167 @@ const Content = () => {
                 className="pull-right"
                 style={{ cursor: "pointer" }}
                 onClick={() => handleClose()}
+              >
+                <i className="pg-icon">close</i>
+              </div>
+            </div>
+            <div className="modal-body">
+              <div>
+                <ValidatorForm
+                  instantValidate={true}
+                  onSubmit={handleFormSubmit}
+                >
+                  <h3 className="mw-80">Contemporary and unique</h3>
+                  <p className="mw-80 m-b-25">
+                    Want it to be more Descriptive and User-Friendly, We Made it
+                    possible, Use Separated Form Layouts Structure to
+                    Presentation your Form Fields.
+                  </p>
+
+                  <div className="form-group-attached">
+                    <div className="form-group form-group-default">
+                      <InputWithLabel
+                        label="Investor"
+                        onChange={(e) => setInvestor(e.target.value)}
+                        value={investor}
+                        type="text"
+                        className="form-control "
+                        icon="fa-info"
+                        required=""
+                      />
+                    </div>
+                    <div className="row clearfix">
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <WithoutMsgValidation
+                            onChange={(e) => setStartingDate(e.target.value)}
+                            name="startDate"
+                            type="text"
+                            value={startingDate}
+                            validators={["required"]}
+                            errorMessages={["This field is required"]}
+                            className={"form-control date"}
+                            label={"Starting date"}
+                            require="true"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            label="Deadline"
+                            onChange={(e) => setDeadline(e.target.value)}
+                            value={deadline}
+                            type="text"
+                            id="end-date"
+                            name="endDate"
+                            className="form-control date "
+                            required=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <WithoutMsgValidation
+                            onChange={(e) => setWebsite(e.target.value)}
+                            name="Website"
+                            value={website}
+                            validators={["required"]}
+                            errorMessages={["This field is required"]}
+                            className={"form-control"}
+                            label={"Website"}
+                            require="true"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default form-check-group d-flex align-items-center">
+                          <div className="form-check switch switch-lg success full-width right m-b-0">
+                            <input type="checkbox" id="switchSample" />
+                            <label htmlFor="switchSample">Availability</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <div className="form-group form-group-default input-group">
+                          <div className="form-input-group">
+                            <label>Budget</label>
+                            <input
+                              type="text"
+                              className="form-control usd"
+                              required=""
+                              aria-required="true"
+                            />
+                          </div>
+                          <div className="input-group-append ">
+                            <span className="input-group-text">USD</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="form-group form-group-default input-group">
+                          <div className="form-input-group">
+                            <label>Profit</label>
+                            <input type="text" className="form-control usd" />
+                          </div>
+                          <div className="input-group-append ">
+                            <span className="input-group-text">USD</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="form-group form-group-default input-group">
+                          <div className="form-input-group">
+                            <label>Revenue</label>
+                            <input type="text" className="form-control usd" />
+                          </div>
+                          <div className="input-group-append ">
+                            <span className="input-group-text">USD</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br />
+                  <div className="row">
+                    <div className="col-8">
+                      <div className="form-check primary m-t-0">
+                        <input type="checkbox" value="1" id="checkbox-agree" />
+                        <label htmlFor="checkbox-agree">
+                          I hereby certify that the information above is true
+                          and accurate
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-4">
+                      <button
+                        aria-label=""
+                        className="btn btn-primary pull-right"
+                        type="submit"
+                      >
+                        Create Droplet
+                      </button>
+                    </div>
+                  </div>
+                </ValidatorForm>
+              </div>
+            </div>
+          </div>
+        </div>
+      </StickUpModal>
+
+      <StickUpModal visible={todo} width={"600"} effect="fadeInUp">
+        <div className="modal-content-wrapper">
+          <div className="modal-content">
+            <div className="modal-top">
+              <div
+                className="pull-right"
+                style={{ cursor: "pointer" }}
+                onClick={() => handleCloseTodo()}
               >
                 <i className="pg-icon">close</i>
               </div>
@@ -404,59 +566,6 @@ const Content = () => {
                             </tr>
                           ))}
                         </tbody>
-                      
-                        {/* <thead
-                          style={{
-                            border: "1px solid #007be8k",
-                            backgroundColor: "#000",
-                            color: "white",
-                          }}
-                        >
-                          <tr>
-                            <td class="font-montserrat all-caps fs-12 w-25">
-                              VOLUME
-                            </td>
-                            <td class="text-right hidden-lg">BUNDLE</td>
-                            <td class="text-right b-r b-dashed b-grey w-25">
-                              UNIT PRICE
-                            </td>
-                            <td class="w-25">PRICE</td>
-                          </tr>
-                        </thead> */}
-                        {/* <thead>
-                          <tr>
-                            <td class="font-montserrat all-caps fs-12 w-50">
-                              <input
-                                type="text"
-                                class="input-sm w-50"
-                                onChange={(e) => handleChange(e)}
-                                className='form-control input-sm w-50'
-                                style={{padding:"0px"}}
-                              />
-                            </td>
-                            <td class="text-right hidden-lg">
-                              <span class="font-montserrat fs-18">
-                                {waiting ? <ProgressOne /> : bundleName}
-                              </span>
-                            </td>
-                            <td class="text-right b-r b-dashed b-grey w-25">
-                              <span class="font-montserrat fs-18 pull-right">
-                                {waiting ? (
-                                  <div>
-                                    <ProgressOne />
-                                  </div>
-                                ) : (
-                                  bundleUnitPrice
-                                )}
-                              </span>
-                            </td>
-                            <td class="w-25">
-                              <span class="font-montserrat fs-18">
-                                {waiting ? <ProgressOne /> : totalPrice}
-                              </span>
-                            </td>
-                          </tr>
-                        </thead> */}
                       </table>
                     </div>
 
@@ -467,7 +576,7 @@ const Content = () => {
                             <td className="font-montserrat all-caps fs-12 w-25">
                               VOLUME
                             </td>
-                            <td className="font-montserrat all-caps fs-12" style={{width:'38%'}}>BUNDLE</td>
+                            <td className="font-montserrat all-caps fs-12" style={{ width: '38%' }}>BUNDLE</td>
                             <td className="text-right b-r b-dashed b-grey w-25">
                               <span className="hint-text small">UNIT PRICE</span>
                             </td>
@@ -482,22 +591,28 @@ const Content = () => {
                           <tr>
                             <td
                               contenteditable="true" style={{ outline: 'none' }}
+                              onInput={(e) => handleChange(e.currentTarget.textContent)}
                               className="font-montserrat all-caps fs-12 w-25">
                               0
                             </td>
-                            <td className="hidden-lg" style={{width:'37%'}}>
+                            <td className="hidden-lg" style={{ width: '37%' }}>
                               <span className="hint-text small">
-                                waiting...
+                                {waiting ? <ProgressTwo /> : bundleName}
                               </span>
                             </td>
                             <td className="text-right b-r b-dashed b-grey w-25">
                               <span className="hint-text small">
-                                waiting...
-                              </span>
+                                {waiting ? (
+                                  <div>
+                                    <ProgressTwo />
+                                  </div>
+                                ) : (
+                                  bundleUnitPrice
+                                )}                              </span>
                             </td>
                             <td className="text-right b-r b-dashed b-grey w-25">
                               <span className="hint-text small">
-                                waiting...
+                                {waiting ? <ProgressTwo /> : totalPrice}
                               </span>
                             </td>
                           </tr>
@@ -839,10 +954,10 @@ const Content = () => {
               </div>
 
               <div class=" card   no-margin widget-loader-circle todolist-widget pending-projects-widget">
-                <div class="card-header ">
+                <div class="card-header" style={{ background: 'black', color: '#fff' }}>
                   <div class="card-title">
                     <span class="d-flex align-items-center font-montserrat all-caps">
-                      Recent projects <i class="pg-icon">chevron_right</i>
+                      Your Organizer <i class="pg-icon">chevron_right</i>
                     </span>
                   </div>
                   <div class="card-controls">
@@ -1031,13 +1146,13 @@ const Content = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col-2 text-center">
-                              <a
-                                href="javascript:void(0);"
+                            <div className="col-2 text-center" onClick={handleShowTodo}>
+                              <Link
+                                to='#'
                                 className="block m-t-15"
                               >
                                 <img src={plusSVG} />
-                              </a>
+                              </Link>
                             </div>
                           </div>
                         </div>
