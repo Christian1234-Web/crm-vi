@@ -386,7 +386,8 @@ const Content = () => {
                         <tbody>
                           {bundles.map((bundle) => (
                             <tr key={bundle.id}>
-                              <td contenteditable="true" style={{ border: 'none', outline: 'none' }} className="font-montserrat all-caps fs-12 w-50">
+                              <td
+                                className="font-montserrat all-caps fs-12 w-50">
                                 {bundle.name}
                               </td>
                               <td className="text-right hidden-lg"></td>
@@ -403,7 +404,7 @@ const Content = () => {
                             </tr>
                           ))}
                         </tbody>
-                        <br />
+                      
                         {/* <thead
                           style={{
                             border: "1px solid #007be8k",
@@ -456,6 +457,51 @@ const Content = () => {
                             </td>
                           </tr>
                         </thead> */}
+                      </table>
+                    </div>
+
+                    <div className="d-flex justify-content-center align-items-center">
+                      <table className="table table-condensed table-hover">
+                        <thead>
+                          <tr>
+                            <td className="font-montserrat all-caps fs-12 w-25">
+                              VOLUME
+                            </td>
+                            <td className="font-montserrat all-caps fs-12" style={{width:'37%'}}>BUNDLE</td>
+                            <td className="text-right b-r b-dashed b-grey w-25">
+                              <span className="hint-text small">UNIT PRICE</span>
+                            </td>
+                            <td className="w-15">
+                              <span className="font-montserrat fs-12 w-25">
+                                PRICE
+                              </span>
+                            </td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td
+                              contenteditable="true" style={{ outline: 'none' }}
+                              className="font-montserrat all-caps fs-12 w-25">
+                              0
+                            </td>
+                            <td className="hidden-lg" style={{width:'37%'}}>
+                              <span className="hint-text small">
+                                waiting...
+                              </span>
+                            </td>
+                            <td className="text-right b-r b-dashed b-grey w-25">
+                              <span className="hint-text small">
+                                waiting...
+                              </span>
+                            </td>
+                            <td className="text-right b-r b-dashed b-grey w-25">
+                              <span className="hint-text small">
+                                waiting...
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
                       </table>
                     </div>
                   </div>
@@ -617,7 +663,7 @@ const Content = () => {
                       <div className="row-xs-height ">
                         <div className="col-xs-height col-top relative">
                           <div className="row full-height">
-                            <div className="col-sm-6">
+                            <div className="col-sm-8">
                               <div className="p-l-20 full-height d-flex flex-column justify-content-between">
                                 <h3 className="no-margin p-b-5">$14,000</h3>
                                 <p className="small m-t-5 m-b-20">
