@@ -577,13 +577,13 @@ const Content = () => {
                               VOLUME
                             </td>
                             <td className="font-montserrat all-caps fs-12" style={{ width: '38%' }}>BUNDLE</td>
-                            <td className="text-right b-r b-dashed b-grey w-25">
-                              <span className="hint-text small">UNIT PRICE</span>
-                            </td>
                             <td className="w-15">
                               <span className="font-montserrat fs-12 w-25">
                                 PRICE
                               </span>
+                            </td>
+                            <td className="text-right b-r b-dashed b-grey w-25">
+                              <span className="hint-text small">UNIT PRICE</span>
                             </td>
                           </tr>
                         </thead>
@@ -602,17 +602,18 @@ const Content = () => {
                             </td>
                             <td className="text-right b-r b-dashed b-grey w-25">
                               <span className="hint-text small">
+                                {waiting ? <ProgressTwo /> : totalPrice}
+                              </span>
+                            </td>
+                            <td className="text-right b-r b-dashed b-grey w-25">
+                              <span className="hint-text small">
                                 {waiting ? (
                                   <div>
                                     <ProgressTwo />
                                   </div>
                                 ) : (
                                   bundleUnitPrice
-                                )}                              </span>
-                            </td>
-                            <td className="text-right b-r b-dashed b-grey w-25">
-                              <span className="hint-text small">
-                                {waiting ? <ProgressTwo /> : totalPrice}
+                                )}
                               </span>
                             </td>
                           </tr>
@@ -780,7 +781,7 @@ const Content = () => {
                           <div className="row full-height">
                             <div className="col-sm-8">
                               <div className="p-l-20 full-height d-flex flex-column justify-content-between">
-                                <h3 className="no-margin p-b-5">$14,000</h3>
+                                <h3 className="no-margin p-b-5">14,000</h3>
                                 <p className="small m-t-5 m-b-20">
                                   <span className="label label-white hint-text font-montserrat m-r-5">
                                     54 days remaining
@@ -996,7 +997,7 @@ const Content = () => {
                         role="tab"
                         aria-expanded="true"
                       >
-                        Pending
+                        Todo's
                       </a>
                     </li>
                     <li className="nav-item">

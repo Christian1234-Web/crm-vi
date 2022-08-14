@@ -69,7 +69,7 @@ const content = () => {
         // console.log(res);
         if (res.success === true) {
           storage.setItem(TOKEN_COOKIE, res.accessToken);
-          storage.setItem(USER_NAME, res.result.userType);
+          storage.setItem(USER_NAME, res.result.username);
           location.href = '/simple/dashboard';
         } else {
           setLoading(false);
