@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext,useCallback } from "react";
 import { Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -8,10 +8,12 @@ import EmailBody from "./EmailBody";
 import EmailGroup from "./EmailGroup";
 import { Store } from "../../context/store";
 import "./style.css";
-
 import allMessages from "./messages.json";
 import { request } from "../../services/utilities";
-import { useCallback } from "react";
+import { TOKEN_COOKIE ,USER_NAME} from "../../services/constants";
+import SSRStorage from '../../services/storage';
+const storage = new SSRStorage(); 
+
 
 const content = ({ toggleHeaderPopup }) => {
   const store = useContext(Store);
@@ -22,9 +24,12 @@ const content = ({ toggleHeaderPopup }) => {
 
 
   const fetchAllSmsMessages = useCallback(async () => {
-    const url = `message/all?page=1&limit=10`;
+   const user = await storage.getItem(USER_NAME);
+
+    const url = `message/all?userId=${user.id}&page=1&limit=10`;
     try {
       const rs = await request(url, 'GET', true);
+      console.log(rs);
       setSms_messages(rs.result);
       setTotal_sms(rs.result.length);
     }

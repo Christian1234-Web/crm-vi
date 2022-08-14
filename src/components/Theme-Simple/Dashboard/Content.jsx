@@ -80,7 +80,7 @@ const Content = () => {
     try {
       setLoading(true);
       const user = await storage.getItem(USER_NAME);
-      setUsername(user)
+      setUsername(user.username);
       const rs = await axios.get(
         `https://deda-crm-backend.herokuapp.com/unit/all`
       );
