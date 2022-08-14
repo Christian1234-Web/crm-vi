@@ -577,12 +577,10 @@ const Content = () => {
                               VOLUME
                             </td>
                             <td className="font-montserrat all-caps fs-12" style={{ width: '38%' }}>BUNDLE</td>
-                            <td className="w-15">
-                              <span className="font-montserrat fs-12 w-25">
-                                PRICE
-                              </span>
-                            </td>
                             <td className="text-right b-r b-dashed b-grey w-25">
+                              <span className="hint-text small"> PRICE</span>
+                            </td>
+                            <td className="text-right">
                               <span className="hint-text small">UNIT PRICE</span>
                             </td>
                           </tr>
@@ -605,7 +603,7 @@ const Content = () => {
                                 {waiting ? <ProgressTwo /> : totalPrice}
                               </span>
                             </td>
-                            <td className="text-right b-r b-dashed b-grey w-25">
+                            <td className="text-right b-r b-dashed b-grey" >
                               <span className="hint-text small">
                                 {waiting ? (
                                   <div>
