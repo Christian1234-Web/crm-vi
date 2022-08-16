@@ -11,8 +11,8 @@ import { ProgressOne } from "../UIElements/ProgressAndActivity/Content";
 import Alert from '../UIElements/Alert';
 import { TOKEN_COOKIE ,USER_NAME} from "../../services/constants";
 import SSRStorage from '../../services/storage';
-const storage = new SSRStorage(); 
-
+import axios from "axios";
+const storage = new SSRStorage();
 
 
 const content = () => {
@@ -21,16 +21,17 @@ const content = () => {
   const [username, setUsername] = useState('');
   const [note, setNote] = useState("Don't");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState();
+  const [usernameAvailability, setUsernameAvailability] = useState(null);
   const [error_login, setError_login] = useState();
   const [loading, setLoading] = useState(false);
 
-  const container_height = '135px';
-
   const handleRegister = async () => {
     setLoading(true);
-    const data = { userName: username, email, password };
+    if(password === confirmPassword){
+      const data = { userName: username, email, password };
     console.log(data);
     const url = `https://deda-crm-backend.herokuapp.com/accounts/register`;
     fetch(url, {
@@ -51,6 +52,9 @@ const content = () => {
           setError(true);
         }
       })
+    } else {
+      setError("true");
+    }
 
   };
 
@@ -88,6 +92,21 @@ const content = () => {
     form_register.current.style.display = ''
   }
 
+  const checkAvailableUsername = async (e) => {
+    try {
+      setUsername(e.target.value)
+      const rs = await axios.get(
+        `https://deda-crm-backend.herokuapp.com/accounts/username/check?u=${username}`
+      );
+      setUsernameAvailability(rs.data.success)
+      
+    } catch (err) {
+      console.log("confirm availability of username", err);
+      setLoading(false);
+    }
+
+  }
+
   return (
 
 
@@ -122,9 +141,10 @@ const content = () => {
 
                     >
                       <div className="row" >
-                        <div className="col-md-12">
+                        <div className="col-md-12 d-flex justify-content-center ">
                           <TextValidator
-                            onChange={(e) => setUsername(e.target.value)}
+                            // onChange={(e) => setUsername(e.target.value)}
+                            onChange={(e) => checkAvailableUsername(e)}
                             name="password"
                             value={username}
                             type="text"
@@ -132,8 +152,9 @@ const content = () => {
                             errorMessages={["This field is required"]}
                             className={"form-control"}
                             label={"Username"}
-                            placeholder="Minimum of 4 characters."
+                            placeholder="Minimum of 2 characters."
                           />
+                          {/* {usernameAvailability ?  <i className="fa fa-check-circle"></i> : <i class="fa fa-close"></i>   } */}
                         </div>
                       </div>
                       <div className="row">
@@ -152,9 +173,9 @@ const content = () => {
                         </div>
                         <div className="col-md-6">
                           <TextValidator
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             name="password"
-                            value={password}
+                            value={confirmPassword}
                             type="password"
                             validators={["required"]}
                             errorMessages={["This field is required"]}
