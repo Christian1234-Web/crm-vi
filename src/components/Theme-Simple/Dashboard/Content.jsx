@@ -54,7 +54,7 @@ const Content = () => {
   const [projectName, setProjectName] = useState("");
   const [startingDate, setStartingDate] = useState("");
   const [website, setWebsite] = useState("");
-  const [classs,setClasss] = useState('');
+  const [classs, setClasss] = useState('');
   const [show, setShow] = useState(false);
   const [dataThree] = useState(tableThreeData);
   const [columnsThree] = useState(tableThreeColumns);
@@ -189,8 +189,16 @@ const Content = () => {
     // setAmount(Number(e.target.value))
     // fetchSpecificBundle(Number(e.target.value))
   };
-  const checkInput = () => {
-    
+  const checkInput = (i) => {
+    // console.log(i);
+    let input = document.querySelectorAll('.strike_line');
+    let todo = document.querySelectorAll('.subject_');
+    if (input[i].checked === true) {
+      let x = todo[i].classList.add('strikethrough');
+    } else {
+      let x = todo[i].classList.remove('strikethrough');
+    }
+    // console.log(todo[i]);
   }
   // const [flipBarNotifyArray, setFlipBarNotifyArray] = useState([]);
   useEffect(() => {
@@ -870,56 +878,31 @@ const Content = () => {
                         </ul>
                         <div className="task-list p-t-0 p-r-20 p-b-20 p-l-20 clearfix flex-1">
                           {/* completed */}
-                          {todos.map(e => {
+                          {todos.map((e, i) => {
                             return (
-                              // <div key={e.id} className="task clearfix row ">
-                              //   <div className="task-list-title col-10 justify-content-between">
-                              //     <a
-                              //       href="javascript:void(0);"
-                              //       className="text-color strikethrough"
-                              //       data-task="name"
-                              //     >
-                              //       {e.subject}
-                              //     </a>
-                              //     <i className="fs-14 pg-close hidden"></i>
-                              //   </div>
-                              //   <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
-                              //     <input
-                              //       type="checkbox"
-                              //       value="1"
-                              //       id="todocheckbox"
-                              //       data-toggler="task"
-                              //       className="hidden"
-                              //       onChange={() =>
-                              //         setCheckedOption((prevState) => !prevState)
-                              //       }
-                              //       checked={checkedOption}
-                              //     />
-                              //     <label
-                              //       htmlFor="todocheckbox"
-                              //       className=" no-margin no-padding absolute"
-                              //     ></label>
-                              //   </div>
-                              // </div>
                               <div key={e.id} className="task clearfix row">
                                 <div className="task-list-title col-10 justify-content-between">
                                   <a
                                     href="javascript:void(0);"
-                                    className={`text-color ${classs}`}
+                                    className={`text-color subject_ `}
                                     data-task="name"
                                   >
                                     {e.subject}
                                   </a>
                                   <i className="fs-14 pg-close hidden"></i>
                                 </div>
-                                <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
+                                {/* <input type='checkbox' onClick={() => checkInput(i) }  className="strike_line"
+                                /> */}
+                                <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center"
+                                  onClick={() => checkInput(i)}
+                                >
                                   <input
                                     type="checkbox"
                                     value="1"
                                     id="todocheck4"
                                     data-toggler="task"
-                                    className="hidden"
-                                    onClick={() => setClasss('strikethrough')}
+                                    className="hidden strike_line"
+
                                   />
                                   <label
                                     htmlFor="todocheck4"
