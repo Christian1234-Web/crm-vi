@@ -24,12 +24,9 @@ const content = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState();
+  const [usernameAvailability, setUsernameAvailability] = useState(null);
   const [error_login, setError_login] = useState();
   const [loading, setLoading] = useState(false);
-
-  const container_height = '135px';
-
-  console.log('aaaaaa', username)
 
   const handleRegister = async () => {
     setLoading(true);
@@ -56,7 +53,7 @@ const content = () => {
         }
       })
     } else {
-      
+      setError("true");
     }
 
   };
@@ -96,12 +93,12 @@ const content = () => {
   }
 
   const checkAvailableUsername = async (e) => {
-    setUsername(e.target.value)
     try {
+      setUsername(e.target.value)
       const rs = await axios.get(
-        `https://deda-crm-backend.herokuapp.com/username/check?u=name`
+        `https://deda-crm-backend.herokuapp.com/accounts/username/check?u=${username}`
       );
-      console.log('heyyyyyy', rs)
+      setUsernameAvailability(rs.data.success)
       
     } catch (err) {
       console.log("confirm availability of username", err);
@@ -144,7 +141,7 @@ const content = () => {
 
                     >
                       <div className="row" >
-                        <div className="col-md-12">
+                        <div className="col-md-12 d-flex justify-content-center ">
                           <TextValidator
                             // onChange={(e) => setUsername(e.target.value)}
                             onChange={(e) => checkAvailableUsername(e)}
@@ -155,8 +152,9 @@ const content = () => {
                             errorMessages={["This field is required"]}
                             className={"form-control"}
                             label={"Username"}
-                            placeholder="Minimum of 4 characters."
+                            placeholder="Minimum of 2 characters."
                           />
+                          {/* {usernameAvailability ?  <i className="fa fa-check-circle"></i> : <i class="fa fa-close"></i>   } */}
                         </div>
                       </div>
                       <div className="row">

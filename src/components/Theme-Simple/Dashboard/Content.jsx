@@ -54,6 +54,20 @@ const Content = () => {
   const [columnsThree] = useState(tableThreeColumns);
   const [refreshEight, setRefreshEight] = useState(false);
   const [checkedOption, setCheckedOption] = useState(true);
+  const [stickUpVisible, setStickUpVisible] = useState(false);
+  const [stickUpModalSize, setStickUpModalSize] = useState([
+    false,
+    true,
+    false,
+  ]);
+  const [stickUpWidth, setStickUpWidth] = useState("lg");
+  useEffect(() => {
+    if (stickUpModalSize[0]) setStickUpWidth("lg");
+    if (stickUpModalSize[1]) setStickUpWidth("md");
+    if (stickUpModalSize[2]) setStickUpWidth("sm");
+  }, [stickUpModalSize]);
+
+
 
 
   const [project, setProject] = useState("");
@@ -80,6 +94,7 @@ const Content = () => {
     try {
       setLoading(true);
       const user = await storage.getItem(USER_NAME);
+      console.log('hello', user)
       setUsername(user.username);
       const rs = await axios.get(
         `https://deda-crm-backend.herokuapp.com/unit/all`
@@ -107,6 +122,7 @@ const Content = () => {
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+  const handleCloseForm = () => setStickUpVisible(false);
   const handleCloseTodo = () => setTodo(false);
   const handleShowTodo = () => setTodo(true);
 
@@ -151,9 +167,183 @@ const Content = () => {
 
   return (
     <div className="page-content-wrapper ">
+      {/* REGISTRATION MODAL */}
+      <StickUpModal 
+      visible={stickUpVisible}
+      className="stickUpModalClass"
+      width={"600"} 
+      >
+        <div className="modal-content-wrapper">
+          <div className="modal-content">
+            <div className="modal-top">
+              <div
+                className="pull-right"
+                style={{ cursor: "pointer" }}
+                onClick={() => handleCloseForm()}
+              >
+                <i className="pg-icon">close</i>
+              </div>
+            </div>
+            <div className="modal-body">
+              <div>
+                <ValidatorForm
+                  instantValidate={true}
+                  onSubmit={handleFormSubmit}
+                >
+                  <h3 className="mw-80">Contemporary and unique</h3>
+                  <p className="mw-80 m-b-25">
+                    Want it to be more Descriptive and User-Friendly, We Made it
+                    possible, Use Separated Form Layouts Structure to
+                    Presentation your Form Fields.
+                  </p>
+
+                  <div className="form-group-attached">
+                  <div className="row clearfix">
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <WithoutMsgValidation
+                            onChange={(e) => setStartingDate(e.target.value)}
+                            name="startDate"
+                            type="text"
+                            value={startingDate}
+                            validators={["required"]}
+                            errorMessages={["This field is required"]}
+                            className={"form-control date"}
+                            label={"username"}
+                            require="true"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            label="email"
+                            onChange={(e) => setDeadline(e.target.value)}
+                            value={deadline}
+                            type="text"
+                            id="end-date"
+                            name="endDate"
+                            className="form-control date "
+                            required=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="form-group form-group-default">
+                      <InputWithLabel
+                        label="Name of Organization"
+                        onChange={(e) => setInvestor(e.target.value)}
+                        value={investor}
+                        type="text"
+                        className="form-control "
+                        icon="fa-info"
+                        required=""
+                      />
+                    </div>
+                    <div className="row clearfix">
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <WithoutMsgValidation
+                            onChange={(e) => setStartingDate(e.target.value)}
+                            name="startDate"
+                            type="text"
+                            value={startingDate}
+                            validators={["required"]}
+                            errorMessages={["This field is required"]}
+                            className={"form-control date"}
+                            label={"First Name"}
+                            require="true"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            label="Last Name"
+                            onChange={(e) => setDeadline(e.target.value)}
+                            value={deadline}
+                            type="text"
+                            id="end-date"
+                            name="endDate"
+                            className="form-control date "
+                            required=""
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            label="Phone Number"
+                            onChange={(e) => setDeadline(e.target.value)}
+                            value={deadline}
+                            type="text"
+                            id="end-date"
+                            name="endDate"
+                            className="form-control date "
+                            required=""
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            label="Whatsapp Number"
+                            onChange={(e) => setDeadline(e.target.value)}
+                            value={deadline}
+                            type="text"
+                            id="end-date"
+                            name="endDate"
+                            className="form-control date "
+                            required=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="form-group form-group-default">
+                      <InputWithLabel
+                        label="Address"
+                        onChange={(e) => setInvestor(e.target.value)}
+                        value={investor}
+                        type="text"
+                        className="form-control "
+                        required=""
+                      />
+                    </div>
+                    
+                  </div>
+                  <br />
+                  <div className="row">
+                    <div className="col-8">
+                      <div className="form-check primary m-t-0">
+                        <input type="checkbox" value="1" id="checkbox-agree" />
+                        <label htmlFor="checkbox-agree">
+                          I hereby certify that the information above is true
+                          and accurate
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-4">
+                      <button
+                        aria-label=""
+                        className="btn btn-primary pull-right"
+                        type="submit"
+                      >
+                        Create Droplet
+                      </button>
+                    </div>
+                  </div>
+                </ValidatorForm>
+              </div>
+            </div>
+          </div>
+        </div>
+      </StickUpModal>
+
       {/* START PAGE CONTENT */}
 
-      <StickUpModal visible={show} width={"600"} effect="fadeInUp">
+      <StickUpModal visible={show} width={"600"} effect="fadeInUp" 
+          className="stickUpModalClass"
+      >
         <div className="modal-content-wrapper">
           <div className="modal-content">
             <div className="modal-top">
@@ -494,7 +684,7 @@ const Content = () => {
                         <div className="card-title">Getting started</div>
                       </div>
                       <div className="card-body">
-                        <h1>Bonjour! <span class="text-success text-capitalize">{username}</span></h1>
+                        <h1>Bonjour! <span class="text-success text-capitalize" onClick={() => setStickUpVisible(true)}>{username}</span></h1>
                         <p>
                           As always, in keeping with our policy of making UX
                           easier and more user-friendly, we have customized this
