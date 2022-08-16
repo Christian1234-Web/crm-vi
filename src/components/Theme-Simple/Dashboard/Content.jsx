@@ -6,7 +6,10 @@ import { ValidatorForm } from "react-form-validator-core";
 //import ui widgets component
 import InputWithLabel from "../../Landing/InputWithLabel";
 import cellEditFactory from "react-bootstrap-table2-editor";
-import WithoutMsgValidation from "../../Landing/InputWithLabel";
+import Alert from '../../UIElements/Alert'
+import FlipBarNotifyModule from "../../UIElements/Notification/FlipBarNotification/FlipBarNotifyModule";
+
+import TextValidator from "./FormValidation";
 import { Link } from "react-router-dom";
 import PageBreadcrumb from "../../UIElements/Breadcrumb";
 import StickUpModal from "../Contact/StickUpModal";
@@ -22,6 +25,8 @@ import { ProgressTwo } from "../../UIElements/ProgressAndActivity/Content";
 import plusSVG from "../../../assets/img/plus.svg";
 import { USER_NAME } from "../../../services/constants";
 import SSRStorage from '../../../services/storage';
+import { setIn } from "formik";
+import { request } from "../../../services/utilities";
 const storage = new SSRStorage();
 const tableThreeData = [
   {
@@ -49,6 +54,7 @@ const Content = () => {
   const [projectName, setProjectName] = useState("");
   const [startingDate, setStartingDate] = useState("");
   const [website, setWebsite] = useState("");
+  const [classs,setClasss] = useState('');
   const [show, setShow] = useState(false);
   const [dataThree] = useState(tableThreeData);
   const [columnsThree] = useState(tableThreeColumns);
@@ -75,7 +81,11 @@ const Content = () => {
   const [deadline, setDeadline] = useState("");
 
   const [loading, setLoading] = useState(true);
+  const [loading_todo, setLoading_todo] = useState(false);
+  const [error_todo, setError_todo] = useState(null);
+
   const [bundles, setBundles] = useState([]);
+  const [todos, setTodos] = useState([]);
   const [meta, setMeta] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -89,6 +99,16 @@ const Content = () => {
   const [waiting, setWaiting] = useState(false);
   const [refreshSix, setRefreshSix] = useState(false);
   const [todo, setTodo] = useState(false);
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const d = new Date();
+  const flipBarNotifyArray = [{ type: 'success', desc: 'Your Todo has been created' }];
+
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const handleCloseTodo = () => setTodo(false);
+  const handleShowTodo = () => setTodo(true);
+
+
 
   const fetchBundleList = useCallback(async (page) => {
     try {
@@ -110,29 +130,47 @@ const Content = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (loading) {
-      fetchBundleList();
+  const fetchTodo = useCallback(async () => {
+    const date = new Date().toLocaleDateString();
+    const url = `todo?page=1&limit=10&term=&date=${date}`;
+    try {
+      const rs = await request(url, 'GET', true);
+      setTodos(rs.result);
     }
-  }, [fetchBundleList, loading]);
+    catch (err) {
+      console.log(err);
+    }
+  }, []);
 
-  let handleFormSubmit = () => {
-    //Call this function on form submit with no errors
+  const saveTodo = async () => {
+    setLoading_todo(true);
+    const user = await storage.getItem(USER_NAME);
+    const data = [{ date: deadline, description: startDate, subject: investor }];
+    const url = `todo/add?userId=${user.id}`
+    console.log(data);
+    try {
+      const rs = await request(url, 'POST', true, data);
+      setLoading_todo(false);
+      // console.log(rs);
+      if (rs.success === false) {
+        setError_todo(true);
+      } else {
+        handleCloseTodo();
+        setError_todo(false);
+      }
+    }
+    catch (err) {
+      setLoading_todo(false);
+      setError_todo(true);
+      console.log(err);
+
+    }
   };
 
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
-  const handleCloseForm = () => setStickUpVisible(false);
-  const handleCloseTodo = () => setTodo(false);
-  const handleShowTodo = () => setTodo(true);
 
 
 
-  const customTotal = (from, to, size) => (
-    <span className="react-bootstrap-table-pagination-total">
-      Showing {from} to {to} of {size} entries
-    </span>
-  );
+
 
   const fetchSpecificBundle = useCallback(
     async (amountInputed) => {
@@ -164,7 +202,22 @@ const Content = () => {
     // setAmount(Number(e.target.value))
     // fetchSpecificBundle(Number(e.target.value))
   };
+  const checkInput = () => {
+    
+  }
+  // const [flipBarNotifyArray, setFlipBarNotifyArray] = useState([]);
+  useEffect(() => {
+    if (loading) {
+      fetchBundleList();
+      fetchTodo();
+    }
+  }, [fetchBundleList, fetchTodo, loading]);
 
+  const customTotal = (from, to, size) => (
+    <span className="react-bootstrap-table-pagination-total">
+      Showing {from} to {to} of {size} entries
+    </span>
+  );
   return (
     <div className="page-content-wrapper ">
       {/* REGISTRATION MODAL */}
@@ -341,6 +394,7 @@ const Content = () => {
 
       {/* START PAGE CONTENT */}
 
+
       <StickUpModal visible={show} width={"600"} effect="fadeInUp" 
           className="stickUpModalClass"
       >
@@ -503,6 +557,11 @@ const Content = () => {
           </div>
         </div>
       </StickUpModal>
+      {error_todo === false ? <FlipBarNotifyModule
+        notifications={flipBarNotifyArray}
+        position={'top-right'}
+        style={{ top: "59px" }}
+      /> : ''}
 
       <StickUpModal visible={todo} width={"600"} effect="fadeInUp">
         <div className="modal-content-wrapper">
@@ -517,136 +576,82 @@ const Content = () => {
               </div>
             </div>
             <div className="modal-body">
+              {loading_todo ? <div className="pull-right"><ProgressTwo /></div> : ''}
+
+
               <div>
                 <ValidatorForm
                   instantValidate={true}
-                  onSubmit={handleFormSubmit}
+                  onSubmit={saveTodo}
                 >
-                  <h3 className="mw-80">Contemporary and unique</h3>
-                  <p className="mw-80 m-b-25">
-                    Want it to be more Descriptive and User-Friendly, We Made it
-                    possible, Use Separated Form Layouts Structure to
-                    Presentation your Form Fields.
-                  </p>
+                  {error_todo === true ? <Alert type="danger">
+                    <strong>Error: </strong>Failed to save todo please try again later
+                    <button
+                      aria-label=""
+                      className="close"
+                      data-dismiss="alert"
+                    ></button>
+                  </Alert> : ''}
+                  <h3 className="mw-80">Todo</h3>
 
-                  <div className="form-group-attached">
-                    <div className="form-group form-group-default">
-                      <InputWithLabel
-                        label="Investor"
-                        onChange={(e) => setInvestor(e.target.value)}
-                        value={investor}
-                        type="text"
-                        className="form-control "
-                        icon="fa-info"
-                        required=""
-                      />
-                    </div>
-                    <div className="row clearfix">
-                      <div className="col-md-6">
-                        <div className="form-group form-group-default">
-                          <WithoutMsgValidation
-                            onChange={(e) => setStartingDate(e.target.value)}
-                            name="startDate"
-                            type="text"
-                            value={startingDate}
-                            validators={["required"]}
-                            errorMessages={["This field is required"]}
-                            className={"form-control date"}
-                            label={"Starting date"}
-                            require="true"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group form-group-default">
-                          <InputWithLabel
-                            label="Deadline"
-                            onChange={(e) => setDeadline(e.target.value)}
-                            value={deadline}
-                            type="text"
-                            id="end-date"
-                            name="endDate"
-                            className="form-control date "
-                            required=""
-                          />
-                        </div>
-                      </div>
-                    </div>
+                  <div className="">
                     <div className="row">
                       <div className="col-md-6">
-                        <div className="form-group form-group-default">
-                          <WithoutMsgValidation
-                            onChange={(e) => setWebsite(e.target.value)}
-                            name="Website"
-                            value={website}
-                            validators={["required"]}
-                            errorMessages={["This field is required"]}
-                            className={"form-control"}
-                            label={"Website"}
-                            require="true"
-                          />
-                        </div>
+                        <TextValidator
+                          onChange={(e) => setInvestor(e.target.value)}
+                          name="subject"
+                          value={investor}
+                          type="text"
+                          validators={["required", "maxStringLength:22"]}
+                          errorMessages={["This field is required", "Maximum of 22 characters"]}
+                          className={"form-control"}
+                          label={"Subject"}
+                          placeholder="Maximum of 22 characters"
+                        />
                       </div>
                       <div className="col-md-6">
-                        <div className="form-group form-group-default form-check-group d-flex align-items-center">
-                          <div className="form-check switch switch-lg success full-width right m-b-0">
-                            <input type="checkbox" id="switchSample" />
-                            <label htmlFor="switchSample">Availability</label>
-                          </div>
-                        </div>
+                        <TextValidator
+                          onChange={(e) => setDeadline(e.target.value)}
+                          name="date"
+                          value={deadline}
+                          type="date"
+                          validators={["required"]}
+                          errorMessages={["This field is required"]}
+                          className={"form-control"}
+                          label={"Date"}
+                          placeholder="Maximum of 22 characters"
+                        />
                       </div>
                     </div>
+
+
                     <div className="row">
-                      <div className="col-md-4">
-                        <div className="form-group form-group-default input-group">
-                          <div className="form-input-group">
-                            <label>Budget</label>
-                            <input
-                              type="text"
-                              className="form-control usd"
-                              required=""
-                              aria-required="true"
-                            />
-                          </div>
-                          <div className="input-group-append ">
-                            <span className="input-group-text">USD</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="form-group form-group-default input-group">
-                          <div className="form-input-group">
-                            <label>Profit</label>
-                            <input type="text" className="form-control usd" />
-                          </div>
-                          <div className="input-group-append ">
-                            <span className="input-group-text">USD</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="form-group form-group-default input-group">
-                          <div className="form-input-group">
-                            <label>Revenue</label>
-                            <input type="text" className="form-control usd" />
-                          </div>
-                          <div className="input-group-append ">
-                            <span className="input-group-text">USD</span>
-                          </div>
-                        </div>
+                      <div className="col-md-12">
+                        <TextValidator
+                          onChange={(e) => setStartDate(e.target.value)}
+                          name="description"
+                          value={startDate}
+                          type="text"
+                          validators={["required", "maxStringLength:22"]}
+                          errorMessages={["This field is required", "Maximum of 22 characters"]}
+                          className={"form-control"}
+                          label={"Description"}
+                          placeholder="Maximum of 22 characters"
+                        />
                       </div>
                     </div>
+
                   </div>
                   <br />
                   <div className="row">
                     <div className="col-8">
-                      <div className="form-check primary m-t-0">
-                        <input type="checkbox" value="1" id="checkbox-agree" />
+                      {/* <div className="form-check primary m-t-0">
+                        <input type="checkbox" id="checkbox-agree" />
                         <label htmlFor="checkbox-agree">
                           I hereby certify that the information above is true
                           and accurate
                         </label>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="col-4">
                       <button
@@ -654,7 +659,7 @@ const Content = () => {
                         className="btn btn-primary pull-right"
                         type="submit"
                       >
-                        Create Droplet
+                        Save
                       </button>
                     </div>
                   </div>
@@ -771,7 +776,7 @@ const Content = () => {
                               <span className="hint-text small"> PRICE</span>
                             </td>
                             <td className="text-right">
-                              <span className="hint-text small">UNIT PRICE</span>
+                              <span className="hint-text small">UNIT</span>
                             </td>
                           </tr>
                         </thead>
@@ -784,7 +789,7 @@ const Content = () => {
                               0
                             </td>
                             <td className="hidden-lg" style={{ width: '37%' }}>
-                              <span className="hint-text small">
+                              <span className="hint-text all-caps small">
                                 {waiting ? <ProgressTwo /> : bundleName}
                               </span>
                             </td>
@@ -1205,120 +1210,76 @@ const Content = () => {
                         <ul className="list-unstyled p-l-20 p-r-20 p-t-10 m-b-20">
                           <li>
                             <h5 className="pull-left normal no-margin">
-                              28th September
+                              {d.getDate()}th  {months[d.getMonth()]} {d.getFullYear()}
                             </h5>
 
                           </li>
                           <div className="clearfix"></div>
                         </ul>
                         <div className="task-list p-t-0 p-r-20 p-b-20 p-l-20 clearfix flex-1">
-                          <div className="task clearfix row completed">
-                            <div className="task-list-title col-10 justify-content-between">
-                              <a
-                                href="javascript:void(0);"
-                                className="text-color strikethrough"
-                                data-task="name"
-                              >
-                                Purchase Pages before 10am
-                              </a>
-                              <i className="fs-14 pg-close hidden"></i>
-                            </div>
-                            <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
-                              <input
-                                type="checkbox"
-                                value="1"
-                                id="todocheckbox"
-                                data-toggler="task"
-                                className="hidden"
-                                onChange={() =>
-                                  setCheckedOption((prevState) => !prevState)
-                                }
-                                checked={checkedOption}
-                              />
-                              <label
-                                htmlFor="todocheckbox"
-                                className=" no-margin no-padding absolute"
-                              ></label>
-                            </div>
-                          </div>
+                          {/* completed */}
+                          {todos.map(e => {
+                            return (
+                              // <div key={e.id} className="task clearfix row ">
+                              //   <div className="task-list-title col-10 justify-content-between">
+                              //     <a
+                              //       href="javascript:void(0);"
+                              //       className="text-color strikethrough"
+                              //       data-task="name"
+                              //     >
+                              //       {e.subject}
+                              //     </a>
+                              //     <i className="fs-14 pg-close hidden"></i>
+                              //   </div>
+                              //   <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
+                              //     <input
+                              //       type="checkbox"
+                              //       value="1"
+                              //       id="todocheckbox"
+                              //       data-toggler="task"
+                              //       className="hidden"
+                              //       onChange={() =>
+                              //         setCheckedOption((prevState) => !prevState)
+                              //       }
+                              //       checked={checkedOption}
+                              //     />
+                              //     <label
+                              //       htmlFor="todocheckbox"
+                              //       className=" no-margin no-padding absolute"
+                              //     ></label>
+                              //   </div>
+                              // </div>
+                              <div key={e.id} className="task clearfix row">
+                                <div className="task-list-title col-10 justify-content-between">
+                                  <a
+                                    href="javascript:void(0);"
+                                    className={`text-color ${classs}`}
+                                    data-task="name"
+                                  >
+                                    {e.subject}
+                                  </a>
+                                  <i className="fs-14 pg-close hidden"></i>
+                                </div>
+                                <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
+                                  <input
+                                    type="checkbox"
+                                    value="1"
+                                    id="todocheck4"
+                                    data-toggler="task"
+                                    className="hidden"
+                                    onClick={() => setClasss('strikethrough')}
+                                  />
+                                  <label
+                                    htmlFor="todocheck4"
+                                    className=" no-margin no-padding absolute"
+                                  ></label>
+                                </div>
+                              </div>
+                            )
+                          })}
 
-                          <div className="task clearfix row">
-                            <div className="task-list-title col-10 justify-content-between">
-                              <a
-                                href="javascript:void(0);"
-                                className="text-color"
-                                data-task="name"
-                              >
-                                Meeting with CFO
-                              </a>
-                              <i className="fs-14 pg-close hidden"></i>
-                            </div>
-                            <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
-                              <input
-                                type="checkbox"
-                                value="1"
-                                id="todocheck2"
-                                data-toggler="task"
-                                className="hidden"
-                              />
-                              <label
-                                htmlFor="todocheck2"
-                                className=" no-margin no-padding absolute"
-                              ></label>
-                            </div>
-                          </div>
 
-                          <div className="task clearfix row">
-                            <div className="task-list-title col-10 justify-content-between">
-                              <a
-                                href="javascript:void(0);"
-                                className="text-color"
-                                data-task="name"
-                              >
-                                AGM Conference at 1pm
-                              </a>
-                              <i className="fs-14 pg-close hidden"></i>
-                            </div>
-                            <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
-                              <input
-                                type="checkbox"
-                                value="1"
-                                id="todocheck3"
-                                data-toggler="task"
-                                className="hidden"
-                              />
-                              <label
-                                htmlFor="todocheck3"
-                                className=" no-margin no-padding absolute"
-                              ></label>
-                            </div>
-                          </div>
 
-                          <div className="task clearfix row">
-                            <div className="task-list-title col-10 justify-content-between">
-                              <a
-                                href="javascript:void(0);"
-                                className="text-color"
-                                data-task="name"
-                              >
-                                Revise Annual Reports
-                              </a>
-                              <i className="fs-14 pg-close hidden"></i>
-                            </div>
-                            <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
-                              <input
-                                type="checkbox"
-                                value="1"
-                                id="todocheck4"
-                                data-toggler="task"
-                                className="hidden"
-                              />
-                              <label
-                                htmlFor="todocheck4"
-                                className=" no-margin no-padding absolute"
-                              ></label>
-                            </div>
-                          </div>
                         </div>
                         <div className="clearfix"></div>
                         <div className="bg-master-light padding-20 full-width ">
@@ -1442,6 +1403,8 @@ const Content = () => {
         policy={"Privacy Policy"}
       />
       {/* END COPYRIGHT */}
+
+
     </div>
   );
 };
