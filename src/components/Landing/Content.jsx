@@ -12,6 +12,7 @@ import { ProgressOne } from "../UIElements/ProgressAndActivity/Content";
 import Alert from '../UIElements/Alert'
 import { TOKEN_COOKIE } from "../../services/constants";
 import SSRStorage from '../../services/storage';
+import axios from "axios";
 const storage = new SSRStorage();
 
 
@@ -22,6 +23,7 @@ const content = () => {
   const [username, setUsername] = useState('');
   const [note, setNote] = useState("Don't");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState();
   const [error_login, setError_login] = useState();
@@ -29,9 +31,12 @@ const content = () => {
 
   const container_height = '135px';
 
+  console.log('aaaaaa', username)
+
   const handleRegister = async () => {
     setLoading(true);
-    const data = { userName: username, email, password };
+    if(password === confirmPassword){
+      const data = { userName: username, email, password };
     console.log(data);
     const url = `https://deda-crm-backend.herokuapp.com/accounts/register`;
     fetch(url, {
@@ -52,6 +57,9 @@ const content = () => {
           setError(true);
         }
       })
+    } else {
+      
+    }
 
   };
 
@@ -86,6 +94,21 @@ const content = () => {
     form_login.current.style.display = 'none';
     setNote("Already");
     form_register.current.style.display = ''
+  }
+
+  const checkAvailableUsername = async (e) => {
+    setUsername(e.target.value)
+    try {
+      const rs = await axios.get(
+        `https://deda-crm-backend.herokuapp.com/username/check?u=name`
+      );
+      console.log('heyyyyyy', rs)
+      
+    } catch (err) {
+      console.log("confirm availability of username", err);
+      setLoading(false);
+    }
+
   }
 
   return (
@@ -124,7 +147,8 @@ const content = () => {
                       <div className="row" >
                         <div className="col-md-12">
                           <TextValidator
-                            onChange={(e) => setUsername(e.target.value)}
+                            // onChange={(e) => setUsername(e.target.value)}
+                            onChange={(e) => checkAvailableUsername(e)}
                             name="password"
                             value={username}
                             type="text"
@@ -152,9 +176,9 @@ const content = () => {
                         </div>
                         <div className="col-md-6">
                           <TextValidator
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             name="password"
-                            value={password}
+                            value={confirmPassword}
                             type="password"
                             validators={["required"]}
                             errorMessages={["This field is required"]}
