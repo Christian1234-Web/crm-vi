@@ -8,7 +8,7 @@ import TextValidator from "./FormValidation";
 import "../../pages/scss/themes/simpleTheme/simple.scss";
 import './landing.css';
 import { ProgressOne } from "../UIElements/ProgressAndActivity/Content";
-import Alert from '../UIElements/Alert'
+import Alert from '../UIElements/Alert';
 import { TOKEN_COOKIE ,USER_NAME} from "../../services/constants";
 import SSRStorage from '../../services/storage';
 const storage = new SSRStorage(); 
@@ -224,6 +224,8 @@ const content = () => {
 
                     </ValidatorForm>
                   </div>
+
+                  
                   <div ref={form_login} style={{ display: '' }}>
                     <ValidatorForm
                       instantValidate={true}

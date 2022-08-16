@@ -28,7 +28,7 @@ const Nav = ({ to, toggleHeaderPopup }) => {
             <ul className="main-menu">
                 <li className="active">
                     <Link to="email">
-                        <span className="title">Inbox</span>
+                        <span className="title">Sent</span>
                         <span className="badge pull-right">{total_sms}</span>
                     </Link>
                 </li>

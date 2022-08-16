@@ -26,7 +26,7 @@ const Nav = ({ messages, to, toggleHeaderPopup }) => {
             <ul className="main-menu">
                 <li className="active">
                     <Link to="email">
-                        <span className="title"><i className="pg-icon">inbox</i> Inbox</span>
+                        <span className="title"><i className="pg-icon">inbox</i> Sent</span>
                         <span className="badge pull-right">{messages.length}</span>
                     </Link>
                 </li>

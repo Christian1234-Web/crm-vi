@@ -6,21 +6,30 @@ import TypeHeadMultiSelect from './TypeHeadMultiSelect';
 import AsyncSelect from 'react-select/async/dist/react-select.esm';
 import Select, { components } from 'react-select';
 import makeAnimated from 'react-select/animated';
+import Copyright from "../ui/Footer/Copyright/Component";
 
 import Label from "./Label";
 import "../Email/style.css";
 import "./style.css";
-import { useEffect } from 'react';
 import { request } from '../../services/utilities';
+import { USER_NAME } from '../../services/constants';
+import SSRStorage from '../../services/storage';
+
+
+const storage = new SSRStorage();
 const animatedComponents = makeAnimated();
 
 
 
 const Content = ({ toggleHeaderPopup }) => {
-    const [quil, setQuil] = useState(null);
-    const [sub, setDub] = useState(null);
-    const [from, setFrom] = useState(null);
+    const [quil, setQuil] = useState('');
+    const [from, setFrom] = useState('');
+    const [subject, setSubject] = useState('');
     const [contacts, setContacts] = useState([]);
+    const [numbers, setNumbers] = useState([]);
+    const [emails, setEmails] = useState([]);
+
+
 
     const [typeheadTextFields, setTypeHeadTextFields] = useState([
         false,
@@ -36,22 +45,36 @@ const Content = ({ toggleHeaderPopup }) => {
             const formatted = result.map(data => (
                 { 'label': data.surname + ' ' + data.other_names, 'email': data.email, 'phone': data.phone_number, 'id': data.id }
             ));
-            setContacts(formatted);  
+            setContacts(formatted);
         } catch (err) {
             console.log('fetch patients err', err);
         }
     };
-    const fetchPatients = async q => {
-      
-        const url = `https://emr-back-end.herokuapp.com/patient/find?q=${q}`;
 
+    const fetchPatients = async q => {
+        const url = `https://emr-back-end.herokuapp.com/patient/find?q=${q}`;
         const res = (await axios.get(url)).data;
         return res;
     };
-
+    const bodyMessage = () => {
+        let x = quil.substr(3);
+        let z = x.slice(0, -4);
+        return z
+    }
     // useEffect
-    const sendMessage = () => {
+    const sendMessage = async () => {
+        const is_email = document.getElementById('sendCC');
+        const user = await storage.getItem(USER_NAME);
 
+        const data = { body: bodyMessage(), from, subject, recipient: is_email.checked === true ? emails : numbers, senderId: user.id };
+        const url = is_email.checked === true ? `message/send/mail` : `message/send`;
+
+        try {
+            const rs = await request(url, 'POST', true, data);
+            // console.log(rs);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     // useEffect(() => {
@@ -73,28 +96,7 @@ const Content = ({ toggleHeaderPopup }) => {
                                     <div className="form-group-attached">
                                         <div className="row clearfix" style={{ height: '100px' }}>
                                             <div className="col-md-6">
-                                                <Label>Project</Label>
-                                                {/* <AsyncSelect
-                                                    style={{ border: 'none' }}
-                                                    isMulti
-                                                    isClearable
-                                                    getOptionValue={option => option.id}
-                                                    getOptionLabel={option =>
-                                                        `${option.surname} ${option.other_names}`
-                                                    }
-                                                    defaultOptions
-                                                    value={contacts}
-                                                    name="contacts"
-                                                    loadOptions={fetchPatients}
-                                                    onChange={e => {
-                                                        if (e) {
-                                                            setContacts(e);
-                                                        } else {
-                                                            setContacts([]);
-                                                        }
-                                                    }}
-                                                    placeholder="Search Contacts"
-                                                /> */}
+                                                {/* <Label>Contacts</Label> */}
                                                 <div
                                                     className={`form-group form-group-default typehead typehead-select ${typeheadTextFields[1] ? "focused" : ""
                                                         }`}
@@ -117,12 +119,23 @@ const Content = ({ toggleHeaderPopup }) => {
                                                         loadOptions={fetchPatients}
                                                         onChange={e => {
                                                             if (e) {
+                                                                e.forEach((e) => {
+                                                                    let y = emails.find(y => y === e.email);
+                                                                    let x = numbers.find(x => x === e.phone_number);
+
+                                                                    if (!x) {
+                                                                        numbers.push(e.phone_number);
+                                                                    }
+                                                                    if (!y) {
+                                                                        emails.push(e.email)
+                                                                    }
+                                                                });
                                                                 setContacts(e);
                                                             } else {
                                                                 setContacts([]);
                                                             }
                                                         }}
-                                                        placeholder="search........"
+                                                        placeholder="search contacts.."
                                                         components={{ animatedComponents, DropdownIndicator: () => null, IndicatorSeparator: () => null }}
                                                         styles={{
                                                             control: (provided) => ({
@@ -202,19 +215,18 @@ const Content = ({ toggleHeaderPopup }) => {
 
                                                         }}
                                                     />
-                                                    {/* <TypeHeadMultiSelect fetchPatientList={(e) => fetchPatientList(e)} contacts={contacts} setContacts={setContacts} /> */}
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
                                                 <div className="form-group form-group-default">
-                                                    <label>cc:</label>
-                                                    <input type="text" className="form-control" name="cc" placeholder="Add Carbon Copy" />
+                                                    <label>From:</label>
+                                                    <input type="text" value={from} onChange={e => setFrom(e.target.value)} className="form-control" name="cc" placeholder="Enter sender name" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="form-group form-group-default">
                                             <label>Subject</label>
-                                            <input type="text" className="form-control" name="subject" />
+                                            <input type="text" value={subject} onChange={e => setSubject(e.target.value)} className="form-control" name="subject" />
                                         </div>
                                     </div>
                                 </form>
@@ -231,13 +243,20 @@ const Content = ({ toggleHeaderPopup }) => {
                                 </div>
                             </div>
                             <div className="col-md-1">
-                                <button aria-label="" onClick={sendMessage} className="btn btn-complete btn-lg pull-right btn-icon-left"><i className="pg-icon">send</i>Send</button>
+                                <button aria-label="" onClick={() => sendMessage()} className="btn btn-complete btn-lg pull-right btn-icon-left"><i className="pg-icon">send</i>Send</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 {/* End email-coompose content */}
             </div>
+            <Copyright
+                year={"2014"}
+                brand={"REVOX"}
+                reserved={"All rights reserved."}
+                terms={"Terms of use"}
+                policy={"Privacy Policy"}
+            />
         </div>
     )
 }

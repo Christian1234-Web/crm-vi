@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useContext,useCallback } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import Copyright from "../ui/Footer/Copyright/Component";
 
 import Nav from "./Nav";
 import EmailBody from "./EmailBody";
@@ -10,9 +11,9 @@ import { Store } from "../../context/store";
 import "./style.css";
 import allMessages from "./messages.json";
 import { request } from "../../services/utilities";
-import { TOKEN_COOKIE ,USER_NAME} from "../../services/constants";
+import { TOKEN_COOKIE, USER_NAME } from "../../services/constants";
 import SSRStorage from '../../services/storage';
-const storage = new SSRStorage(); 
+const storage = new SSRStorage();
 
 
 const content = ({ toggleHeaderPopup }) => {
@@ -24,7 +25,7 @@ const content = ({ toggleHeaderPopup }) => {
 
 
   const fetchAllSmsMessages = useCallback(async () => {
-   const user = await storage.getItem(USER_NAME);
+    const user = await storage.getItem(USER_NAME);
 
     const url = `message/all?userId=${user.id}&page=1&limit=10`;
     try {
@@ -123,8 +124,18 @@ const content = ({ toggleHeaderPopup }) => {
           </div>
           {/* END COMPOSE BUTTON */}
         </div>
+
       </div>
       {/* End email list content */}
+      <div className="pt-4">
+        <Copyright
+          year={"2014"}
+          brand={"REVOX"}
+          reserved={"All rights reserved."}
+          terms={"Terms of use"}
+          policy={"Privacy Policy"}
+        />
+      </div>
     </div>
   );
 };
