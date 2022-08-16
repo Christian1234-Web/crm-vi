@@ -11,40 +11,44 @@ import Login from "./components/Extra/Login"
 import Landing from "./components/Landing"
 import Extra400 from "./components/Extra/404Page";
 import Quickview from "./components/Quickview";
+import StoreContext from './context/store';
 
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <>
-          <Switch>
-            {/* Uncomment the routes below if you want to view all the themes (remember to uncomment the imports as well*/}
-            <Route path="/" exact>
-              <Landing />
-            </Route>
-            <Route path="/login" >
-              <Login />
-            </Route>
-            <Route path="/casual">
-              <Casual />
-            </Route>
-            <Route path="/corporate">
-              <Corporate />
-            </Route>
-            <Route path="/condensed">
-              <Condensed />
-            </Route>
-            <Route path="/simple">
-              <Simple />
-            </Route>
-            <Route path="/executive">
-              <Executive />
-            </Route>
-          </Switch>
-          <Quickview />
-        </>
+      <StoreContext>
+        <BrowserRouter>
+          <>
+            <Switch>
+              {/* Uncomment the routes below if you want to view all the themes (remember to uncomment the imports as well*/}
+              <Route path="/" exact>
+                <Landing />
+              </Route>
+              <Route path="/login" >
+                <Login />
+              </Route>
+              <Route path="/casual">
+                <Casual />
+              </Route>
+              <Route path="/corporate">
+                <Corporate />
+              </Route>
+              <Route path="/condensed">
+                <Condensed />
+              </Route>
+              <Route path="/simple">
+                <Simple />
+              </Route>
+              <Route path="/executive">
+                <Executive />
+              </Route>
+            </Switch>
+            <Quickview />
+          </>
 
-      </BrowserRouter>
+        </BrowserRouter>
+      </StoreContext>
+
     );
   }
 }

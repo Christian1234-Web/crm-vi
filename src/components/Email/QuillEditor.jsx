@@ -4,9 +4,8 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './QuilEditorStyle.css';
 
-const quillEditor = () => {
+const quillEditor = (props) => {
     
-    const [quil, setQuil] = useState(null);
     const [quilModules] = useState({
         toolbar: [
             ['bold', 'italic', 'underline','strike', 'blockquote'],
@@ -25,12 +24,12 @@ const quillEditor = () => {
 
     return (
         <ReactQuill 
-            value={quil} 
+            value={props.quil} 
             placeholder="type here"
             modules={quilModules}
             formats={quilFormats}
             theme="snow"
-            onChange={(value) => setQuil(value)} 
+            onChange={(value) => props.setQuil(value)} 
         />
     )
 }

@@ -1,36 +1,36 @@
 import React, { useState, useEffect } from 'react'
-import {Link} from 'react-router-dom';
-
-const Nav = ({to, toggleHeaderPopup}) => {
-// console.log(toggleHeaderPopup);
+import { Link } from 'react-router-dom';
+const Nav = ({ messages, to, toggleHeaderPopup }) => {
+    // console.log(toggleHeaderPopup);
     const [isMobileMode, setIsMobileMode] = useState(false);
-    
+   
+
     useEffect(() => {
-       const  {innerWidth: width} =window
-       width < 1025 ? setIsMobileMode(true) : setIsMobileMode(false);
+        const { innerWidth: width } = window
+        width < 1025 ? setIsMobileMode(true) : setIsMobileMode(false);
         // window.addEventListener("resize", (e) => {
         //     if(e.target.outerWidth < 1025) setIsMobileMode(true)
         //     else setIsMobileMode(false)
         // });
         // return () => window.removeEventListener("resize", null);
-    },[toggleHeaderPopup]);
-    
+    }, [toggleHeaderPopup]);
+
     return (
-        <nav className="secondary-sidebar" 
-            style={(isMobileMode ? ((toggleHeaderPopup && isMobileMode) ? {"display":"block"} : {"display":"none"}) : {"display":"block"})}
+        <nav className="secondary-sidebar"
+            style={(isMobileMode ? ((toggleHeaderPopup && isMobileMode) ? { "display": "block" } : { "display": "none" }) : { "display": "block" })}
         >
             <div className=" m-b-20 m-l-30 m-r-10 d-sm-none d-md-block d-lg-block d-xl-block">
                 <Link to={to} className="btn btn-complete btn-block">Compose</Link>
             </div>
             <p className="menu-title">BROWSE</p>
             <ul className="main-menu">
-                    <li className="active">
-                        <Link to="email">
-                            <span className="title"><i className="pg-icon">inbox</i> Inbox</span>
-                            <span className="badge pull-right">5</span>
-                        </Link>
-                    </li>
-                <li className="">
+                <li className="active">
+                    <Link to="email">
+                        <span className="title"><i className="pg-icon">inbox</i> Inbox</span>
+                        <span className="badge pull-right">{messages.length}</span>
+                    </Link>
+                </li>
+                {/* <li className="">
                     <a href="javascript:void(0);">
                         <span className="title"><i className="pg-icon">inbox_all</i> All mail</span>
                     </a>
@@ -57,9 +57,9 @@ const Nav = ({to, toggleHeaderPopup}) => {
                         <span className="title"><i className="pg-icon">spam</i> Spam</span>
                         <span className="badge pull-right">10</span>
                     </a>
-                </li>
+                </li> */}
             </ul>
-            <p className="menu-title m-t-20 all-caps">Quick view</p>
+            {/* <p className="menu-title m-t-20 all-caps">Quick view</p>
             <ul id="email-quick-view-secondary-sidebar-id" className="sub-menu no-padding">
                 <li>
                     <a href="javascript:void(0);">
@@ -77,7 +77,7 @@ const Nav = ({to, toggleHeaderPopup}) => {
                         <span className="title">Images</span>
                     </a>
                 </li>
-            </ul>
+            </ul> */}
         </nav>
     )
 }

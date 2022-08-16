@@ -11,20 +11,21 @@ import Copyright from "../../ui/Footer/Copyright";
 export const ProgressOne = () => {
   return (
     <div className="col-md-6  text-center">
-      <div className="progress-circle-indeterminate" style={{width:'30px'}} ></div>
+      <div className="progress-circle-indeterminate" style={{ width: '30px', height: '30px' }} ></div>
     </div>
   )
 }
 export const ProgressTwo = () => {
   return (
     <div className="col-md-6  text-center">
-      <div className="progress-circle-indeterminate.progress-circle-warning" style={{width:'30px'}} ></div>
+      <div className="progress-circle-indeterminate" style={{ width: '20px', height: '20px' }} ></div>
     </div>
   )
 }
+
 const content = ({ path }) => {
 
- 
+
   return (
     <div className="page-content-wrapper ">
       {/* START PAGE CONTENT */}
