@@ -74,7 +74,8 @@ const Content = () => {
     if (stickUpModalSize[2]) setStickUpWidth("sm");
   }, [stickUpModalSize]);
 
-
+  const [optionsStrike, setOptionsStrike] = useState([])
+  const [strike, setStrike] = useState(true)
 
 
   const [project, setProject] = useState("");
@@ -119,7 +120,6 @@ const Content = () => {
     try {
       setLoading(true);
       const user = await storage.getItem(USER_NAME);
-      console.log('hello', user)
       setUsername(user.username);
       const rs = await axios.get(
         `https://deda-crm-backend.herokuapp.com/unit/all`
@@ -172,8 +172,22 @@ const Content = () => {
     }
   };
 
+  
 
 
+
+const handleStrike = (e, i) => {
+  console.log('amala', e.target)
+  if (e.target.checked) {
+    optionsStrike[i] ='strikethrough'
+    setOptionsStrike(optionsStrike)
+    console.log('✅ Checkbox is checked', optionsStrike);
+  } else {
+    optionsStrike[i] = ''
+    setOptionsStrike(optionsStrike)
+    console.log('⛔️ Checkbox is NOT checked', optionsStrike);
+  }
+}
 
 
 
@@ -237,7 +251,7 @@ const Content = () => {
               <div
                 className="pull-right"
                 style={{ cursor: "pointer" }}
-                onClick={() => handleCloseForm()}
+                onClick={() => setStickUpVisible(false)}
               >
                 <i className="pg-icon">close</i>
               </div>
@@ -1223,7 +1237,7 @@ const Content = () => {
                         </ul>
                         <div className="task-list p-t-0 p-r-20 p-b-20 p-l-20 clearfix flex-1">
                           {/* completed */}
-                          {todos.map(e => {
+                          {todos.map((e, i) => {
                             return (
                               // <div key={e.id} className="task clearfix row ">
                               //   <div className="task-list-title col-10 justify-content-between">
@@ -1258,24 +1272,27 @@ const Content = () => {
                                 <div className="task-list-title col-10 justify-content-between">
                                   <a
                                     href="javascript:void(0);"
-                                    className={`text-color ${classs}`}
+                                    className={`text-color ${optionsStrike[i]}`}
                                     data-task="name"
                                   >
-                                    {e.subject}
+                                    {e.subject}aaa
                                   </a>
                                   <i className="fs-14 pg-close hidden"></i>
                                 </div>
-                                <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
+                                <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center"
+                                >
                                   <input
                                     type="checkbox"
                                     value="1"
-                                    id="todocheck4"
+                                    id={`todocheck${i}`}
                                     data-toggler="task"
-                                    className="hidden"
-                                    onClick={() => setClasss('strikethrough')}
+                                    className="form-check checkbox-circle"
+                                    onClick={(e) => handleStrike(e, i)}
+                                    // onClick={() => setClasss('strikethrough')}
+                                    
                                   />
                                   <label
-                                    htmlFor="todocheck4"
+                                    htmlFor={`todocheck${i}`}
                                     className=" no-margin no-padding absolute"
                                   ></label>
                                 </div>
