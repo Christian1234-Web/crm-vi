@@ -109,10 +109,6 @@ const Content = () => {
   const handleCloseTodo = () => setTodo(false);
   const handleShowTodo = () => setTodo(true);
 
-  const handleFormSubmit = () => {
-    
-  }
-
 
 
   const fetchBundleList = useCallback(async (page) => {
@@ -152,13 +148,14 @@ const Content = () => {
     const user = await storage.getItem(USER_NAME);
     const data = [{ date: deadline, description: startDate, subject: investor }];
     const url = `todo/add?userId=${user.id}`
-    console.log(data);
+    // console.log(data);
     try {
       const rs = await request(url, 'POST', true, data);
       setLoading_todo(false);
       // console.log(rs);
       if (rs.success === false) {
         setError_todo(true);
+        fetchTodo();
       } else {
         handleCloseTodo();
         setError_todo(false);
@@ -209,17 +206,7 @@ const Content = () => {
     // setAmount(Number(e.target.value))
     // fetchSpecificBundle(Number(e.target.value))
   };
-  const checkInput = (i) => {
-    // console.log(i);
-    let input = document.querySelectorAll('.strike_line');
-    let todo = document.querySelectorAll('.subject_');
-    if (input[i].checked === true) {
-      let x = todo[i].classList.add('strikethrough');
-    } else {
-      let x = todo[i].classList.remove('strikethrough');
-    }
-    // console.log(todo[i]);
-  }
+ 
   // const [flipBarNotifyArray, setFlipBarNotifyArray] = useState([]);
   useEffect(() => {
     if (loading) {
@@ -572,6 +559,7 @@ const Content = () => {
           </div>
         </div>
       </StickUpModal>
+    
       {error_todo === false ? <FlipBarNotifyModule
         notifications={flipBarNotifyArray}
         position={'top-right'}
@@ -1249,7 +1237,7 @@ const Content = () => {
                                 {/* <input type='checkbox' onClick={() => checkInput(i) }  className="strike_line"
                                 /> */}
                                 <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center"
-                                  onClick={() => checkInput(i)}
+                                  // onClick={() => checkInput(i)}
                                 >
                                   <input
                                     type="checkbox"
