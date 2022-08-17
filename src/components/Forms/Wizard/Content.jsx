@@ -254,7 +254,7 @@ const content = ({ path }) => {
                 id="tab1"
               >
                 <div className="row row-same-height">
-                  <div className="col-md-5 b-r b-dashed b-grey sm-b-b">
+                  <div className="col-md-6 b-r b-dashed b-grey sm-b-b">
                     <div className="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
                       {/* <span className="hidden-block"> */}
                       <Icon path={mdiCart} size="2em" />
@@ -337,7 +337,7 @@ const content = ({ path }) => {
                     </div>
 
                   </div>
-                  <div className="col-md-7">
+                  <div className="col-md-6">
                     <div className="padding-30 sm-padding-5">
                       <table className="table table-condensed">
                         <tbody>
@@ -360,7 +360,7 @@ const content = ({ path }) => {
                                 <span className="m-l-10 font-montserrat fs-11 all-caps">
                                   {e.name}
                                 </span>
-                                <span className="m-l-10 ">Dashboard UI Pack</span>
+                                {/* <span className="m-l-10 ">Dashboard UI Pack</span> */}
                               </td>
                               <td className=" col-lg-4 col-md-4 col-sm-4 text-right">
                                 <span>Qty {e.unitQuantity}</span>
