@@ -115,7 +115,6 @@ const Content = () => {
     try {
       setLoading(true);
       const user = await storage.getItem(USER_NAME);
-      console.log('hello', user)
       setUsername(user.username);
       const rs = await axios.get(
         `https://deda-crm-backend.herokuapp.com/unit/all`
@@ -136,7 +135,6 @@ const Content = () => {
     const url = `todo?page=1&limit=10&term=&date=${date}`;
     try {
       const rs = await request(url, 'GET', true);
-      console.log(rs.result);
       setTodos(rs.result);
     }
     catch (err) {
