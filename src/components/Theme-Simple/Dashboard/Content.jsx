@@ -206,7 +206,17 @@ const Content = () => {
     // setAmount(Number(e.target.value))
     // fetchSpecificBundle(Number(e.target.value))
   };
- 
+  const checkInput = (i) => {
+    // console.log(i);
+    let input = document.querySelectorAll('.strike_line');
+    let todo = document.querySelectorAll('.subject_');
+    if (input[i].checked === true) {
+      let x = todo[i].classList.add('strikethrough');
+    } else {
+      let x = todo[i].classList.remove('strikethrough');
+    }
+    // console.log(todo[i]);
+  }
   // const [flipBarNotifyArray, setFlipBarNotifyArray] = useState([]);
   useEffect(() => {
     if (loading) {
@@ -559,7 +569,7 @@ const Content = () => {
           </div>
         </div>
       </StickUpModal>
-    
+
       {error_todo === false ? <FlipBarNotifyModule
         notifications={flipBarNotifyArray}
         position={'top-right'}
@@ -975,12 +985,12 @@ const Content = () => {
                       <div className="row-xs-height ">
                         <div className="col-xs-height col-top relative">
                           <div className="row full-height">
-                            <div className="col-sm-8">
+                            <div className="col-sm-12">
                               <div className="p-l-20 full-height d-flex flex-column justify-content-between">
-                                <h3 className="no-margin p-b-5">14,000</h3>
+                                <h3 className="no-margin p-b-5">947.11</h3>
                                 <p className="small m-t-5 m-b-20">
                                   <span className="label label-white hint-text font-montserrat m-r-5">
-                                    54 days remaining
+                                   Your subscription has expired
                                   </span>
                                   <span className="fs-12"><a href="/simple/form_wizard" style={{ textDecoration: "none", color: 'inherit' }}>Buy Units</a></span>
                                 </p>
@@ -1237,7 +1247,7 @@ const Content = () => {
                                 {/* <input type='checkbox' onClick={() => checkInput(i) }  className="strike_line"
                                 /> */}
                                 <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center"
-                                  // onClick={() => checkInput(i)}
+                                // onClick={() => checkInput(i)}
                                 >
                                   <input
                                     type="checkbox"
