@@ -168,7 +168,9 @@ const Content = () => {
   };
 
 
+  let handleFormSubmit = () => {
 
+  }
 
 
 
@@ -229,10 +231,10 @@ const Content = () => {
   return (
     <div className="page-content-wrapper ">
       {/* REGISTRATION MODAL */}
-      <StickUpModal 
-      visible={stickUpVisible}
-      className="stickUpModalClass"
-      width={"600"} 
+      <StickUpModal
+        visible={stickUpVisible}
+        className="stickUpModalClass"
+        width={"600"}
       >
         <div className="modal-content-wrapper">
           <div className="modal-content">
@@ -259,7 +261,7 @@ const Content = () => {
                   </p>
 
                   <div className="form-group-attached">
-                  <div className="row clearfix">
+                    <div className="row clearfix">
                       <div className="col-md-6">
                         <div className="form-group form-group-default">
                           <WithoutMsgValidation
@@ -370,7 +372,7 @@ const Content = () => {
                         required=""
                       />
                     </div>
-                    
+
                   </div>
                   <br />
                   <div className="row">
@@ -403,8 +405,8 @@ const Content = () => {
       {/* START PAGE CONTENT */}
 
 
-      <StickUpModal visible={show} width={"600"} effect="fadeInUp" 
-          className="stickUpModalClass"
+      <StickUpModal visible={show} width={"600"} effect="fadeInUp"
+        className="stickUpModalClass"
       >
         <div className="modal-content-wrapper">
           <div className="modal-content">
