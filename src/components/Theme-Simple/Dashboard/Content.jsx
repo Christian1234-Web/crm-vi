@@ -8,6 +8,7 @@ import InputWithLabel from "../../Landing/InputWithLabel";
 import cellEditFactory from "react-bootstrap-table2-editor";
 import Alert from '../../UIElements/Alert'
 import FlipBarNotifyModule from "../../UIElements/Notification/FlipBarNotification/FlipBarNotifyModule";
+import WithoutMsgValidation from "../../Forms/FormLayouts/WithoutMsgValidation";
 
 import TextValidator from "./FormValidation";
 import { Link } from "react-router-dom";
@@ -107,6 +108,10 @@ const Content = () => {
   const handleClose = () => setShow(false);
   const handleCloseTodo = () => setTodo(false);
   const handleShowTodo = () => setTodo(true);
+
+  const handleFormSubmit = () => {
+    
+  }
 
 
 
