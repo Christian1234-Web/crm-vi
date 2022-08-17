@@ -943,7 +943,7 @@ const Content = () => {
                           <div className="card-header  top-left top-right">
                             <div className="card-title">
                               <span className="font-montserrat fs-11 all-caps">
-                                Weekly Sales{" "}
+                               Units Balance{" "}
                               </span>
                             </div>
                             <div className="card-controls">
