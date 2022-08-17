@@ -4,14 +4,14 @@ import { mdiCart, mdiTruck, mdiCreditCardOutline, mdiCheck } from "@mdi/js";
 import { ValidatorForm } from "react-form-validator-core";
 import WithoutMsgValidation from "../FormLayouts/WithoutMsgValidation";
 import SelectValidation from "./SelectValidation";
-
+import { ProgressTwo } from "../../UIElements/ProgressAndActivity/Content";
 import Copyright from "../../ui/Footer/Copyright";
 import PageContainer from "../../UIElements/Containers";
 import StageSelect from "./StageSelect";
 
 import Countries from "../Elements/countries";
 import { CountryCodes, MonthWithCodes, Years } from "./Codes";
-
+import axios from 'axios';
 import "./style.css";
 
 const content = ({ path }) => {
@@ -39,6 +39,18 @@ const content = ({ path }) => {
 
   const [item1Close, setItem1Close] = useState(false);
   const [item2Close, setItem2Close] = useState(false);
+
+  // bundle state
+  const [bundleName, setBundleName] = useState("");
+  const [totalPrice, setTotalPrice] = useState("");
+  const [bundleUnitPrice, setBundleUnitPrice] = useState("");
+  const [waiting, setWaiting] = useState(false);
+  const [count, setCount] = useState(0);
+
+  const [selectedBundle, setSelectedBundle] = useState(null);
+  const [bundleArr] = useState([]);
+
+  const total_Price = bundleArr.reduce((accumulator, current) => accumulator + current.price * 1, 0)
 
   let countryOptionsList = () => {
     return (
@@ -104,6 +116,32 @@ const content = ({ path }) => {
     //Call this function on form submit with no errors
   };
 
+  const fetchSpecificBundle = async amountInputed => {
+    if (amountInputed) {
+      const url = `https://deda-crm-backend.herokuapp.com/unit/amount/calc?units=${amountInputed}`;
+      try {
+        const rs = (await axios(url)).data;
+        setSelectedBundle(rs.bundle);
+        setBundleName(rs.bundle.name);
+        setBundleUnitPrice(rs.bundle.amount);
+        setTotalPrice(rs.result);
+        setWaiting(false);
+
+      } catch (err) {
+        console.log("fetch patients err", err);
+      }
+    };
+  }
+
+
+  const handleChange = (e) => {
+    if (Number(e) >= 5000) {
+      setWaiting(true);
+      fetchSpecificBundle(Number(e));
+    }
+  };
+
+
   return (
     <div className="page-content-wrapper ">
       {/* START PAGE CONTENT */}
@@ -126,9 +164,8 @@ const content = ({ path }) => {
                 onClick={() => setTabs([true, false, false, false])}
               >
                 <a
-                  className={`d-flex align-items-center ${
-                    tabs[0] ? "active" : ""
-                  }`}
+                  className={`d-flex align-items-center ${tabs[0] ? "active" : ""
+                    }`}
                   data-toggle="tab"
                   href="javascript:void(0);"
                   onClick={(e) => e.preventDefault()}
@@ -147,9 +184,8 @@ const content = ({ path }) => {
                 onClick={() => setTabs([false, true, false, false])}
               >
                 <a
-                  className={`d-flex align-items-center ${
-                    tabs[1] ? "active" : ""
-                  }`}
+                  className={`d-flex align-items-center ${tabs[1] ? "active" : ""
+                    }`}
                   data-toggle="tab"
                   href="javascript:void(0);"
                   onClick={(e) => e.preventDefault()}
@@ -167,9 +203,8 @@ const content = ({ path }) => {
                 onClick={() => setTabs([false, false, true, false])}
               >
                 <a
-                  className={`d-flex align-items-center ${
-                    tabs[2] ? "active" : ""
-                  }`}
+                  className={`d-flex align-items-center ${tabs[2] ? "active" : ""
+                    }`}
                   data-toggle="tab"
                   href="javascript:void(0);"
                   onClick={(e) => e.preventDefault()}
@@ -190,9 +225,8 @@ const content = ({ path }) => {
                 onClick={() => setTabs([false, false, false, true])}
               >
                 <a
-                  className={`d-flex align-items-center ${
-                    tabs[3] ? "active" : ""
-                  }`}
+                  className={`d-flex align-items-center ${tabs[3] ? "active" : ""
+                    }`}
                   data-toggle="tab"
                   href="javascript:void(0);"
                   onClick={(e) => e.preventDefault()}
@@ -235,58 +269,109 @@ const content = ({ path }) => {
                         Below is a sample page for your cart , Created using
                         pages design UI Elementes
                       </p>
+                      <div>
+                        <div className="d-flex justify-content-center align-items-center">
+                          <table className="table table-condensed table-hover">
+                            <thead style={{ background: '#f4f4f4' }}>
+                              <tr>
+                                <td className="font-montserrat all-caps fs-12 w-25">
+                                  VOLUME
+                                </td>
+                                <td className="font-montserrat all-caps fs-12" style={{ width: '38%' }}>BUNDLE</td>
+                                <td className="text-right  w-25">
+                                  <span className="hint-text small"> PRICE</span>
+                                </td>
+                                <td className="text-right b-r b-dashed b-grey w-25">
+                                  <span className="hint-text small">UNIT</span>
+                                </td>
+                                <td className="text-right w-25">
+                                  <span className="hint-text small">ACTION</span>
+                                </td>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td
+                                  contenteditable="true" style={{ outline: 'none' }}
+                                  onInput={(e) => handleChange(e.currentTarget.textContent)}
+                                  className="font-montserrat all-caps fs-12 w-25">
+                                  0
+                                </td>
+                                <td className="hidden-lg" style={{ width: '37%' }}>
+                                  <span className="hint-text all-caps small">
+                                    {waiting ? <ProgressTwo /> : bundleName}
+                                  </span>
+                                </td>
+                                <td className="text-right  w-25">
+                                  <span className="hint-text small">
+                                    {waiting ? <ProgressTwo /> : totalPrice}
+                                  </span>
+                                </td>
+                                <td className="text-right b-r b-dashed b-grey" >
+                                  <span className="hint-text small">
+                                    {waiting ? (
+                                      <div>
+                                        <ProgressTwo />
+                                      </div>
+                                    ) : (
+                                      bundleUnitPrice
+                                    )}
+                                  </span>
+                                </td>
+                                <td className="text-right b-r b-dashed b-grey" >
+                                  <span className="hint-text small" style={{ cursor: 'pointer' }} onClick={() => {
+                                    let x = bundleArr.find(x => x.id === selectedBundle.id);
+                                    if (!x) {
+                                      bundleArr.push({ ...selectedBundle, price: totalPrice });
+                                    }
+                                    setCount(count + 1);
+                                  }}>
+                                    <i className="pg-icon">add</i>
+                                  </span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </div>
+
                   </div>
                   <div className="col-md-7">
                     <div className="padding-30 sm-padding-5">
                       <table className="table table-condensed">
                         <tbody>
-                          <tr className={item1Close ? `d-none` : ``}>
-                            <td className="col-lg-8 col-md-6 col-sm-7 ">
-                              <a
-                                href="javascript:void(0);"
-                                className="remove-item"
-                                onClick={() => setItem1Close(true)}
-                              >
-                                <i className="pg-icon">close</i>
-                              </a>
-                              <span className="m-l-10 font-montserrat fs-11 all-caps">
-                                Webarch UI Framework
-                              </span>
-                              <span className="m-l-10 ">Dashboard UI Pack</span>
-                            </td>
-                            <td className=" col-lg-2 col-md-3 col-sm-3 text-right">
-                              <span>Qty 1</span>
-                            </td>
-                            <td className=" col-lg-2 col-md-3 col-sm-2 text-right">
-                              <h4 className="text-primary no-margin font-montserrat">
-                                $27
-                              </h4>
-                            </td>
-                          </tr>
-                          <tr className={item2Close ? `d-none` : ``}>
-                            <td className="col-lg-8 col-md-6 col-sm-7">
-                              <a
-                                href="javascript:void(0);"
-                                className="remove-item"
-                                onClick={() => setItem2Close(true)}
-                              >
-                                <i className="pg-icon">close</i>
-                              </a>
-                              <span className="m-l-10 font-montserrat fs-11 all-caps">
-                                Pages UI Framework
-                              </span>
-                              <span className="m-l-10 ">Next Gen UI Pack</span>
-                            </td>
-                            <td className="col-lg-2 col-md-3 col-sm-3 text-right">
-                              <span>Qty 1</span>
-                            </td>
-                            <td className=" col-lg-2 col-md-3 col-sm-2 text-right">
-                              <h4 className="text-primary no-margin font-montserrat">
-                                $27
-                              </h4>
-                            </td>
-                          </tr>
+
+                          {bundleArr.map((e, i) => (
+                            <tr key={e.id} className={item1Close ? `d-none` : ``}>
+                              <td className="col-lg-8 col-md-6 col-sm-7 ">
+                                <a
+                                  href="javascript:void(0);"
+                                  className="remove-item"
+                                  onClick={() => {
+                                    // let items = [...data];
+                                    bundleArr.splice(i, 1);
+                                    setCount(count - 1);
+
+                                  }}
+                                >
+                                  <i className="pg-icon">close</i>
+                                </a>
+                                <span className="m-l-10 font-montserrat fs-11 all-caps">
+                                  {e.name}
+                                </span>
+                                <span className="m-l-10 ">Dashboard UI Pack</span>
+                              </td>
+                              <td className=" col-lg-4 col-md-4 col-sm-4 text-right">
+                                <span>Qty {e.unitQuantity}</span>
+                              </td>
+                              <td className=" col-lg-4 col-md-4 col-sm-2 text-right">
+                                <h4 className="text-primary no-margin font-montserrat">
+                                  ₦{e.price}
+                                </h4>
+                              </td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                       <h5>Donation</h5>
@@ -311,19 +396,19 @@ const content = ({ path }) => {
                               <input
                                 type="radio"
                                 name="options"
-                                onChange={() => {}}
+                                onChange={() => { }}
                                 id="option1"
                                 checked=""
                               />{" "}
-                              <span className="fs-16">$0</span>
+                              <span className="fs-16"> ₦0</span>
                             </label>
                             <label className="btn btn-default">
                               <input type="radio" name="options" id="option2" />{" "}
-                              <span className="fs-16">$10</span>
+                              <span className="fs-16"> ₦10</span>
                             </label>
                             <label className="btn btn-default">
                               <input type="radio" name="options" id="option3" />{" "}
-                              <span className="fs-16">$20</span>
+                              <span className="fs-16"> ₦20</span>
                             </label>
                           </div>
                         </div>
@@ -333,7 +418,7 @@ const content = ({ path }) => {
                         <div className="col-md-3 p-l-10 sm-padding-15 align-items-center d-flex">
                           <div>
                             <h5 className="font-montserrat all-caps small no-margin hint-text bold">
-                              Discount (10%)
+                              SubTotal (10%)
                             </h5>
                             <p className="no-margin">$10</p>
                           </div>
@@ -341,16 +426,16 @@ const content = ({ path }) => {
                         <div className="col-md-7 col-middle sm-padding-15 align-items-center d-flex">
                           <div>
                             <h5 className="font-montserrat all-caps small no-margin hint-text bold">
-                              Donations
+                              Tax
                             </h5>
-                            <p className="no-margin">$0</p>
+                            <p className="no-margin"> ₦0</p>
                           </div>
                         </div>
                         <div className="col-md-2 text-right bg-primary padding-10">
                           <h5 className="font-montserrat all-caps small no-margin hint-text text-white bold">
                             Total
                           </h5>
-                          <h4 className="no-margin text-white">$44</h4>
+                          <h4 className="no-margin text-white"> ₦{total_Price}</h4>
                         </div>
                       </div>
                     </div>
@@ -538,32 +623,30 @@ const content = ({ path }) => {
                       </p>
                       <table className="table table-condensed">
                         <tbody>
-                          <tr>
-                            <td className=" col-md-9">
-                              <span className="m-l-10 font-montserrat fs-11 all-caps">
-                                Webarch UI Framework
-                              </span>
-                              <span className="m-l-10 ">Dashboard UI Pack</span>
-                            </td>
-                            <td className=" col-md-3 text-right">
-                              <span>Qty 1</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className=" col-md-9">
-                              <span className="m-l-10 font-montserrat fs-11 all-caps">
-                                Pages UI Framework
-                              </span>
-                              <span className="m-l-10 ">Next Gen UI Pack</span>
-                            </td>
-                            <td className=" col-md-3 text-right">
-                              <span>Qty 1</span>
-                            </td>
-                          </tr>
+                          {bundleArr.map((e, i) => (
+                            <tr key={e.id} className={item1Close ? `d-none` : ``}>
+                              <td className="col-lg-8 col-md-6 col-sm-7 ">
+
+                                <span className="m-l-10 font-montserrat fs-11 all-caps">
+                                  {e.name}
+                                </span>
+                                <span className="m-l-10 ">Dashboard UI Pack</span>
+                              </td>
+                              <td className=" col-lg-4 col-md-4 col-sm-4 text-right">
+                                <span>Qty {e.unitQuantity}</span>
+                              </td>
+                              {/* <td className=" col-lg-4 col-md-4 col-sm-2 text-right">
+                                <h4 className="text-primary no-margin font-montserrat">
+                                  ₦{e.price}
+                                </h4>
+                              </td> */}
+                            </tr>
+                          ))}
+
                           <tr>
                             <td colSpan="2" className=" col-md-3 text-right">
                               <h4 className="text-primary no-margin font-montserrat">
-                                $27
+                                ₦{total_Price}
                               </h4>
                             </td>
                           </tr>
@@ -876,11 +959,9 @@ const content = ({ path }) => {
                     </button>
                   </li>
                   <li
-                    className={`${
-                      tabs[0] ? "previous first hidden disabled" : ""
-                    } ${tabs[1] ? "previous first hidden" : ""} ${
-                      tabs[2] ? "previous first hidden" : ""
-                    } ${tabs[3] ? "previous first hidden" : ""}`}
+                    className={`${tabs[0] ? "previous first hidden disabled" : ""
+                      } ${tabs[1] ? "previous first hidden" : ""} ${tabs[2] ? "previous first hidden" : ""
+                      } ${tabs[3] ? "previous first hidden" : ""}`}
                   >
                     <button
                       aria-label=""
@@ -898,9 +979,8 @@ const content = ({ path }) => {
                     </button>
                   </li>
                   <li
-                    className={`${tabs[0] ? "previous disabled" : ""} ${
-                      tabs[1] ? "previous" : ""
-                    } ${tabs[2] ? "previous" : ""}`}
+                    className={`${tabs[0] ? "previous disabled" : ""} ${tabs[1] ? "previous" : ""
+                      } ${tabs[2] ? "previous" : ""}`}
                   >
                     <button
                       aria-label=""
@@ -912,9 +992,8 @@ const content = ({ path }) => {
                           if (prevState[3]) return [false, false, true, false];
                         })
                       }
-                      className={`btn btn-default btn-cons from-left pull-right ${
-                        tabs[1] || tabs[2] || tabs[3] ? "btn-animated" : ""
-                      }`}
+                      className={`btn btn-default btn-cons from-left pull-right ${tabs[1] || tabs[2] || tabs[3] ? "btn-animated" : ""
+                        }`}
                       type="button"
                     >
                       <span>Previous</span>

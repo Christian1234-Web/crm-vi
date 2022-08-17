@@ -55,7 +55,7 @@ const Content = () => {
   const [projectName, setProjectName] = useState("");
   const [startingDate, setStartingDate] = useState("");
   const [website, setWebsite] = useState("");
-  const [classs,setClasss] = useState('');
+  const [classs, setClasss] = useState('');
   const [show, setShow] = useState(false);
   const [dataThree] = useState(tableThreeData);
   const [columnsThree] = useState(tableThreeColumns);
@@ -75,7 +75,7 @@ const Content = () => {
   }, [stickUpModalSize]);
 
   const [optionsStrike, setOptionsStrike] = useState([])
-  const [strike, setStrike] = useState(true)
+  const [strike, setStrike] = useState('')
 
 
   const [project, setProject] = useState("");
@@ -110,10 +110,6 @@ const Content = () => {
   const handleCloseTodo = () => setTodo(false);
   const handleShowTodo = () => setTodo(true);
 
-  const handleFormSubmit = () => {
-    
-  }
-
 
 
   const fetchBundleList = useCallback(async (page) => {
@@ -121,6 +117,7 @@ const Content = () => {
       setLoading(true);
       const user = await storage.getItem(USER_NAME);
       setUsername(user.username);
+      console.log('malikkkk', user)
       const rs = await axios.get(
         `https://deda-crm-backend.herokuapp.com/unit/all`
       );
@@ -152,13 +149,14 @@ const Content = () => {
     const user = await storage.getItem(USER_NAME);
     const data = [{ date: deadline, description: startDate, subject: investor }];
     const url = `todo/add?userId=${user.id}`
-    console.log(data);
+    // console.log(data);
     try {
       const rs = await request(url, 'POST', true, data);
       setLoading_todo(false);
       // console.log(rs);
       if (rs.success === false) {
         setError_todo(true);
+        fetchTodo();
       } else {
         handleCloseTodo();
         setError_todo(false);
@@ -174,20 +172,25 @@ const Content = () => {
 
   
 
+  let handleFormSubmit = () => {
 
-
-const handleStrike = (e, i) => {
-  console.log('amala', e.target)
-  if (e.target.checked) {
-    optionsStrike[i] ='strikethrough'
-    setOptionsStrike(optionsStrike)
-    console.log('✅ Checkbox is checked', optionsStrike);
-  } else {
-    optionsStrike[i] = ''
-    setOptionsStrike(optionsStrike)
-    console.log('⛔️ Checkbox is NOT checked', optionsStrike);
   }
-}
+
+  
+
+  const handleStrike = (e, i) => {
+    if (e.target.checked) {
+      setStrike('') 
+      optionsStrike[i] = strike
+      setOptionsStrike(optionsStrike)
+    } else {
+      setStrike('strikethrough') 
+      optionsStrike[i] = strike
+      setOptionsStrike(optionsStrike)
+    }
+  }
+
+
 
 
 
@@ -221,9 +224,7 @@ const handleStrike = (e, i) => {
     // setAmount(Number(e.target.value))
     // fetchSpecificBundle(Number(e.target.value))
   };
-  const checkInput = () => {
-    
-  }
+ 
   // const [flipBarNotifyArray, setFlipBarNotifyArray] = useState([]);
   useEffect(() => {
     if (loading) {
@@ -240,10 +241,10 @@ const handleStrike = (e, i) => {
   return (
     <div className="page-content-wrapper ">
       {/* REGISTRATION MODAL */}
-      <StickUpModal 
-      visible={stickUpVisible}
-      className="stickUpModalClass"
-      width={"600"} 
+      <StickUpModal
+        visible={stickUpVisible}
+        className="stickUpModalClass"
+        width={"600"}
       >
         <div className="modal-content-wrapper">
           <div className="modal-content">
@@ -270,7 +271,7 @@ const handleStrike = (e, i) => {
                   </p>
 
                   <div className="form-group-attached">
-                  <div className="row clearfix">
+                    <div className="row clearfix">
                       <div className="col-md-6">
                         <div className="form-group form-group-default">
                           <WithoutMsgValidation
@@ -381,7 +382,7 @@ const handleStrike = (e, i) => {
                         required=""
                       />
                     </div>
-                    
+
                   </div>
                   <br />
                   <div className="row">
@@ -414,8 +415,8 @@ const handleStrike = (e, i) => {
       {/* START PAGE CONTENT */}
 
 
-      <StickUpModal visible={show} width={"600"} effect="fadeInUp" 
-          className="stickUpModalClass"
+      <StickUpModal visible={show} width={"600"} effect="fadeInUp"
+        className="stickUpModalClass"
       >
         <div className="modal-content-wrapper">
           <div className="modal-content">
@@ -576,6 +577,7 @@ const handleStrike = (e, i) => {
           </div>
         </div>
       </StickUpModal>
+    
       {error_todo === false ? <FlipBarNotifyModule
         notifications={flipBarNotifyArray}
         position={'top-right'}
@@ -1239,35 +1241,6 @@ const handleStrike = (e, i) => {
                           {/* completed */}
                           {todos.map((e, i) => {
                             return (
-                              // <div key={e.id} className="task clearfix row ">
-                              //   <div className="task-list-title col-10 justify-content-between">
-                              //     <a
-                              //       href="javascript:void(0);"
-                              //       className="text-color strikethrough"
-                              //       data-task="name"
-                              //     >
-                              //       {e.subject}
-                              //     </a>
-                              //     <i className="fs-14 pg-close hidden"></i>
-                              //   </div>
-                              //   <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center">
-                              //     <input
-                              //       type="checkbox"
-                              //       value="1"
-                              //       id="todocheckbox"
-                              //       data-toggler="task"
-                              //       className="hidden"
-                              //       onChange={() =>
-                              //         setCheckedOption((prevState) => !prevState)
-                              //       }
-                              //       checked={checkedOption}
-                              //     />
-                              //     <label
-                              //       htmlFor="todocheckbox"
-                              //       className=" no-margin no-padding absolute"
-                              //     ></label>
-                              //   </div>
-                              // </div>
                               <div key={e.id} className="task clearfix row">
                                 <div className="task-list-title col-10 justify-content-between">
                                   <a
@@ -1275,11 +1248,14 @@ const handleStrike = (e, i) => {
                                     className={`text-color ${optionsStrike[i]}`}
                                     data-task="name"
                                   >
-                                    {e.subject}aaa
+                                    {e.subject}
                                   </a>
                                   <i className="fs-14 pg-close hidden"></i>
                                 </div>
+                      {/* <input type='checkbox' onClick={() => checkInput(i) }  className="strike_line"
+                                /> */}
                                 <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center"
+                                  // onClick={() => checkInput(i)}
                                 >
                                   <input
                                     type="checkbox"
@@ -1289,7 +1265,6 @@ const handleStrike = (e, i) => {
                                     className="form-check checkbox-circle"
                                     onClick={(e) => handleStrike(e, i)}
                                     // onClick={() => setClasss('strikethrough')}
-                                    
                                   />
                                   <label
                                     htmlFor={`todocheck${i}`}
