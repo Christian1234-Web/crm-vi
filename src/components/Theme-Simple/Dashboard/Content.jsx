@@ -136,6 +136,7 @@ const Content = () => {
     const url = `todo?page=1&limit=10&term=&date=${date}`;
     try {
       const rs = await request(url, 'GET', true);
+      console.log(rs.result);
       setTodos(rs.result);
     }
     catch (err) {
@@ -710,7 +711,7 @@ const Content = () => {
                           <span className="text-success"> hello@anweit.com</span>
                         </p>
                         <br />
-                        
+
                         {/* <div>
                           <div className="profile-img-wrapper m-t-5 inline">
                             <img
@@ -981,14 +982,16 @@ const Content = () => {
                       <div className="row-xs-height ">
                         <div className="col-xs-height col-top relative">
                           <div className="row full-height">
-                            <div className="col-sm-12">
+                            <div className="col-sm-9">
                               <div className="p-l-20 full-height d-flex flex-column justify-content-between">
                                 <h3 className="no-margin p-b-5">947.11</h3>
                                 <p className="small m-t-5 m-b-20">
                                   <span className="label label-white hint-text font-montserrat m-r-5">
                                     Your subscription has expired
                                   </span>
-                                  <span className="fs-12"><a href="/simple/form_wizard" style={{ textDecoration: "none", color: 'inherit' }}>Buy Units</a></span>
+                                  {/* <span className="fs-12"> */}
+                                    <Link to="/simple/form_wizard" style={{ textDecoration: "none", color: 'inherit' }}>Buy Units</Link>
+                                  {/* </span> */}
                                 </p>
                               </div>
                             </div>
