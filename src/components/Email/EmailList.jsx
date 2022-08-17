@@ -79,21 +79,21 @@ const EmailList = ({
                 </Col>
                 <Col xs={5} md={5}>
                   <div className="datetime email-list-date-class">
-                    {new Date(listValue.createdAt).toLocaleTimeString()}
+                    {new Date(listValue.dateTime).toLocaleTimeString()}
                   </div>
                 </Col>
               </Row>
               <Row>
                 <Col xs={12} md={12} className="no-padding">
                   <p className="subject no-margin">
-                    {listValue.from.slice(0, 37)}
+                    {listValue.origin.slice(0, 37)}
                   </p>
                 </Col>
               </Row>
               <Row>
                 <Col xs={12} md={12} className="no-padding">
                   <p className="body no-margin" style={{ color: "#9F9F9F" }}>
-                    {striptags(listValue.body).slice(0, 35)}...
+                    {striptags(listValue.message).slice(0, 35)}...
                   </p>
                 </Col>
               </Row>
@@ -108,7 +108,7 @@ const EmailList = ({
   return (
     <React.Fragment>
       <div className="sticky-date">
-        <span className="email-group-header-date">{group.length === 0 ? '' : new Date(group[0].createdAt).toDateString()} </span>
+        <span className="email-group-header-date">{group.length === 0 ? '' : new Date(group[0].dateTime).toDateString()} </span>
         {/* <span className="email-group-header-date"> 2 Aug</span> */}
       </div>
       <ul className="no-padding mail-list-ul">{emailItem}</ul>

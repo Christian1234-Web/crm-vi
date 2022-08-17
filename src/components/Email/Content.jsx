@@ -27,12 +27,12 @@ const content = ({ toggleHeaderPopup }) => {
   const fetchAllSmsMessages = useCallback(async () => {
     const user = await storage.getItem(USER_NAME);
 
-    const url = `message/all?userId=${user.id}&page=1&limit=10`;
+    const url = `message/all/out`;
     try {
       const rs = await request(url, 'GET', true);
       console.log(rs);
-      setSms_messages(rs.result);
-      setTotal_sms(rs.result.length);
+      setSms_messages(rs.messages);
+      setTotal_sms(rs.messages.length);
     }
     catch (err) {
       console.log(err)

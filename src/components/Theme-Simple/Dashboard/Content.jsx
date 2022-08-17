@@ -74,7 +74,8 @@ const Content = () => {
     if (stickUpModalSize[2]) setStickUpWidth("sm");
   }, [stickUpModalSize]);
 
-
+  const [optionsStrike, setOptionsStrike] = useState([])
+  const [strike, setStrike] = useState('')
 
 
   const [project, setProject] = useState("");
@@ -116,6 +117,7 @@ const Content = () => {
       setLoading(true);
       const user = await storage.getItem(USER_NAME);
       setUsername(user.username);
+      console.log('malikkkk', user)
       const rs = await axios.get(
         `https://deda-crm-backend.herokuapp.com/unit/all`
       );
@@ -168,10 +170,27 @@ const Content = () => {
     }
   };
 
+  
 
   let handleFormSubmit = () => {
 
   }
+
+  
+
+  const handleStrike = (e, i) => {
+    if (e.target.checked) {
+      setStrike('') 
+      optionsStrike[i] = strike
+      setOptionsStrike(optionsStrike)
+    } else {
+      setStrike('strikethrough') 
+      optionsStrike[i] = strike
+      setOptionsStrike(optionsStrike)
+    }
+  }
+
+
 
 
 
@@ -243,7 +262,7 @@ const Content = () => {
               <div
                 className="pull-right"
                 style={{ cursor: "pointer" }}
-                onClick={() => handleCloseForm()}
+                onClick={() => setStickUpVisible(false)}
               >
                 <i className="pg-icon">close</i>
               </div>
@@ -1234,14 +1253,16 @@ const Content = () => {
                                 <div className="task-list-title col-10 justify-content-between">
                                   <a
                                     href="javascript:void(0);"
-                                    className={`text-color subject_  capitalize`}
+                                    // className={`text-color subject_  capitalize`}
+
+                                    className={`text-color ${optionsStrike[i]}`}
                                     data-task="name"
                                   >
                                     {e.subject}
                                   </a>
                                   <i className="fs-14 pg-close hidden"></i>
                                 </div>
-                                {/* <input type='checkbox' onClick={() => checkInput(i) }  className="strike_line"
+                      {/* <input type='checkbox' onClick={() => checkInput(i) }  className="strike_line"
                                 /> */}
                                 <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center"
                                 // onClick={() => checkInput(i)}
@@ -1249,13 +1270,14 @@ const Content = () => {
                                   <input
                                     type="checkbox"
                                     value="1"
-                                    id="todocheck4"
+                                    id={`todocheck${i}`}
                                     data-toggler="task"
-                                    className="hidden strike_line"
-
+                                    className="form-check checkbox-circle"
+                                    onClick={(e) => handleStrike(e, i)}
+                                    // onClick={() => setClasss('strikethrough')}
                                   />
                                   <label
-                                    htmlFor="todocheck4"
+                                    htmlFor={`todocheck${i}`}
                                     className=" no-margin no-padding absolute"
                                   ></label>
                                 </div>

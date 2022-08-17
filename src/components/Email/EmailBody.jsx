@@ -56,7 +56,7 @@ const EmailBody = ({ viewedEmail = null, emailGroups, onSlide = null }) => {
             </div>
             <div className="email-content-header">
               <div className="subject m-b-20 semi-bold mw-80">
-                {emailContent.subject}
+                {`No Subject`}
               </div>
               <div className="fromto row">
                 <div className="col-lg-8 d-flex align-items-center">
@@ -78,16 +78,16 @@ const EmailBody = ({ viewedEmail = null, emailGroups, onSlide = null }) => {
                         }  m-r-10 m-l-10`}
                     >
                       <Button
-                        dropdowntoggle="true"
+                        // dropdowntoggle="true"
                         textalign="center"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded={downDirectionDropDown ? "true" : "false"}
-                        onClick={() =>
-                          setDownDirectionDropDown((prevState) => !prevState)
-                        }
+                        // data-toggle="dropdown"
+                        // aria-haspopup="true"
+                        // aria-expanded={downDirectionDropDown ? "true" : "false"}
+                        // onClick={() =>
+                        //   setDownDirectionDropDown((prevState) => !prevState)
+                        // }
                       >
-                        {emailContent.from}
+                        {emailContent.origin}
                       </Button>
                       <div
                         className="dropdown-menu"
@@ -138,7 +138,7 @@ const EmailBody = ({ viewedEmail = null, emailGroups, onSlide = null }) => {
                 </div>
                 <div className="col-lg-4 d-flex align-items-center text-right sm-text-left">
                   <p className="datetime no-margin small-text full-width">
-                    {new Date(emailContent.createdAt).toLocaleTimeString()}
+                    {new Date(emailContent.dateTime).toLocaleTimeString()}
                   </p>
                 </div>
               </div>
@@ -146,7 +146,7 @@ const EmailBody = ({ viewedEmail = null, emailGroups, onSlide = null }) => {
             <div className="email-content" style={{ width: "96%" }}>
               <div className="clearfix"></div>
               <div className="email-content-body m-t-20 m-b-30">
-                {parse(`${emailContent.body}`)}
+                {parse(`${emailContent.message}`)}
               </div>
               {/* <QuillEditor /> */}
             </div>

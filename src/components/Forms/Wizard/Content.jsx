@@ -415,15 +415,15 @@ const content = ({ path }) => {
                       </div>
                       <br />
                       <div className="row b-a b-grey no-margin">
-                        <div className="col-md-3 p-l-10 sm-padding-15 align-items-center d-flex">
+                        <div className="col-md-6 p-l-10 sm-padding-15 align-items-center d-flex">
                           <div>
                             <h5 className="font-montserrat all-caps small no-margin hint-text bold">
-                              SubTotal (10%)
+                              SubTotal 
                             </h5>
-                            <p className="no-margin">$10</p>
+                            <p className="no-margin"></p>
                           </div>
                         </div>
-                        <div className="col-md-7 col-middle sm-padding-15 align-items-center d-flex">
+                        <div className="col-md-4 col-middle sm-padding-15 align-items-center d-flex">
                           <div>
                             <h5 className="font-montserrat all-caps small no-margin hint-text bold">
                               Tax
@@ -1050,7 +1050,7 @@ const content = ({ path }) => {
       {/* START COPYRIGHT */}
       <Copyright
         year={"2014"}
-        brand={"REVOX"}
+        brand={"CENTIO"}
         reserved={"All rights reserved."}
         terms={"Terms of use"}
         policy={"Privacy Policy"}
