@@ -704,14 +704,14 @@ const Content = () => {
                       <div className="card-body">
                         <h1>Bonjour! <span class="text-success text-capitalize" onClick={() => setStickUpVisible(true)}>{username}</span></h1>
                         <p>
-                          As always, in keeping with our policy of making UX
-                          easier and more user-friendly, we have customized this
-                          feature with a lightweight SVG indicator. Also this is
-                          highly adaptable and offers a range of progress bar
-                          options to suit your preference.{" "}
+                          Find your people. Engage your customers. Build your brand. We
+                          will continue to bridge the gap between you and your clients.
+                          Please learn how you can help us improve your experience.{" "}
+                          <span className="text-success"> hello@anweit.com</span>
                         </p>
                         <br />
-                        <div>
+                        
+                        {/* <div>
                           <div className="profile-img-wrapper m-t-5 inline">
                             <img
                               width="35"
@@ -729,7 +729,7 @@ const Content = () => {
                               <br /> for UI/UX at REVOX
                             </p>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>
@@ -832,7 +832,7 @@ const Content = () => {
 
               <div className="mx-2 widget-11 widget-11-3 card no-border  widget-loader-bar">
                 <div className="card-header">
-                  <div className="card-title">Today's Table</div>
+                  <div className="card-title">recent transactions</div>
                   <div className="card-controls">
                     <ul>
                       <li>
@@ -872,43 +872,39 @@ const Content = () => {
                   <table className="table table-condensed table-hover">
                     <tbody>
                       <tr>
-                        <td className=" fs-12">Purchase CODE #23450</td>
+                        <td className=" fs-12">MONTH SERVICE RENEWAL</td>
                         <td className="text-right">
-                          <span className="hint-text small">dewdrops</span>
+                          <span className="hint-text small">09-07-2022</span>
                         </td>
                         <td className="text-right b-r b-dashed b-grey">
-                          <span className="hint-text small">Qty 1</span>
+                          <span className="hint-text small">JULY</span>
                         </td>
                         <td>
-                          <span className="font-montserrat fs-18">$27</span>
+                          <span className="font-montserrat fs-18">₦25,000.00</span>
                         </td>
                       </tr>
                       <tr>
-                        <td className=" fs-12">Purchase CODE #2345</td>
+                        <td className=" fs-12">BUSINESS PLANS PURCHASE</td>
                         <td className="text-right">
-                          <span className="hint-text small">johnsmith</span>
+                          <span className="hint-text small">09-07-2022</span>
                         </td>
                         <td className="text-right b-r b-dashed b-grey">
-                          <span className="hint-text small">Qty 1</span>
+                          <span className="hint-text small">17000 UNITS</span>
                         </td>
                         <td>
-                          <span className="font-montserrat fs-18 text-primary">
-                            $1000
-                          </span>
+                          <span className="font-montserrat fs-18">₦154,000.00</span>
                         </td>
                       </tr>
                       <tr>
-                        <td className=" fs-12">Purchase CODE #2345</td>
+                        <td className=" fs-12">BUSINESS PLAN PURCHASE</td>
                         <td className="text-right">
-                          <span className="hint-text small">johnsmith</span>
+                          <span className="hint-text small">04-05-2022</span>
                         </td>
                         <td className="text-right b-r b-dashed b-grey">
-                          <span className="hint-text small">Qty 1</span>
+                          <span className="hint-text small">22000 UNITS</span>
                         </td>
                         <td>
-                          <span className="font-montserrat fs-18 text-primary">
-                            $1000
-                          </span>
+                          <span className="font-montserrat fs-18">₦210,000.00</span>
                         </td>
                       </tr>
                     </tbody>
@@ -925,7 +921,7 @@ const Content = () => {
                     </a>
                     <span className="hint-text ">
                       Show more details of{" "}
-                      <a href="javascript:void(0);"> Revox pvt ltd </a>
+                      <a href="javascript:void(0);"> Anewi pvt ltd </a>
                     </span>
                   </p>
                 </div>
@@ -943,7 +939,7 @@ const Content = () => {
                           <div className="card-header  top-left top-right">
                             <div className="card-title">
                               <span className="font-montserrat fs-11 all-caps">
-                               Units Balance{" "}
+                                Units Balance{" "}
                               </span>
                             </div>
                             <div className="card-controls">
@@ -990,7 +986,7 @@ const Content = () => {
                                 <h3 className="no-margin p-b-5">947.11</h3>
                                 <p className="small m-t-5 m-b-20">
                                   <span className="label label-white hint-text font-montserrat m-r-5">
-                                   Your subscription has expired
+                                    Your subscription has expired
                                   </span>
                                   <span className="fs-12"><a href="/simple/form_wizard" style={{ textDecoration: "none", color: 'inherit' }}>Buy Units</a></span>
                                 </p>
@@ -1237,7 +1233,7 @@ const Content = () => {
                                 <div className="task-list-title col-10 justify-content-between">
                                   <a
                                     href="javascript:void(0);"
-                                    className={`text-color subject_ `}
+                                    className={`text-color subject_  capitalize`}
                                     data-task="name"
                                   >
                                     {e.subject}
@@ -1385,7 +1381,7 @@ const Content = () => {
       {/* START COPYRIGHT */}
       <Copyright
         year={"2014"}
-        brand={"REVOX"}
+        brand={"ANEWIT"}
         reserved={"All rights reserved."}
         terms={"Terms of use"}
         policy={"Privacy Policy"}

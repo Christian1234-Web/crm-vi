@@ -307,8 +307,8 @@ const Content = ({ location, inboxHeader, setInboxHeader }) => {
           <li className="inline">{emailEdit}</li>
         </ul>
         <div className="pull-left p-r-10 fs-14 d-lg-inline-block d-none m-l-20">
-          <span className="semi-bold">David</span>{" "}
-          <span className="text-color">Nest</span>
+          <span className="semi-bold">Deda</span>{" "}
+          <span className="text-color">Admin</span>
         </div>
         <div style={{ width: '3.5rem' }}
           className={`dropdown pull-right d-lg-block d-none ${shouldShowProfile ? "show" : "" 

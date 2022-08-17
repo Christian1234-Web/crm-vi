@@ -130,7 +130,7 @@ const content = ({ toggleHeaderPopup }) => {
       <div className="pt-4">
         <Copyright
           year={"2014"}
-          brand={"REVOX"}
+          brand={"ANEWIT"}
           reserved={"All rights reserved."}
           terms={"Terms of use"}
           policy={"Privacy Policy"}
