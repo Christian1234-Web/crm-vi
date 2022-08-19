@@ -13,7 +13,6 @@ const handleChange = (event) => {
     note.textContent = event.currentTarget.innerText;
     note.date = new Date();
     note.id = Math.random().toString(20).replace('0.', '');
-    console.log(note.content, note.textContent);
 }
 
 const NoteDetail = (props) => {
@@ -63,7 +62,7 @@ const NoteDetail = (props) => {
                     <div className="content">
                         <ContentEditable
                             className="quick-note-editor full-width full-height js-input"
-                            html={(props.newContent && props.newContent.content) || ""}
+                            html={(props.newContent && props.newContent.note) || ""}
                             disabled={false}       // use true to disable editing
                             onChange={handleChange} // handle innerHTML change
                             placeholder={"Add note and click '<' to save"}

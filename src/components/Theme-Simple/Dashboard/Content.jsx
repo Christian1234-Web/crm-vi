@@ -192,18 +192,18 @@ const Content = () => {
       const user = await storage.getItem(USER_NAME);
       const rs = await axios.patch(
         `https://deda-crm-backend.herokuapp.com/user/prompt/update/${user.id}`, {
-          surname: firstName,
-          otherNames: lastName,
-          phone: phoneNumber,
-          whatsappNum: whatsappNumber,
-          address: address,
-          company: nameOfOrganization
-        }
+        surname: firstName,
+        otherNames: lastName,
+        phone: phoneNumber,
+        whatsappNum: whatsappNumber,
+        address: address,
+        company: nameOfOrganization
+      }
       );
 
-    if(rs.data.success){
-      setVisibility(true)
-    }
+      if (rs.data.success) {
+        setVisibility(true)
+      }
       // const { result, ...meta } = rs.data;
       // setMeta(meta);
       setLoading(false);
@@ -287,175 +287,175 @@ const Content = () => {
   return (
     <div className="page-content-wrapper ">
       {/* REGISTRATION MODAL */}
-<StickUpModal
-          visible={!visibility}
-          className="stickUpModalClass"
-          width={"600"}
-        >
-          <div className="modal-content-wrapper">
-            <div className="modal-content">
-              <div className="modal-top">
-                <div
-                  className="pull-right"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setStickUpVisible(false)}
-                >
-                  <i className="pg-icon">close</i>
-                </div>
+      <StickUpModal
+        visible={!visibility}
+        className="stickUpModalClass"
+        width={"600"}
+      >
+        <div className="modal-content-wrapper">
+          <div className="modal-content">
+            <div className="modal-top">
+              <div
+                className="pull-right"
+                style={{ cursor: "pointer" }}
+                onClick={() => setStickUpVisible(false)}
+              >
+                <i className="pg-icon">close</i>
               </div>
-              <div className="modal-body">
-                <div>
-                  <ValidatorForm
-                    instantValidate={true}
-                    onSubmit={e => handleFormSubmit(e)}
-                  >
-                    <h3 className="mw-80">Complete Your Profile</h3>
-                    <p className="mw-80 m-b-25">
-                    Find your people. Engage your customers. Build your brand. 
-                    We will continue to bridge the gap between you and your clients. 
+            </div>
+            <div className="modal-body">
+              <div>
+                <ValidatorForm
+                  instantValidate={true}
+                  onSubmit={e => handleFormSubmit(e)}
+                >
+                  <h3 className="mw-80">Complete Your Profile</h3>
+                  <p className="mw-80 m-b-25">
+                    Find your people. Engage your customers. Build your brand.
+                    We will continue to bridge the gap between you and your clients.
                     Please learn how you can help us improve your experience. hello@anweit.com
-                    </p>
-  
-                    <div className="form-group-attached">
-                      <div className="row clearfix">
-                        <div className="col-md-6">
-                          <div className="form-group form-group-default">
-                            <WithoutMsgValidation
-                              name="startDate"
-                              type="text"
-                              value={accountUser?.username}
-                              validators={["required"]}
-                              errorMessages={["This field is required"]}
-                              className={"form-control date"}
-                              label={"username"}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-group-default">
+                  </p>
+
+                  <div className="form-group-attached">
+                    <div className="row clearfix">
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
                           <WithoutMsgValidation
-                              name="startDate"
-                              type="text"
-                              value={accountUser?.email}
-                              validators={["required"]}
-                              errorMessages={["This field is required"]}
-                              className={"form-control date"}
-                              label={"email"}
-                            />
-                          </div>
+                            name="startDate"
+                            type="text"
+                            value={accountUser?.username}
+                            validators={["required"]}
+                            errorMessages={["This field is required"]}
+                            className={"form-control date"}
+                            label={"username"}
+                          />
                         </div>
                       </div>
-                      <div className="form-group form-group-default">
-                        <InputWithLabel
-                          label="Name of Organization"
-                          onChange={(e) => setNameOfOrganization(e.target.value)}
-                          value={nameOfOrganization}
-                          type="text"
-                          className="form-control "
-                          icon="fa-info"
-                          required=""
-                        />
-                      </div>
-                      <div className="row clearfix">
-                        <div className="col-md-6">
-                          <div className="form-group form-group-default">
-                            <InputWithLabel
-                              onChange={(e) => setFirstName(e.target.value)}
-                              name="startDate"
-                              type="text"
-                              value={firstName}
-                              validators={["required"]}
-                              errorMessages={["This field is required"]}
-                              className={"form-control date"}
-                              label={"First Name"}
-                              require="true"
-                            />
-                          </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <WithoutMsgValidation
+                            name="startDate"
+                            type="text"
+                            value={accountUser?.email}
+                            validators={["required"]}
+                            errorMessages={["This field is required"]}
+                            className={"form-control date"}
+                            label={"email"}
+                          />
                         </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-group-default">
-                            <InputWithLabel
-                              label="Last Name"
-                              onChange={(e) => setLastName(e.target.value)}
-                              value={lastName}
-                              type="text"
-                              id="end-date"
-                              name="endDate"
-                              className="form-control date "
-                              required=""
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-group-default">
-                            <InputWithLabel
-                              label="Phone Number"
-                              onChange={(e) => setPhoneNumber(e.target.value)}
-                              value={phoneNumber}
-                              type="text"
-                              id="end-date"
-                              name="endDate"
-                              className="form-control date "
-                              required=""
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-group-default">
-                            <InputWithLabel
-                              label="Whatsapp Number"
-                              onChange={(e) => setWhatsappNumber(e.target.value)}
-                              value={whatsappNumber}
-                              type="text"
-                              id="end-date"
-                              name="endDate"
-                              className="form-control date "
-                              required=""
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="form-group form-group-default">
-                        <InputWithLabel
-                          label="Address"
-                          onChange={(e) => setAddress(e.target.value)}
-                          value={address}
-                          type="text"
-                          className="form-control "
-                          required=""
-                        />
-                      </div>
-  
-                    </div>
-                    <br />
-                    <div className="row">
-                      <div className="col-8">
-                        <div className="form-check primary m-t-0">
-                          <input type="checkbox" value="1" id="checkbox-agree" />
-                          <label htmlFor="checkbox-agree">
-                            I hereby certify that the information above is true
-                            and accurate
-                          </label>
-                        </div>
-                      </div>
-                      <div className="col-4">
-                        <button
-                          aria-label=""
-                          className="btn btn-primary pull-right"
-                          type="submit"
-                          onClick={e => handleUserRegistration(e)}
-                        >
-                          Update Profile
-                        </button>
                       </div>
                     </div>
-                  </ValidatorForm>
-                </div>
+                    <div className="form-group form-group-default">
+                      <InputWithLabel
+                        label="Name of Organization"
+                        onChange={(e) => setNameOfOrganization(e.target.value)}
+                        value={nameOfOrganization}
+                        type="text"
+                        className="form-control "
+                        icon="fa-info"
+                        required=""
+                      />
+                    </div>
+                    <div className="row clearfix">
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            onChange={(e) => setFirstName(e.target.value)}
+                            name="startDate"
+                            type="text"
+                            value={firstName}
+                            validators={["required"]}
+                            errorMessages={["This field is required"]}
+                            className={"form-control date"}
+                            label={"First Name"}
+                            require="true"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            label="Last Name"
+                            onChange={(e) => setLastName(e.target.value)}
+                            value={lastName}
+                            type="text"
+                            id="end-date"
+                            name="endDate"
+                            className="form-control date "
+                            required=""
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            label="Phone Number"
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                            value={phoneNumber}
+                            type="text"
+                            id="end-date"
+                            name="endDate"
+                            className="form-control date "
+                            required=""
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            label="Whatsapp Number"
+                            onChange={(e) => setWhatsappNumber(e.target.value)}
+                            value={whatsappNumber}
+                            type="text"
+                            id="end-date"
+                            name="endDate"
+                            className="form-control date "
+                            required=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="form-group form-group-default">
+                      <InputWithLabel
+                        label="Address"
+                        onChange={(e) => setAddress(e.target.value)}
+                        value={address}
+                        type="text"
+                        className="form-control "
+                        required=""
+                      />
+                    </div>
+
+                  </div>
+                  <br />
+                  <div className="row">
+                    <div className="col-8">
+                      <div className="form-check primary m-t-0">
+                        <input type="checkbox" value="1" id="checkbox-agree" />
+                        <label htmlFor="checkbox-agree">
+                          I hereby certify that the information above is true
+                          and accurate
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-4">
+                      <button
+                        aria-label=""
+                        className="btn btn-primary pull-right"
+                        type="submit"
+                        onClick={e => handleUserRegistration(e)}
+                      >
+                        Update Profile
+                      </button>
+                    </div>
+                  </div>
+                </ValidatorForm>
               </div>
             </div>
           </div>
-        </StickUpModal>
-      
+        </div>
+      </StickUpModal>
+
 
       {/* START PAGE CONTENT */}
 
@@ -482,7 +482,7 @@ const Content = () => {
                 >
                   <h3 className="mw-80">Complete Your Profile</h3>
                   <p className="mw-80 m-b-25">
-                  Find your people. Engage your customers. Build your brand. We will continue to bridge the gap between you and your clients. Please learn how you can help us improve your experience. hello@anweit.com
+                    Find your people. Engage your customers. Build your brand. We will continue to bridge the gap between you and your clients. Please learn how you can help us improve your experience. hello@anweit.com
                   </p>
 
                   <div className="form-group-attached">
