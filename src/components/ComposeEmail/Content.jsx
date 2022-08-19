@@ -7,6 +7,7 @@ import AsyncSelect from 'react-select/async/dist/react-select.esm';
 import Select, { components } from 'react-select';
 import makeAnimated from 'react-select/animated';
 import Copyright from "../ui/Footer/Copyright/Component";
+import FlipBarNotifyModule from "../UIElements/Notification/FlipBarNotification/FlipBarNotifyModule";
 
 import Label from "./Label";
 import "../Email/style.css";
@@ -28,6 +29,7 @@ const Content = ({ toggleHeaderPopup }) => {
     const [contacts, setContacts] = useState([]);
     const [numbers, setNumbers] = useState([]);
     const [emails, setEmails] = useState([]);
+    const [error_todo, setError_todo] = useState(null);
 
 
 
@@ -36,6 +38,9 @@ const Content = ({ toggleHeaderPopup }) => {
         false,
         false,
     ]);
+
+    const flipBarNotifyArray = [{ type: 'success', desc: 'Your Messages has been sent' }];
+
     const fetchPatientList = async q => {
         try {
             const url = `https://emr-back-end.herokuapp.com/patient/find?q=${q}`;
@@ -71,9 +76,16 @@ const Content = ({ toggleHeaderPopup }) => {
 
         try {
             const rs = await request(url, 'POST', true, data);
+            if (rs.success === false) {
+                setError_todo(true);
+            } else {
+                setError_todo(false);
+            }
             // console.log(rs);
         } catch (err) {
             console.log(err);
+            setError_todo(false);
+
         }
     }
 
@@ -83,6 +95,11 @@ const Content = ({ toggleHeaderPopup }) => {
 
     return (
         <div className="page-content-wrapper full-height">
+            {error_todo === false ? <FlipBarNotifyModule
+                notifications={flipBarNotifyArray}
+                position={'top-right'}
+                style={{ top: "59px" }}
+            /> : ''}
             <div className="content full-height">
                 {/* Start Secondary side bar nav */}
                 <Nav to="compose_email" toggleHeaderPopup={toggleHeaderPopup} />

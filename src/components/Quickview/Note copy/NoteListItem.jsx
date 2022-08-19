@@ -26,8 +26,7 @@ const NoteListItem = (props) => {
                         {props.date}
                     </Moment>
                 </span>
-                <a href="javascript:void(0);" data-navigate="view" data-view-port="#note-views"
-                    data-view-animation="push"><i className="fa fa-chevron-right"></i></a>
+                <a href="javascript:void(0);" data-navigate="view" data-view-port="#note-views" data-view-animation="push"><i className="fa fa-chevron-right"></i></a>
                 { /* END Note Date */ }
             </div>
             { /* END Note Details */ }

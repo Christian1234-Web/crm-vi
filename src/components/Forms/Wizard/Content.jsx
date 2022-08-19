@@ -51,6 +51,8 @@ const content = ({ path }) => {
   const [bundleArr] = useState([]);
 
   const total_Price = bundleArr.reduce((accumulator, current) => accumulator + current.price * 1, 0)
+  const sub_total_Price = bundleArr.reduce((accumulator, current) => accumulator + current.price + 1, 0)
+
 
   let countryOptionsList = () => {
     return (
@@ -115,6 +117,11 @@ const content = ({ path }) => {
   let handleFormSubmit = () => {
     //Call this function on form submit with no errors
   };
+
+
+
+  // console.log(new Intl.NumberFormat().format(2500));
+
 
   const fetchSpecificBundle = async amountInputed => {
     if (amountInputed) {
@@ -259,15 +266,14 @@ const content = ({ path }) => {
                       {/* <span className="hidden-block"> */}
                       <Icon path={mdiCart} size="2em" />
                       {/* </span> */}
-                      <h2>Your Bags are ready to check out!</h2>
+                      <h2>Units Purchase Calculator!</h2>
                       <p>
-                        Discover goods you'll love from brands that inspire. The
-                        easiest way to open your own online store. Discover
-                        amazing stuff or open your own store for free!
+                        <span class="text-success">TIP: </span>
+                        Patrela provides a complete help desk experience with a fully customizable
+                        knowledge base that’s available 24/7, even if your team isn’t.
                       </p>
-                      <p className="small hint-text">
-                        Below is a sample page for your cart , Created using
-                        pages design UI Elementes
+                      <p className="small hint-text text-success">
+                        Type in the amount of units you wish to purchase and find the cost.
                       </p>
                       <div>
                         <div className="d-flex justify-content-center align-items-center">
@@ -277,16 +283,14 @@ const content = ({ path }) => {
                                 <td className="font-montserrat all-caps fs-12 w-25">
                                   VOLUME
                                 </td>
-                                <td className="font-montserrat all-caps fs-12" style={{ width: '38%' }}>BUNDLE</td>
-                                <td className="text-right  w-25">
+                                <td className="font-montserrat all-caps fs-12" style={{ width: '60%', paddingLeft: '20px' }}>BUNDLE</td>
+                                <td className="text-right  b-r b-dashed b-grey w-25">
                                   <span className="hint-text small"> PRICE</span>
                                 </td>
-                                <td className="text-right b-r b-dashed b-grey w-25">
+                                <td className="text-right w-25">
                                   <span className="hint-text small">UNIT</span>
                                 </td>
-                                <td className="text-right w-25">
-                                  <span className="hint-text small">ACTION</span>
-                                </td>
+
                               </tr>
                             </thead>
                             <tbody>
@@ -297,38 +301,40 @@ const content = ({ path }) => {
                                   className="font-montserrat all-caps fs-12 w-25">
                                   0
                                 </td>
-                                <td className="hidden-lg" style={{ width: '37%' }}>
+                                <td className="hidden-lg">
                                   <span className="hint-text all-caps small">
                                     {waiting ? <ProgressTwo /> : bundleName}
                                   </span>
                                 </td>
-                                <td className="text-right  w-25">
-                                  <span className="hint-text small">
+                                <td className="text-right  b-r b-dashed b-grey">
+                                  <span className="hint-text small ">
                                     {waiting ? <ProgressTwo /> : totalPrice}
                                   </span>
                                 </td>
-                                <td className="text-right b-r b-dashed b-grey" >
-                                  <span className="hint-text small">
-                                    {waiting ? (
-                                      <div>
-                                        <ProgressTwo />
-                                      </div>
-                                    ) : (
-                                      bundleUnitPrice
-                                    )}
+                                <td className="text-right" >
+                                  <span className="hint-text small d-flex justify-content-between"
+                                  >
+                                    <div>
+                                      {waiting ? (
+                                        <div>
+                                          <ProgressTwo />
+
+                                        </div>
+                                      ) : (
+                                        bundleUnitPrice
+
+                                      )}
+                                    </div>
+                                    <i className="pg-icon pull-right" style={{ cursor: 'pointer' }} onClick={() => {
+                                      let x = bundleArr.find(x => x.price === selectedBundle.price);
+                                      if (!x) {
+                                        bundleArr.push({ ...selectedBundle, price: totalPrice });
+                                      }
+                                      setCount(count + 1);
+                                    }}>add</i>
                                   </span>
                                 </td>
-                                <td className="text-right b-r b-dashed b-grey" >
-                                  <span className="hint-text small" style={{ cursor: 'pointer' }} onClick={() => {
-                                    let x = bundleArr.find(x => x.id === selectedBundle.id);
-                                    if (!x) {
-                                      bundleArr.push({ ...selectedBundle, price: totalPrice });
-                                    }
-                                    setCount(count + 1);
-                                  }}>
-                                    <i className="pg-icon">add</i>
-                                  </span>
-                                </td>
+
                               </tr>
                             </tbody>
                           </table>
@@ -344,7 +350,7 @@ const content = ({ path }) => {
 
                           {bundleArr.map((e, i) => (
                             <tr key={e.id} className={item1Close ? `d-none` : ``}>
-                              <td className="col-lg-8 col-md-6 col-sm-7 ">
+                              <td className="col-lg-5 col-md-6 col-sm-6 ">
                                 <a
                                   href="javascript:void(0);"
                                   className="remove-item"
@@ -362,29 +368,28 @@ const content = ({ path }) => {
                                 </span>
                                 {/* <span className="m-l-10 ">Dashboard UI Pack</span> */}
                               </td>
-                              <td className=" col-lg-4 col-md-4 col-sm-4 text-right">
+                              <td className="col-lg-3 col-md-3 col-sm-3 text-right">
                                 <span>Qty {e.unitQuantity}</span>
                               </td>
-                              <td className=" col-lg-4 col-md-4 col-sm-2 text-right">
-                                <h4 className="text-primary no-margin font-montserrat">
-                                  ₦{e.price}
+                              <td className=" col-lg-6 col-md-5 col-sm-2 text-right">
+                                <h4 className="text-primary no-margin font-montserrat" style={{ fontSize: '20px' }}>
+                                  ₦{new Intl.NumberFormat().format(parseInt(e.price))}.00
                                 </h4>
                               </td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
-                      <h5>Donation</h5>
+                      <h5>Discount</h5>
                       <div className="row">
                         <div className="col-lg-7 col-md-6">
                           <p className="no-margin">
-                            Donate now and give clean, safe water to those in
-                            need.{" "}
+                            Use the quick bulk buy and get 20% off .{" "}
                           </p>
                           <p className="small hint-text">
-                            100% of your donation goes to the field, and you can
-                            track the progress of every dollar spent.{" "}
-                            <a href="javascript:void(0);">Click Here</a>
+                            If you're looking to buy above 800,000 units, please send us an
+                            email at.{" "}
+                            <a href="javascript:void(0);">hello@patrela.com</a>
                           </p>
                         </div>
                         <div className="col-lg-5 col-md-6">
@@ -392,50 +397,59 @@ const content = ({ path }) => {
                             className="btn-group btn-group-toggle"
                             data-toggle="buttons"
                           >
-                            <label className="btn btn-default active">
-                              <input
-                                type="radio"
-                                name="options"
-                                onChange={() => { }}
-                                id="option1"
-                                checked=""
-                              />{" "}
-                              <span className="fs-16"> ₦0</span>
-                            </label>
+
                             <label className="btn btn-default">
                               <input type="radio" name="options" id="option2" />{" "}
-                              <span className="fs-16"> ₦10</span>
+                              <span className="fs-16"
+                                onClick={() => {
+                                  // let x = bundleArr.find(x => x.price === selectedBundle.price);
+                                  // if (!x) {
+                                    let ob60 = { amount: 7, id: 7, name: 'Business Premium', unitQuantity: 15000, price: 420000 }
+                                    bundleArr.push(ob60);
+                                  // }
+                                  setCount(count + 1);
+                                }}
+                              > 60,000 <span className="small hint-text text-success">units</span></span>
                             </label>
                             <label className="btn btn-default">
                               <input type="radio" name="options" id="option3" />{" "}
-                              <span className="fs-16"> ₦20</span>
+                              <span className="fs-16"
+                                onClick={() => {
+                                  // let x = bundleArr.find(x => x.price === x.price);
+                                  // if (!x) {
+                                  let ob80 = { amount: 7, id: 7, name: 'Business Premium', unitQuantity: 15000, price: 560000 };
+                                  bundleArr.push(ob80);
+                                  // }
+                                  setCount(count + 1);
+                                }}
+                              > 80,000 <span className="small hint-text text-success">units</span></span>
                             </label>
                           </div>
                         </div>
                       </div>
                       <br />
                       <div className="row b-a b-grey no-margin">
-                        <div className="col-md-6 p-l-10 sm-padding-15 align-items-center d-flex">
+                        <div className="col-md-5 p-l-10 sm-padding-15 align-items-center d-flex">
                           <div>
                             <h5 className="font-montserrat all-caps small no-margin hint-text bold">
-                              SubTotal 
+                              SubTotal
                             </h5>
-                            <p className="no-margin"></p>
+                            <p className="no-margin"> ₦{new Intl.NumberFormat().format(parseInt(total_Price))}.00</p>
                           </div>
                         </div>
-                        <div className="col-md-4 col-middle sm-padding-15 align-items-center d-flex">
+                        <div className="col-md-3 col-middle sm-padding-15 align-items-center d-flex">
                           <div>
                             <h5 className="font-montserrat all-caps small no-margin hint-text bold">
                               Tax
                             </h5>
-                            <p className="no-margin"> ₦0</p>
+                            <p className="no-margin"> ₦0.00</p>
                           </div>
                         </div>
-                        <div className="col-md-2 text-right bg-primary padding-10">
+                        <div className="col-md-4 text-right bg-primary padding-10">
                           <h5 className="font-montserrat all-caps small no-margin hint-text text-white bold">
                             Total
                           </h5>
-                          <h4 className="no-margin text-white"> ₦{total_Price}</h4>
+                          <h4 className="no-margin text-white"> ₦{new Intl.NumberFormat().format(parseInt(sub_total_Price))}.00</h4>
                         </div>
                       </div>
                     </div>
@@ -461,8 +475,8 @@ const content = ({ path }) => {
                         use.
                       </p>
                       <p className="small hint-text">
-                        Below is a sample page for your cart , Created using
-                        pages design UI Elementes
+                        {/* Below is a sample page for your cart , Created using
+                        pages design UI Elementes */}
                       </p>
                     </div>
                   </div>
@@ -614,39 +628,39 @@ const content = ({ path }) => {
                     <div className="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
                       <h2>We Secured Your Line</h2>
                       <p>
-                        Below is a sample page for your cart , Created using
-                        pages design UI Elementes
+                        Below is a tabular preview of your cart ,
+                        Please preview and proceed to make payment using our secure channel.
                       </p>
-                      <p className="small hint-text">
-                        Below is a sample page for your cart , Created using
-                        pages design UI Elementes
+                      <p className="small hint-text text-success">
+                        TIP: Customers will be able to find what they’re looking
+                        for and instantly receive suggestions as they type.
                       </p>
                       <table className="table table-condensed">
                         <tbody>
                           {bundleArr.map((e, i) => (
                             <tr key={e.id} className={item1Close ? `d-none` : ``}>
-                              <td className="col-lg-8 col-md-6 col-sm-7 ">
+                              <td className="col-lg-6 col-md-6 col-sm-7 ">
 
                                 <span className="m-l-10 font-montserrat fs-11 all-caps">
                                   {e.name}
                                 </span>
-                                <span className="m-l-10 ">Dashboard UI Pack</span>
+                                {/* <span className="m-l-10 ">Dashboard UI Pack</span> */}
                               </td>
                               <td className=" col-lg-4 col-md-4 col-sm-4 text-right">
                                 <span>Qty {e.unitQuantity}</span>
                               </td>
-                              {/* <td className=" col-lg-4 col-md-4 col-sm-2 text-right">
-                                <h4 className="text-primary no-margin font-montserrat">
-                                  ₦{e.price}
+                              <td className=" col-lg-6 col-md-4 col-sm-2 text-right">
+                                <h4 className="text-primary no-margin font-montserrat" style={{ fontSize: '20px' }}>
+                                  ₦{new Intl.NumberFormat().format(parseInt(e.price))}.00
                                 </h4>
-                              </td> */}
+                              </td>
                             </tr>
                           ))}
 
                           <tr>
-                            <td colSpan="2" className=" col-md-3 text-right">
-                              <h4 className="text-primary no-margin font-montserrat">
-                                ₦{total_Price}
+                            <td colSpan="3" className=" col-md-3 text-right">
+                              <h4 className="text-primary no-margin font-montserrat ">
+                                ₦{new Intl.NumberFormat().format(parseInt(total_Price))}.00
                               </h4>
                             </td>
                           </tr>

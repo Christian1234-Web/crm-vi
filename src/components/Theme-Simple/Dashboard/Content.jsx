@@ -170,21 +170,21 @@ const Content = () => {
     }
   };
 
-  
+
 
   let handleFormSubmit = () => {
 
   }
 
-  
+
 
   const handleStrike = (e, i) => {
     if (e.target.checked) {
-      setStrike('') 
+      setStrike('')
       optionsStrike[i] = strike
       setOptionsStrike(optionsStrike)
     } else {
-      setStrike('strikethrough') 
+      setStrike('strikethrough')
       optionsStrike[i] = strike
       setOptionsStrike(optionsStrike)
     }
@@ -890,6 +890,30 @@ const Content = () => {
                   <table className="table table-condensed table-hover">
                     <tbody>
                       <tr>
+                        <td className=" fs-12">BUSINESS PLANS PURCHASE</td>
+                        <td className="text-right">
+                          <span className="hint-text small">09-08-2022</span>
+                        </td>
+                        <td className="text-right b-r b-dashed b-grey">
+                          <span className="hint-text small">14000 UNITS</span>
+                        </td>
+                        <td>
+                          <span className="font-montserrat fs-18">₦98,000.00</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className=" fs-12">MONTH SERVICE RENEWAL</td>
+                        <td className="text-right">
+                          <span className="hint-text small">09-08-2022</span>
+                        </td>
+                        <td className="text-right b-r b-dashed b-grey">
+                          <span className="hint-text small">JULY</span>
+                        </td>
+                        <td>
+                          <span className="font-montserrat fs-18">₦25,000.00</span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td className=" fs-12">MONTH SERVICE RENEWAL</td>
                         <td className="text-right">
                           <span className="hint-text small">09-07-2022</span>
@@ -1001,13 +1025,17 @@ const Content = () => {
                           <div className="row full-height">
                             <div className="col-sm-9">
                               <div className="p-l-20 full-height d-flex flex-column justify-content-between">
-                                <h3 className="no-margin p-b-5">947.11</h3>
+                                <div className="d-flex align-items-center">
+                                  <h3 className="no-margin p-b-5">98,947.11</h3>
+                                  <Link className="small ml-2" to="/simple/form_wizard" style={{ textDecoration: "none", color: '#fff' }}>Buy Units</Link>
+                                </div>
+
                                 <p className="small m-t-5 m-b-20">
                                   <span className="label label-white hint-text font-montserrat m-r-5">
-                                    Your subscription has expired
+                                    29 days remaining
                                   </span>
                                   {/* <span className="fs-12"> */}
-                                    <Link to="/simple/form_wizard" style={{ textDecoration: "none", color: 'inherit' }}>Buy Units</Link>
+                                  <Link to="#" style={{ textDecoration: "none", color: 'inherit' }}>Renew</Link>
                                   {/* </span> */}
                                 </p>
                               </div>
@@ -1262,7 +1290,7 @@ const Content = () => {
                                   </a>
                                   <i className="fs-14 pg-close hidden"></i>
                                 </div>
-                      {/* <input type='checkbox' onClick={() => checkInput(i) }  className="strike_line"
+                                {/* <input type='checkbox' onClick={() => checkInput(i) }  className="strike_line"
                                 /> */}
                                 <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center"
                                 // onClick={() => checkInput(i)}
@@ -1274,7 +1302,7 @@ const Content = () => {
                                     data-toggler="task"
                                     className="form-check checkbox-circle"
                                     onClick={(e) => handleStrike(e, i)}
-                                    // onClick={() => setClasss('strikethrough')}
+                                  // onClick={() => setClasss('strikethrough')}
                                   />
                                   <label
                                     htmlFor={`todocheck${i}`}

@@ -1,0 +1,24 @@
+.full-height {
+  height: 100%;
+}
+
+.note-add-placeholder {
+  text-align: center !important;
+}
+
+[contenteditable="true"]:empty:before {
+  content: attr(placeholder);
+  display: block;
+  color: #aaa;
+}
+
+.toolbar {
+  height: 35px !important;
+}
+
+.note-add-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
