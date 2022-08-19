@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import "./style.css";
 import QuickViewAction from "../../../redux/actions";
+import SSRStorage from '../../../services/storage';
+import { USER_NAME } from "../../../services/constants";
+import { useEffect } from "react";
+const storage = new SSRStorage();
 
 const Content = ({ location, inboxHeader, setInboxHeader }) => {
   let path = location.pathname;
@@ -66,6 +70,23 @@ const Content = ({ location, inboxHeader, setInboxHeader }) => {
       "sidebar-visible"
     );
     document.body.classList.add("dashboard");
+  }
+  const [user, setUser] = useState(null)
+
+  const fetchUserDetails = async () => {
+    const user = await storage.getItem(USER_NAME);
+    setUser(user)
+  }
+  
+  useEffect(() => {
+    fetchUserDetails()
+  }, [])
+  
+  
+  const handleLogout = async () => {
+    console.log('ahhhhhhhh')
+    const user = await storage.removeItem(USER_NAME);
+
   }
 
   return (
@@ -307,8 +328,8 @@ const Content = ({ location, inboxHeader, setInboxHeader }) => {
           <li className="inline">{emailEdit}</li>
         </ul>
         <div className="pull-left p-r-10 fs-14 d-lg-inline-block d-none m-l-20">
-          <span className="semi-bold">Deda</span>{" "}
-          <span className="text-color">Admin</span>
+          <span className="semi-bold">{user?.surname == null ? user?.username : user?.surname }</span>{" "}
+          <span className="semi-bold">{user?.othernames == null ? '' : user?.othernames }</span>{" "}
         </div>
         <div style={{ width: '3.5rem' }}
           className={`dropdown pull-right d-lg-block d-none ${shouldShowProfile ? "show" : "" 
@@ -345,7 +366,7 @@ const Content = ({ location, inboxHeader, setInboxHeader }) => {
             <a href="javascript:void(0);" className="dropdown-item">
               <span>
                 Signed in as <br />
-                <b>David Aunsberg</b>
+                <b>{user?.surname} {user?.othernames}</b>
               </span>
             </a>
             <div className="dropdown-divider"></div>
@@ -353,27 +374,21 @@ const Content = ({ location, inboxHeader, setInboxHeader }) => {
               Your Profile
             </a>
             <a href="javascript:void(0);" className="dropdown-item">
-              Your Activity
-            </a>
-            <a href="javascript:void(0);" className="dropdown-item">
               Your Archive
             </a>
             <div className="dropdown-divider"></div>
-            <a href="javascript:void(0);" className="dropdown-item">
-              Features
-            </a>
             <a href="javascript:void(0);" className="dropdown-item">
               Help
             </a>
             <a href="javascript:void(0);" className="dropdown-item">
               Settings
             </a>
-            <a href="javascript:void(0);" className="dropdown-item">
+            <a href="/" className="dropdown-item" onClick={handleLogout}>
               Logout
             </a>
             <div className="dropdown-divider"></div>
             <span className="dropdown-item fs-12 hint-text">
-              Last edited by David
+              Last Login by {user?.surname}
               <br />
               on Friday at 5:27PM
             </span>

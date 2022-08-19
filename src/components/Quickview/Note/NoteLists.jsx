@@ -8,6 +8,7 @@ const NoteLists = (props) => {
             <PerfectScrollbar component="ul">
                 { /* BEGIN Note Item */}
                 {props.list.map((note, index) => {
+                    console.log(props.list);
                     return (
                         <NoteListItem
                             key={index}
