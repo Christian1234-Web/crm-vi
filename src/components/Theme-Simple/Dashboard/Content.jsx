@@ -1065,7 +1065,7 @@ const Content = () => {
 
                                 <p className="small m-t-5 m-b-20">
                                   <span className="label label-white hint-text font-montserrat m-r-5">
-                                    29 days remaining
+                                    28 days remaining
                                   </span>
                                   {/* <span className="fs-12"> */}
                                   <Link to="#" style={{ textDecoration: "none", color: 'inherit' }}>Renew</Link>
