@@ -5,10 +5,6 @@ import NoteLists from "./NoteLists";
 import NoteDetail from "./NoteDetail";
 
 import "./style.css";
-import { request } from "../../../services/utilities";
-import { USER_NAME } from "../../../services/constants";
-import SSRStorage from "../../../services/storage";
-const storage = new SSRStorage();
 
 class Component extends React.Component {
   constructor(props) {
@@ -20,28 +16,6 @@ class Component extends React.Component {
       passEditNote: {},
     };
   }
-  saveNote = async (x) => {
-    const user = await storage.getItem(USER_NAME);
-    const data = { note: x.content, userId: user.id }
-    const url = `note/add`;
-    try {
-      const rs = await request(url, 'POST', true, data);
-      this.fetchNotes();
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  updateNote = async (x) => {
-    const user = await storage.getItem(USER_NAME);
-
-    const data = { note: x.content, userId: user.id }
-    const url = `note/add`;
-    try {
-      const rs = await request(url, 'POST', true, data);
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   handleBack = (data) => {
     const NoteArrayCopy = [...this.state.NoteArray];
@@ -52,27 +26,21 @@ class Component extends React.Component {
     ) {
       let isNoteExist = true;
       this.state.NoteArray.forEach((note, index) => {
-        // edit note
         if (note.id === data.id) {
-          // update note
           NoteArrayCopy[index].content = data.content;
           NoteArrayCopy[index].textContent = data.textContent;
           isNoteExist = false;
         }
       });
       if (isNoteExist) {
-        // save note
-        this.saveNote(data);
         NoteArrayCopy.push(data);
       }
     }
     this.setState({
-      // NoteArray: [...NoteArrayCopy],
-      shouldNavNewNote: false
+      NoteArray: [...NoteArrayCopy],
+      shouldNavNewNote: false,
     });
   };
-
-
 
   handleNewNote = () => {
     this.setState({
@@ -120,42 +88,21 @@ class Component extends React.Component {
 
   handleEditNoteNav = (id) => {
     this.state.NoteArray.forEach((value, index) => {
-      if (id === value.id.toString()) {
+      if (id === value.id) {
         this.setState({
           passEditNote: this.state.NoteArray[index],
           shouldNavNewNote: true,
         });
       }
     });
-
   };
-
-  fetchNotes = async () => {
-    const user = await storage.getItem(USER_NAME);
-    try {
-      const url = `note/?userId=${user.id}`
-      const rs = await request(url, 'GET', true);
-      // console.log(rs);
-      if (rs.success === true) {
-        this.setState({
-          NoteArray: [...rs.notes],
-          shouldNavNewNote: false,
-        });
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  componentDidMount() {
-    this.fetchNotes();
-  }
 
   render() {
     return (
       <div
-        className={`view-port clearfix quickview-notes ${this.state.shouldNavNewNote ? "push" : ""
-          }`}
+        className={`view-port clearfix quickview-notes ${
+          this.state.shouldNavNewNote ? "push" : ""
+        }`}
         id="note-views"
       >
         {/* BEGIN Note List */}

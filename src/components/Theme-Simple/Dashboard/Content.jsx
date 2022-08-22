@@ -183,6 +183,7 @@ const Content = () => {
     }
   };
 
+
   let handleFormSubmit = (e) => {
     e.preventDefault()
   }
@@ -193,18 +194,18 @@ const Content = () => {
       const user = await storage.getItem(USER_NAME);
       const rs = await axios.patch(
         `https://deda-crm-backend.herokuapp.com/user/prompt/update/${user.id}`, {
-          surname: firstName,
-          otherNames: lastName,
-          phone: phoneNumber,
-          whatsappNum: whatsappNumber,
-          address: address,
-          company: nameOfOrganization
-        }
+        surname: firstName,
+        otherNames: lastName,
+        phone: phoneNumber,
+        whatsappNum: whatsappNumber,
+        address: address,
+        company: nameOfOrganization
+      }
       );
 
-    if(rs.data.success){
-      setVisibility(true)
-    }
+      if (rs.data.success) {
+        setVisibility(true)
+      }
       // const { result, ...meta } = rs.data;
       // setMeta(meta);
       setLoading(false);
@@ -217,11 +218,11 @@ const Content = () => {
 
   const handleStrike = (e, i) => {
     if (e.target.checked) {
-      setStrike('') 
+      setStrike('')
       optionsStrike[i] = strike
       setOptionsStrike(optionsStrike)
     } else {
-      setStrike('strikethrough') 
+      setStrike('strikethrough')
       optionsStrike[i] = strike
       setOptionsStrike(optionsStrike)
     }
@@ -288,175 +289,175 @@ const Content = () => {
   return (
     <div className="page-content-wrapper ">
       {/* REGISTRATION MODAL */}
-<StickUpModal
-          visible={!visibility}
-          className="stickUpModalClass"
-          width={"600"}
-        >
-          <div className="modal-content-wrapper">
-            <div className="modal-content">
-              <div className="modal-top">
-                <div
-                  className="pull-right"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setStickUpVisible(false)}
-                >
-                  <i className="pg-icon">close</i>
-                </div>
+      <StickUpModal
+        visible={!visibility}
+        className="stickUpModalClass"
+        width={"600"}
+      >
+        <div className="modal-content-wrapper">
+          <div className="modal-content">
+            <div className="modal-top">
+              <div
+                className="pull-right"
+                style={{ cursor: "pointer" }}
+                onClick={() => setStickUpVisible(false)}
+              >
+                <i className="pg-icon">close</i>
               </div>
-              <div className="modal-body">
-                <div>
-                  <ValidatorForm
-                    instantValidate={true}
-                    onSubmit={e => handleFormSubmit(e)}
-                  >
-                    <h3 className="mw-80">Complete Your Profile</h3>
-                    <p className="mw-80 m-b-25">
-                    Find your people. Engage your customers. Build your brand. 
-                    We will continue to bridge the gap between you and your clients. 
+            </div>
+            <div className="modal-body">
+              <div>
+                <ValidatorForm
+                  instantValidate={true}
+                  onSubmit={e => handleFormSubmit(e)}
+                >
+                  <h3 className="mw-80">Complete Your Profile</h3>
+                  <p className="mw-80 m-b-25">
+                    Find your people. Engage your customers. Build your brand.
+                    We will continue to bridge the gap between you and your clients.
                     Please learn how you can help us improve your experience. hello@anweit.com
-                    </p>
-  
-                    <div className="form-group-attached">
-                      <div className="row clearfix">
-                        <div className="col-md-6">
-                          <div className="form-group form-group-default">
-                            <WithoutMsgValidation
-                              name="startDate"
-                              type="text"
-                              value={accountUser?.username}
-                              validators={["required"]}
-                              errorMessages={["This field is required"]}
-                              className={"form-control date"}
-                              label={"username"}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-group-default">
+                  </p>
+
+                  <div className="form-group-attached">
+                    <div className="row clearfix">
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
                           <WithoutMsgValidation
-                              name="startDate"
-                              type="text"
-                              value={accountUser?.email}
-                              validators={["required"]}
-                              errorMessages={["This field is required"]}
-                              className={"form-control date"}
-                              label={"email"}
-                            />
-                          </div>
+                            name="startDate"
+                            type="text"
+                            value={accountUser?.username}
+                            validators={["required"]}
+                            errorMessages={["This field is required"]}
+                            className={"form-control date"}
+                            label={"username"}
+                          />
                         </div>
                       </div>
-                      <div className="form-group form-group-default">
-                        <InputWithLabel
-                          label="Name of Organization"
-                          onChange={(e) => setNameOfOrganization(e.target.value)}
-                          value={nameOfOrganization}
-                          type="text"
-                          className="form-control "
-                          icon="fa-info"
-                          required=""
-                        />
-                      </div>
-                      <div className="row clearfix">
-                        <div className="col-md-6">
-                          <div className="form-group form-group-default">
-                            <InputWithLabel
-                              onChange={(e) => setFirstName(e.target.value)}
-                              name="startDate"
-                              type="text"
-                              value={firstName}
-                              validators={["required"]}
-                              errorMessages={["This field is required"]}
-                              className={"form-control date"}
-                              label={"First Name"}
-                              require="true"
-                            />
-                          </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <WithoutMsgValidation
+                            name="startDate"
+                            type="text"
+                            value={accountUser?.email}
+                            validators={["required"]}
+                            errorMessages={["This field is required"]}
+                            className={"form-control date"}
+                            label={"email"}
+                          />
                         </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-group-default">
-                            <InputWithLabel
-                              label="Last Name"
-                              onChange={(e) => setLastName(e.target.value)}
-                              value={lastName}
-                              type="text"
-                              id="end-date"
-                              name="endDate"
-                              className="form-control date "
-                              required=""
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-group-default">
-                            <InputWithLabel
-                              label="Phone Number"
-                              onChange={(e) => setPhoneNumber(e.target.value)}
-                              value={phoneNumber}
-                              type="text"
-                              id="end-date"
-                              name="endDate"
-                              className="form-control date "
-                              required=""
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-group-default">
-                            <InputWithLabel
-                              label="Whatsapp Number"
-                              onChange={(e) => setWhatsappNumber(e.target.value)}
-                              value={whatsappNumber}
-                              type="text"
-                              id="end-date"
-                              name="endDate"
-                              className="form-control date "
-                              required=""
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="form-group form-group-default">
-                        <InputWithLabel
-                          label="Address"
-                          onChange={(e) => setAddress(e.target.value)}
-                          value={address}
-                          type="text"
-                          className="form-control "
-                          required=""
-                        />
-                      </div>
-  
-                    </div>
-                    <br />
-                    <div className="row">
-                      <div className="col-8">
-                        <div className="form-check primary m-t-0">
-                          <input type="checkbox" value="1" id="checkbox-agree" />
-                          <label htmlFor="checkbox-agree">
-                            I hereby certify that the information above is true
-                            and accurate
-                          </label>
-                        </div>
-                      </div>
-                      <div className="col-4">
-                        <button
-                          aria-label=""
-                          className="btn btn-primary pull-right"
-                          type="submit"
-                          onClick={e => handleUserRegistration(e)}
-                        >
-                          Update Profile
-                        </button>
                       </div>
                     </div>
-                  </ValidatorForm>
-                </div>
+                    <div className="form-group form-group-default">
+                      <InputWithLabel
+                        label="Name of Organization"
+                        onChange={(e) => setNameOfOrganization(e.target.value)}
+                        value={nameOfOrganization}
+                        type="text"
+                        className="form-control "
+                        icon="fa-info"
+                        required=""
+                      />
+                    </div>
+                    <div className="row clearfix">
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            onChange={(e) => setFirstName(e.target.value)}
+                            name="startDate"
+                            type="text"
+                            value={firstName}
+                            validators={["required"]}
+                            errorMessages={["This field is required"]}
+                            className={"form-control date"}
+                            label={"First Name"}
+                            require="true"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            label="Last Name"
+                            onChange={(e) => setLastName(e.target.value)}
+                            value={lastName}
+                            type="text"
+                            id="end-date"
+                            name="endDate"
+                            className="form-control date "
+                            required=""
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            label="Phone Number"
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                            value={phoneNumber}
+                            type="text"
+                            id="end-date"
+                            name="endDate"
+                            className="form-control date "
+                            required=""
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group form-group-default">
+                          <InputWithLabel
+                            label="Whatsapp Number"
+                            onChange={(e) => setWhatsappNumber(e.target.value)}
+                            value={whatsappNumber}
+                            type="text"
+                            id="end-date"
+                            name="endDate"
+                            className="form-control date "
+                            required=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="form-group form-group-default">
+                      <InputWithLabel
+                        label="Address"
+                        onChange={(e) => setAddress(e.target.value)}
+                        value={address}
+                        type="text"
+                        className="form-control "
+                        required=""
+                      />
+                    </div>
+
+                  </div>
+                  <br />
+                  <div className="row">
+                    <div className="col-8">
+                      <div className="form-check primary m-t-0">
+                        <input type="checkbox" value="1" id="checkbox-agree" />
+                        <label htmlFor="checkbox-agree">
+                          I hereby certify that the information above is true
+                          and accurate
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-4">
+                      <button
+                        aria-label=""
+                        className="btn btn-primary pull-right"
+                        type="submit"
+                        onClick={e => handleUserRegistration(e)}
+                      >
+                        Update Profile
+                      </button>
+                    </div>
+                  </div>
+                </ValidatorForm>
               </div>
             </div>
           </div>
-        </StickUpModal>
-      
+        </div>
+      </StickUpModal>
+
 
       {/* START PAGE CONTENT */}
 
@@ -483,7 +484,7 @@ const Content = () => {
                 >
                   <h3 className="mw-80">Complete Your Profile</h3>
                   <p className="mw-80 m-b-25">
-                  Find your people. Engage your customers. Build your brand. We will continue to bridge the gap between you and your clients. Please learn how you can help us improve your experience. hello@anweit.com
+                    Find your people. Engage your customers. Build your brand. We will continue to bridge the gap between you and your clients. Please learn how you can help us improve your experience. hello@anweit.com
                   </p>
 
                   <div className="form-group-attached">
@@ -924,6 +925,30 @@ const Content = () => {
                   <table className="table table-condensed table-hover">
                     <tbody>
                       <tr>
+                        <td className=" fs-12">BUSINESS PLAN PURCHASE</td>
+                        <td className="text-right">
+                          <span className="hint-text small">18-08-2022</span>
+                        </td>
+                        <td className="text-right b-r b-dashed b-grey">
+                          <span className="hint-text small">14000 UNITS</span>
+                        </td>
+                        <td>
+                          <span className="font-montserrat fs-18">₦98,000.00</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className=" fs-12">MONTH SERVICE RENEWAL</td>
+                        <td className="text-right">
+                          <span className="hint-text small">18-08-2022</span>
+                        </td>
+                        <td className="text-right b-r b-dashed b-grey">
+                          <span className="hint-text small">AUGUST</span>
+                        </td>
+                        <td>
+                          <span className="font-montserrat fs-18">₦25,000.00</span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td className=" fs-12">MONTH SERVICE RENEWAL</td>
                         <td className="text-right">
                           <span className="hint-text small">09-07-2022</span>
@@ -936,7 +961,7 @@ const Content = () => {
                         </td>
                       </tr>
                       <tr>
-                        <td className=" fs-12">BUSINESS PLANS PURCHASE</td>
+                        <td className=" fs-12">BUSINESS PLAN PURCHASE</td>
                         <td className="text-right">
                           <span className="hint-text small">09-07-2022</span>
                         </td>
@@ -1035,13 +1060,17 @@ const Content = () => {
                           <div className="row full-height">
                             <div className="col-sm-9">
                               <div className="p-l-20 full-height d-flex flex-column justify-content-between">
-                                <h3 className="no-margin p-b-5">947.11</h3>
+                                <div className="d-flex align-items-center">
+                                  <h3 className="no-margin p-b-5">98,947.11</h3>
+                                  <Link className="small ml-2" to="/simple/form_wizard" style={{ textDecoration: "none", color: '#fff' }}>Buy Units</Link>
+                                </div>
+
                                 <p className="small m-t-5 m-b-20">
                                   <span className="label label-white hint-text font-montserrat m-r-5">
-                                    Your subscription has expired
+                                    29 days remaining
                                   </span>
                                   {/* <span className="fs-12"> */}
-                                    <Link to="/simple/form_wizard" style={{ textDecoration: "none", color: 'inherit' }}>Buy Units</Link>
+                                  <Link to="#" style={{ textDecoration: "none", color: 'inherit' }}>Renew</Link>
                                   {/* </span> */}
                                 </p>
                               </div>
@@ -1296,7 +1325,7 @@ const Content = () => {
                                   </a>
                                   <i className="fs-14 pg-close hidden"></i>
                                 </div>
-                      {/* <input type='checkbox' onClick={() => checkInput(i) }  className="strike_line"
+                                {/* <input type='checkbox' onClick={() => checkInput(i) }  className="strike_line"
                                 /> */}
                                 <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center"
                                 // onClick={() => checkInput(i)}
@@ -1308,7 +1337,7 @@ const Content = () => {
                                     data-toggler="task"
                                     className="form-check checkbox-circle"
                                     onClick={(e) => handleStrike(e, i)}
-                                    // onClick={() => setClasss('strikethrough')}
+                                  // onClick={() => setClasss('strikethrough')}
                                   />
                                   <label
                                     htmlFor={`todocheck${i}`}

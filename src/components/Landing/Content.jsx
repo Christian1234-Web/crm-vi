@@ -367,16 +367,17 @@ const content = () => {
               <div className="m-t-10 ">
                 <ul className="no-style fs-11 no-padding font-arial">
                   <li className="inline no-padding"><a href="#" className=" text-master p-r-10 b-r b-grey">Home</a></li>
-                  <li className="inline no-padding"><a href="#" className="hint-text text-master p-l-10 p-r-10 b-r b-grey">Themeforest Profile</a></li>
+                  <li className="inline no-padding"><a href="#" className="hint-text text-master p-l-10 p-r-10 b-r b-grey">About Centio.Io</a></li>
                   <li className="inline no-padding"><a href="#" className="hint-text text-master p-l-10 p-r-10 b-r b-grey">Support</a></li>
-                  <li className="inline no-padding"><a href="#" className="hint-text text-master p-l-10 p-r-10 xs-no-padding xs-m-t-10">Made with Pages</a></li>
+                  <li className="inline no-padding"><a href="#" className="hint-text text-master p-l-10 p-r-10 xs-no-padding xs-m-t-10">Contact</a></li>
                 </ul>
               </div>
             </div>
             <div className="col-sm-6 text-right font-arial sm-text-left">
-              <p className="fs-11 no-margin small-text"><span className="hint-text">Exclusive only at</span> Envato Marketplace,Themeforest <span className="hint-text">See</span> Standard licenses &amp; Extended licenses
+              <p className="fs-11 no-margin small-text"><span className="hint-text">Exclusive only at</span>
+                <span className="hint-text">See</span> Standard licenses &amp; Extended licenses
               </p>
-              <p className="fs-11 muted">Copyright © 2014 REVOX. All Rights Reserved.</p>
+              <p className="fs-11 muted">Copyright © 2014 CENTIO. All Rights Reserved.</p>
             </div>
           </div>
         </div>
