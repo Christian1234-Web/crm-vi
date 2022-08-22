@@ -15,6 +15,7 @@ class Component extends React.Component {
     super(props);
     this.state = {
       NoteArray: [],
+      idToDelete: [],
       shouldNavNewNote: false,
       shouldReadyForTrash: false,
       passEditNote: {},
@@ -32,12 +33,11 @@ class Component extends React.Component {
     }
   }
   updateNote = async (x) => {
-    const user = await storage.getItem(USER_NAME);
-
-    const data = { note: x.content, userId: user.id }
-    const url = `note/add`;
+    const data = { note: x.content }
+    const url = `note/update/${x.id}`;
     try {
-      const rs = await request(url, 'POST', true, data);
+      const rs = await request(url, 'PATCH', true, data);
+      this.fetchNotes();
     } catch (err) {
       console.log(err);
     }
@@ -55,8 +55,7 @@ class Component extends React.Component {
         // edit note
         if (note.id === data.id) {
           // update note
-          NoteArrayCopy[index].content = data.content;
-          NoteArrayCopy[index].textContent = data.textContent;
+          this.updateNote(data);
           isNoteExist = false;
         }
       });
@@ -83,33 +82,36 @@ class Component extends React.Component {
 
   handleCheck = (id) => {
     //change checkbox status on click
+    let check = document.getElementById(id);
     const NoteArrayCopy = [...this.state.NoteArray];
-    let count = 0;
+    const id_ = this.state.idToDelete;
+
     NoteArrayCopy.map((value, index) => {
-      if (value.id === id) {
-        return (value.checkBoxCheckStatus = !value.checkBoxCheckStatus);
+      if (value.id === Number(id)) {
+        if (check.checked === true) {
+          let ids = id_.find(x => x === Number(id));
+          if (!ids) {
+            id_.push(Number(id));
+          }
+        }
+        if (check.checked === false) {
+          let i = id_.indexOf(Number(id))
+          id_.splice(i, 1);
+        }
       }
-      return (count = index);
     });
-    if (NoteArrayCopy.length - 1 === count) {
-      this.setState({
-        NoteArray: [...NoteArrayCopy],
-      });
-    }
+
   };
 
-  handleRemove = () => {
-    let copyNoteArray = [...this.state.NoteArray];
-    let newArray = copyNoteArray.filter((value) => {
-      if (!value.checkBoxCheckStatus) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    this.setState({
-      NoteArray: [...newArray],
-    });
+  handleRemove = async () => {
+    const data = { ids: this.state.idToDelete };
+    try {
+      const url = `note/delete/many`;
+      const rs = await request(url, 'POST', true, data);
+      this.fetchNotes();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   handleReadyTrash = () => {
@@ -135,8 +137,7 @@ class Component extends React.Component {
     try {
       const url = `note/?userId=${user.id}`
       const rs = await request(url, 'GET', true);
-      // console.log(rs);
-      if (rs.success === true) {
+      if (rs.success === true || rs.notes.length === 0) {
         this.setState({
           NoteArray: [...rs.notes],
           shouldNavNewNote: false,

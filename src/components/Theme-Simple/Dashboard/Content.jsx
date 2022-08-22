@@ -125,7 +125,6 @@ const Content = () => {
     try {
       setLoading(true);
       const user = await storage.getItem(USER_NAME);
-      console.log('farouk', user)
       setUsername(user.username);
       setVisibility(user.isUpdated)
       setAccountUser(user)
@@ -152,6 +151,17 @@ const Content = () => {
     }
     catch (err) {
       console.log(err);
+    }
+  }, []);
+
+  const fetchUser = useCallback(async () => {
+    const user = await storage.getItem(USER_NAME);
+    const url = `user/findone/${user.id}`;
+    try {
+      const rs = await request(url, 'GET', true);
+      // console.log(rs);
+    } catch (err) {
+      console.log(rs);
     }
   }, []);
 
@@ -227,7 +237,19 @@ const Content = () => {
   }
 
 
-
+  const renewSub = async () => {
+    const user = await storage.getItem(USER_NAME);
+    const data = { userId: user.id, paymentMethod: 'paystack' };
+    const url = `payment/default/pay`;
+    try {
+      const rs = await request(url, 'POST', true, data);
+      if (rs.success === true) {
+        location.href = rs.link;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
 
   const fetchSpecificBundle = useCallback(
@@ -257,23 +279,22 @@ const Content = () => {
       setWaiting(false);
       fetchSpecificBundle(Number(e));
     }
-    // setAmount(Number(e.target.value))
-    // fetchSpecificBundle(Number(e.target.value))
   };
-  const checkInput = (i) => {
-    // console.log(i);
-    let input = document.querySelectorAll('.strike_line');
-    let todo = document.querySelectorAll('.subject_');
-    if (input[i].checked === true) {
-      let x = todo[i].classList.add('strikethrough');
-    } else {
-      let x = todo[i].classList.remove('strikethrough');
-    }
-    // console.log(todo[i]);
-  }
+  // const checkInput = (i) => {
+  // console.log(i);
+  // let input = document.querySelectorAll('.strike_line');
+  // let todo = document.querySelectorAll('.subject_');
+  // if (input[i].checked === true) {
+  //   let x = todo[i].classList.add('strikethrough');
+  // } else {
+  //   let x = todo[i].classList.remove('strikethrough');
+  // }
+  // console.log(todo[i]);
+  // }
   // const [flipBarNotifyArray, setFlipBarNotifyArray] = useState([]);
   useEffect(() => {
     if (loading) {
+      fetchUser();
       fetchBundleList();
       fetchTodo();
     }
@@ -740,7 +761,7 @@ const Content = () => {
             <div className="col-lg-9 m-b-10">
               <PageBreadcrumb className="jumbotron mb-4">
                 <li className="breadcrumb-item">
-                  <a href="javascript:void(0);">Home</a>
+                  <a href="#">Home</a>
                 </li>
                 <li className="breadcrumb-item active">Dashboard</li>
               </PageBreadcrumb>
@@ -891,7 +912,7 @@ const Content = () => {
                           data-toggle="refresh"
                           className={`card-refresh ${refreshOne ? "refreshing" : ""
                             }`}
-                          href="javascript:void(0);"
+                          href="#"
                           onClick={(e) => {
                             e.preventDefault();
                             setRefreshOne(true);
@@ -989,14 +1010,14 @@ const Content = () => {
                 <div className="p-t-15 p-b-15 p-l-20 p-r-20">
                   <p className="small no-margin">
                     <a
-                      href="javascript:void(0);"
+                      href="#"
                       className="btn-circle-arrow b-grey"
                     >
                       <i className="pg-icon">chevron_down</i>
                     </a>
                     <span className="hint-text ">
                       Show more details of{" "}
-                      <a href="javascript:void(0);"> Anewi pvt ltd </a>
+                      <a href="#"> Anewi pvt ltd </a>
                     </span>
                   </p>
                 </div>
@@ -1024,7 +1045,7 @@ const Content = () => {
                                     data-toggle="refresh"
                                     className={`card-refresh ${refreshSix ? "refreshing" : ""
                                       }`}
-                                    href="javascript:void(0);"
+                                    href="#"
                                     onClick={(e) => {
                                       e.preventDefault();
                                       setRefreshSix(true);
@@ -1065,10 +1086,10 @@ const Content = () => {
 
                                 <p className="small m-t-5 m-b-20">
                                   <span className="label label-white hint-text font-montserrat m-r-5">
-                                    28 days remaining
+                                    27 days remaining
                                   </span>
                                   {/* <span className="fs-12"> */}
-                                  <Link to="#" style={{ textDecoration: "none", color: 'inherit' }}>Renew</Link>
+                                  <Link to="#" onClick={() => renewSub()} style={{ textDecoration: "none", color: 'inherit' }}>Renew</Link>
                                   {/* </span> */}
                                 </p>
                               </div>
@@ -1250,7 +1271,7 @@ const Content = () => {
                         <a
                           data-toggle="refresh"
                           class="card-refresh "
-                          href="javascript:void(0);"
+                          href="#"
                         >
                           <i class="card-icon card-icon-refresh "></i>
                           <i
@@ -1313,7 +1334,7 @@ const Content = () => {
                               <div key={e.id} className="task clearfix row">
                                 <div className="task-list-title col-10 justify-content-between">
                                   <a
-                                    href="javascript:void(0);"
+                                    href="#"
                                     // className={`text-color subject_  capitalize`}
 
                                     className={`text-color ${optionsStrike[i]}`}
@@ -1376,7 +1397,7 @@ const Content = () => {
                         </div>
                       </div>
                       <a
-                        href="javascript:void(0);"
+                        href="#"
                         className="btn btn-block m-t-30"
                       >
                         See all projects
@@ -1402,7 +1423,7 @@ const Content = () => {
                           <p className="hint-text  small pull-left no-margin">
                             45% completed from total
                           </p>
-                          <a href="javascript:void(0);" className="pull-right ">
+                          <a href="#" className="pull-right ">
                             <i className="pg-icon">more_horizontal</i>
                           </a>
                           <div className="clearfix"></div>
@@ -1433,7 +1454,7 @@ const Content = () => {
                           <p className="hint-text  small pull-left no-margin">
                             20% completed from total
                           </p>
-                          <a href="javascript:void(0);" className="pull-right ">
+                          <a href="#" className="pull-right ">
                             <i className="pg-icon">more_horizontal</i>
                           </a>
                           <div className="clearfix"></div>
@@ -1446,7 +1467,7 @@ const Content = () => {
                         </div>
                       </div>
                       <a
-                        href="javascript:void(0);"
+                        href="#"
                         className="btn btn-block m-t-30"
                       >
                         See all projects

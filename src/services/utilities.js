@@ -46,7 +46,6 @@ const checkStatus = async response => {
         }
         
         const message = await response.text();
-        console.log(message)
         const err = JSON.parse(message);
         throw Object.freeze({ message: err.message || err.error });
     }
@@ -59,7 +58,6 @@ const parseJSON = response => response.json();
 export const request = async (url, method, authed = false, data) => {
     // prettier-ignore
     const token = await (new SSRStorage()).getItem(TOKEN_COOKIE);
-    console.log(API_URI);
     const response = await fetch(`${API_URI}/${url}`, {
         method: method,
         headers: authed ? headers(token) : { ...defaultHeaders },
