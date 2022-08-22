@@ -92,6 +92,7 @@ const Content = () => {
   const [deadline, setDeadline] = useState("");
 
   const [loading, setLoading] = useState(true);
+  const [loader, setLoader] = useState(false);
   const [loading_todo, setLoading_todo] = useState(false);
   const [error_todo, setError_todo] = useState(null);
 
@@ -123,9 +124,7 @@ const Content = () => {
 
   const fetchBundleList = useCallback(async (page) => {
     try {
-      setLoading(true);
       const user = await storage.getItem(USER_NAME);
-      console.log('farouk', user)
       setUsername(user.username);
       setVisibility(user.isUpdated)
       setAccountUser(user)
@@ -135,11 +134,9 @@ const Content = () => {
       const { result, ...meta } = rs.data;
       setBundles(result.reverse());
       setMeta(meta);
-      setLoading(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       console.log("fetch bundle err", err);
-      setLoading(false);
     }
   }, []);
 
@@ -191,7 +188,7 @@ const Content = () => {
   const handleUserRegistration = useCallback(async (e) => {
     e.preventDefault()
     try {
-      setLoading(true);
+      setLoader(true);
       const user = await storage.getItem(USER_NAME);
       const rs = await axios.patch(
         `https://deda-crm-backend.herokuapp.com/user/prompt/update/${user.id}`, {
@@ -206,10 +203,11 @@ const Content = () => {
 
       if (rs.data.success) {
         setVisibility(true)
+        setUsername(`${firstName}`)
       }
+      setLoader(false);
       // const { result, ...meta } = rs.data;
       // setMeta(meta);
-      setLoading(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       console.log("User form submit error", err);
@@ -233,7 +231,6 @@ const Content = () => {
   const fetchSpecificBundle = useCallback(
     async (amountInputed) => {
       try {
-        setLoading(true);
         const rs = await axios.get(
           `https://deda-crm-backend.herokuapp.com/unit/amount/calc?units=${amountInputed}`
         );
@@ -241,10 +238,8 @@ const Content = () => {
         setBundleName(rs.data.bundle.name);
         setBundleUnitPrice(rs.data.bundle.amount);
         setTotalPrice(rs.data.result);
-        setLoading(false);
       } catch (err) {
         console.log("fetch patients err", err);
-        setLoading(false);
       }
     },
     [endDate, search, startDate]
@@ -310,10 +305,10 @@ const Content = () => {
                   onSubmit={e => handleFormSubmit(e)}
                 >
                   <h3 className="mw-80">Complete Your Profile</h3>
-                  <p className="mw-80 m-b-25">
+                  <p className="m-b-25">
                     Find your people. Engage your customers. Build your brand.
                     We will continue to bridge the gap between you and your clients.
-                    Please learn how you can help us improve your experience. hello@anweit.com
+                    Please learn how you can help us improve your experience. hello@anewit.com
                   </p>
 
                   <div className="form-group-attached">
@@ -445,7 +440,7 @@ const Content = () => {
                         type="submit"
                         onClick={e => handleUserRegistration(e)}
                       >
-                        Update Profile
+                       { loader ? <ProgressTwo/> :"Update Profile"}
                       </button>
                     </div>
                   </div>
@@ -758,7 +753,7 @@ const Content = () => {
                           Find your people. Engage your customers. Build your brand. We
                           will continue to bridge the gap between you and your clients.
                           Please learn how you can help us improve your experience.{" "}
-                          <span className="text-success"> hello@anweit.com</span>
+                          <span className="text-success"> hello@anewit.com</span>
                         </p>
                         <br />
 
@@ -930,8 +925,11 @@ const Content = () => {
                         <td className="text-right b-r b-dashed b-grey">
                           <span className="hint-text small">14000 UNITS</span>
                         </td>
-                        <td>
+                        <td className="b-r b-dashed b-grey text-right">
                           <span className="font-montserrat fs-18">₦98,000.00</span>
+                        </td>
+                        <td className="text-left">
+                          <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
                         </td>
                       </tr>
                       <tr>
@@ -942,8 +940,11 @@ const Content = () => {
                         <td className="text-right b-r b-dashed b-grey">
                           <span className="hint-text small">AUGUST</span>
                         </td>
-                        <td>
+                        <td className="b-r b-dashed b-grey text-right">
                           <span className="font-montserrat fs-18">₦25,000.00</span>
+                        </td>
+                        <td className="text-left">
+                          <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
                         </td>
                       </tr>
                       <tr>
@@ -954,8 +955,11 @@ const Content = () => {
                         <td className="text-right b-r b-dashed b-grey">
                           <span className="hint-text small">JULY</span>
                         </td>
-                        <td>
+                        <td className="b-r b-dashed b-grey text-right">
                           <span className="font-montserrat fs-18">₦25,000.00</span>
+                        </td>
+                        <td className="text-left">
+                          <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
                         </td>
                       </tr>
                       <tr>
@@ -966,8 +970,11 @@ const Content = () => {
                         <td className="text-right b-r b-dashed b-grey">
                           <span className="hint-text small">17000 UNITS</span>
                         </td>
-                        <td>
+                        <td className="b-r b-dashed b-grey text-right">
                           <span className="font-montserrat fs-18">₦154,000.00</span>
+                        </td>
+                        <td className="text-left">
+                          <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
                         </td>
                       </tr>
                       <tr>
@@ -978,8 +985,11 @@ const Content = () => {
                         <td className="text-right b-r b-dashed b-grey">
                           <span className="hint-text small">22000 UNITS</span>
                         </td>
-                        <td>
-                          <span className="font-montserrat fs-18">₦210,000.00</span>
+                        <td className="b-r b-dashed b-grey text-right">
+                          <span className="font-montserrat fs-18 ">₦210,000.00</span>
+                        </td>
+                        <td className="text-left">
+                          <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
                         </td>
                       </tr>
                     </tbody>
@@ -995,8 +1005,8 @@ const Content = () => {
                       <i className="pg-icon">chevron_down</i>
                     </a>
                     <span className="hint-text ">
-                      Show more details of{" "}
-                      <a href="javascript:void(0);"> Anewi pvt ltd </a>
+                      Show more  
+                      <a href="javascript:void(0);"> Transactions  </a>
                     </span>
                   </p>
                 </div>

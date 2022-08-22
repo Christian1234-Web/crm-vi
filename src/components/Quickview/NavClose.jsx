@@ -8,10 +8,13 @@ const NavClose = () => {
     return (
         <a 
             onClick={() => dispatch(toggleQuickViewClose())}
-            className="btn-icon-link invert quickview-toggle" 
+            className="btn-icon-link invert quickview-toggle " 
             data-toggle-element="#quickview" 
-            data-toggle="quickview">
-            <i className="pg-icon">close</i>
+            data-toggle="quickview"
+            >
+            <i className="pg-icon text-success mb-1" 
+            style={{border:'1px solid #005bab', borderRadius:'50%'}}
+            >close</i>
         </a>
     )
 }

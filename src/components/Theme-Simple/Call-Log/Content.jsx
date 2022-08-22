@@ -302,7 +302,7 @@ const Content = () => {
             <li className="breadcrumb-item">
               <a href="javascript:void(0);">Home</a>
             </li>
-            <li className="breadcrumb-item active">Dashboard</li>
+            <li className="breadcrumb-item active">Call Logs</li>
           </PageBreadcrumb>
         
           <div className="row">

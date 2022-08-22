@@ -19,7 +19,7 @@ const EmailBody = ({ viewedEmail = null, emailGroups, onSlide = null }) => {
           className="no-result"
           style={viewedEmail === null ? {} : { display: "none" }}
         >
-          <h1>No email has been selected</h1>
+          <h1>No message has been selected</h1>
         </div>
         <PerfectScrollbar>
           <div

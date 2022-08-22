@@ -84,9 +84,7 @@ const Content = ({ location, inboxHeader, setInboxHeader }) => {
   
   
   const handleLogout = async () => {
-    console.log('ahhhhhhhh')
     const user = await storage.removeItem(USER_NAME);
-
   }
 
   return (
@@ -115,13 +113,6 @@ const Content = ({ location, inboxHeader, setInboxHeader }) => {
             className="header-logo"
           />
         </div>
-        <a
-          href="javascript:void(0);"
-          className="btn btn-link text-primary m-l-20 d-none d-lg-inline-flex d-xl-inline-flex"
-        >
-          Add New Item
-        </a>
-
         <a
           href="javascript:void(0);"
           id="headerSearchInput"
@@ -315,7 +306,7 @@ const Content = ({ location, inboxHeader, setInboxHeader }) => {
               </div>
             </div>
           </li>
-          <li className="p-r-5 inline">
+          {/* <li className="p-r-5 inline">
             <a href="javascript:void(0);" className="header-icon btn-icon-link">
               <i className="pg-icon">link_alt</i>
             </a>
@@ -324,7 +315,7 @@ const Content = ({ location, inboxHeader, setInboxHeader }) => {
             <a href="javascript:void(0);" className="header-icon btn-icon-link">
               <i className="pg-icon">grid_alt</i>
             </a>
-          </li>
+          </li> */}
           <li className="inline">{emailEdit}</li>
         </ul>
         <div className="pull-left p-r-10 fs-14 d-lg-inline-block d-none m-l-20">

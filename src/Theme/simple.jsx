@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Dashboard from "../components/Theme-Simple/Dashboard";
 import Ticket from "../components/Theme-Simple/Ticket";
+import Settings from "../components/Theme-Simple/Settings";
 
 import Social from "../components/Social";
 import Contact from "../components/Theme-Simple/Contact";
@@ -144,6 +145,7 @@ const Simple = ({ location }) => {
       {/* end of landing */}
       <Route path="/simple/dashboard" component={Dashboard} />
       <Route path="/simple/ticket" component={Ticket} />
+      <Route path="/simple/settings" component={Settings} />
 
       <Route path="/simple/social" component={Social} />
       <Route path="/simple/contact" component={Contact} />
