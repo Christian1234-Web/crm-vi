@@ -13,6 +13,10 @@ import Countries from "../Elements/countries";
 import { CountryCodes, MonthWithCodes, Years } from "./Codes";
 import axios from 'axios';
 import "./style.css";
+import { request } from "../../../services/utilities";
+import { USER_NAME } from "../../../services/constants";
+import SSRStorage from "../../../services/storage";
+const storage = new SSRStorage();
 
 const content = ({ path }) => {
   const [tabs, setTabs] = useState([true, false, false, false]);
@@ -39,7 +43,8 @@ const content = ({ path }) => {
 
   const [item1Close, setItem1Close] = useState(false);
   const [item2Close, setItem2Close] = useState(false);
-
+  const [payLoader, setPayLoader] = useState(false);
+  const [volume, setVolume] = useState('');
   // bundle state
   const [bundleName, setBundleName] = useState("");
   const [totalPrice, setTotalPrice] = useState("");
@@ -50,8 +55,10 @@ const content = ({ path }) => {
   const [selectedBundle, setSelectedBundle] = useState(null);
   const [bundleArr] = useState([]);
 
-  const total_Price = bundleArr.reduce((accumulator, current) => accumulator + current.price * 1, 0)
-  const sub_total_Price = bundleArr.reduce((accumulator, current) => accumulator + current.price + 1, 0)
+  const total_Price = bundleArr.reduce((accumulator, current) => accumulator + current.price * 1, 0);
+  const sub_total_Price = bundleArr.reduce((accumulator, current) => accumulator + current.price + 1, 0);
+  const total_volume = bundleArr.reduce((accumulator, current) => accumulator + current.volume * 1, 0)
+
 
 
   let countryOptionsList = () => {
@@ -118,9 +125,21 @@ const content = ({ path }) => {
     //Call this function on form submit with no errors
   };
 
-
-
-  // console.log(new Intl.NumberFormat().format(2500));
+  const onSubmitToPayStack = async () => {
+    setPayLoader(true);
+    const user = await storage.getItem(USER_NAME);
+    const data = { units: Number(total_volume), userId: user.id, paymentMethod: 'paystack' };
+    const url = `payment/units/buy`;
+    try {
+      const rs = await request(url, 'POST', true, data);
+      if (rs.success === true) {
+        location.href = rs.link;
+      }
+    } catch (err) {
+      setPayLoader(false);
+      console.log(err);
+    }
+  }
 
 
   const fetchSpecificBundle = async amountInputed => {
@@ -142,6 +161,7 @@ const content = ({ path }) => {
 
 
   const handleChange = (e) => {
+    setVolume(Number(e));
     if (Number(e) >= 5000) {
       setWaiting(true);
       fetchSpecificBundle(Number(e));
@@ -174,7 +194,7 @@ const content = ({ path }) => {
                   className={`d-flex align-items-center ${tabs[0] ? "active" : ""
                     }`}
                   data-toggle="tab"
-                  href="javascript:void(0);"
+                  href="#"
                   onClick={(e) => e.preventDefault()}
                   data-target="#tab1"
                   role="tab"
@@ -194,7 +214,7 @@ const content = ({ path }) => {
                   className={`d-flex align-items-center ${tabs[1] ? "active" : ""
                     }`}
                   data-toggle="tab"
-                  href="javascript:void(0);"
+                  href="#"
                   onClick={(e) => e.preventDefault()}
                   data-target="#tab2"
                   role="tab"
@@ -213,7 +233,7 @@ const content = ({ path }) => {
                   className={`d-flex align-items-center ${tabs[2] ? "active" : ""
                     }`}
                   data-toggle="tab"
-                  href="javascript:void(0);"
+                  href="#"
                   onClick={(e) => e.preventDefault()}
                   data-target="#tab3"
                   role="tab"
@@ -235,7 +255,7 @@ const content = ({ path }) => {
                   className={`d-flex align-items-center ${tabs[3] ? "active" : ""
                     }`}
                   data-toggle="tab"
-                  href="javascript:void(0);"
+                  href="#"
                   onClick={(e) => e.preventDefault()}
                   data-target="#tab4"
                   role="tab"
@@ -328,7 +348,7 @@ const content = ({ path }) => {
                                     <i className="pg-icon pull-right" style={{ cursor: 'pointer' }} onClick={() => {
                                       let x = bundleArr.find(x => x.price === selectedBundle.price);
                                       if (!x) {
-                                        bundleArr.push({ ...selectedBundle, price: totalPrice });
+                                        bundleArr.push({ ...selectedBundle, price: totalPrice, volume });
                                       }
                                       setCount(count + 1);
                                     }}>add</i>
@@ -349,10 +369,10 @@ const content = ({ path }) => {
                         <tbody>
 
                           {bundleArr.map((e, i) => (
-                            <tr key={e.id} className={item1Close ? `d-none` : ``}>
+                            <tr key={i} className={item1Close ? `d-none` : ``}>
                               <td className="col-lg-5 col-md-6 col-sm-6 ">
                                 <a
-                                  href="javascript:void(0);"
+                                  href="#"
                                   className="remove-item"
                                   onClick={() => {
                                     // let items = [...data];
@@ -389,7 +409,7 @@ const content = ({ path }) => {
                           <p className="small hint-text">
                             If you're looking to buy above 800,000 units, please send us an
                             email at.{" "}
-                            <a href="javascript:void(0);">hello@patrela.com</a>
+                            <a href="#">hello@patrela.com</a>
                           </p>
                         </div>
                         <div className="col-lg-5 col-md-6">
@@ -404,8 +424,8 @@ const content = ({ path }) => {
                                 onClick={() => {
                                   // let x = bundleArr.find(x => x.price === selectedBundle.price);
                                   // if (!x) {
-                                    let ob60 = { amount: 7, id: 7, name: 'Business Premium', unitQuantity: 15000, price: 420000 }
-                                    bundleArr.push(ob60);
+                                  let ob60 = { amount: 7, id: 7, name: 'Business Premium', unitQuantity: 15000, price: 420000, volume: 60000 }
+                                  bundleArr.push(ob60);
                                   // }
                                   setCount(count + 1);
                                 }}
@@ -417,7 +437,7 @@ const content = ({ path }) => {
                                 onClick={() => {
                                   // let x = bundleArr.find(x => x.price === x.price);
                                   // if (!x) {
-                                  let ob80 = { amount: 7, id: 7, name: 'Business Premium', unitQuantity: 15000, price: 560000 };
+                                  let ob80 = { amount: 7, id: 7, name: 'Business Premium', unitQuantity: 15000, price: 560000, volume: 80000 };
                                   bundleArr.push(ob80);
                                   // }
                                   setCount(count + 1);
@@ -638,7 +658,7 @@ const content = ({ path }) => {
                       <table className="table table-condensed">
                         <tbody>
                           {bundleArr.map((e, i) => (
-                            <tr key={e.id} className={item1Close ? `d-none` : ``}>
+                            <tr key={i} className={item1Close ? `d-none` : ``}>
                               <td className="col-lg-6 col-md-6 col-sm-7 ">
 
                                 <span className="m-l-10 font-montserrat fs-11 all-caps">
@@ -675,7 +695,7 @@ const content = ({ path }) => {
                       </p>
                       <p className="small">
                         By pressing Pay Now You will Agree to the Payment{" "}
-                        <a href="javascript:void(0);">Terms &amp; Conditions</a>
+                        <a href="#">Terms &amp; Conditions</a>
                       </p>
                     </div>
                   </div>
@@ -684,7 +704,7 @@ const content = ({ path }) => {
                       <ul className="list-unstyled list-inline m-l-30">
                         <li>
                           <a
-                            href="javascript:void(0);"
+                            href="#"
                             className="p-r-30 text-black"
                           >
                             Credit card
@@ -692,7 +712,7 @@ const content = ({ path }) => {
                         </li>
                         <li style={{ padding: "0px 10px" }}>
                           <a
-                            href="javascript:void(0);"
+                            href="#"
                             className="p-r-30 text-black  hint-text"
                           >
                             PayPal
@@ -700,7 +720,7 @@ const content = ({ path }) => {
                         </li>
                         <li>
                           <a
-                            href="javascript:void(0);"
+                            href="#"
                             className="p-r-30 text-black  hint-text"
                           >
                             Wire transfer
@@ -716,7 +736,7 @@ const content = ({ path }) => {
                           <h2 className="pull-left no-margin">Credit Card</h2>
                           <ul className="list-unstyled pull-right list-inline no-margin">
                             <li>
-                              <a href="javascript:void(0);">
+                              <a href="#">
                                 <img
                                   width="51"
                                   height="32"
@@ -739,7 +759,7 @@ const content = ({ path }) => {
                             </li>
                             <li style={{ padding: "0px 9px" }}>
                               <a
-                                href="javascript:void(0);"
+                                href="#"
                                 className="hint-text"
                               >
                                 <img
@@ -764,7 +784,7 @@ const content = ({ path }) => {
                             </li>
                             <li>
                               <a
-                                href="javascript:void(0);"
+                                href="#"
                                 className="hint-text"
                               >
                                 <img
@@ -885,7 +905,12 @@ const content = ({ path }) => {
                 }
                 id="tab4"
               >
+                {payLoader === true ? <div className="pull-right">
+                  <ProgressTwo />
+                </div> : ''}
+
                 <h1>Thank you.</h1>
+
               </div>
               <div className="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
                 <ul className="pager wizard no-style">
@@ -962,11 +987,12 @@ const content = ({ path }) => {
                   >
                     <button
                       aria-label=""
-                      onClick={() => setTabs([true, false, false, false])}
+                      // onClick={() => setTabs([true, false, false, false])}
+                      onClick={() => onSubmitToPayStack()}
                       className="btn btn-primary btn-cons btn-animated from-left pull-right"
                       type="button"
                     >
-                      <span>Finish</span>
+                      <span>Submit</span>
                       <span className="hidden-block">
                         <Icon path={mdiCheck} size="1em" />
                       </span>
