@@ -155,6 +155,8 @@ const Content = () => {
     }
   }, []);
 
+  console.log('kayyyy', todos)
+
   const saveTodo = async () => {
     setLoading_todo(true);
     const user = await storage.getItem(USER_NAME);
