@@ -96,7 +96,7 @@ const Content = () => {
   const [error_todo, setError_todo] = useState(null);
 
   const [bundles, setBundles] = useState([]);
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(null);
   const [meta, setMeta] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -187,8 +187,9 @@ const Content = () => {
   let handleFormSubmit = (e) => {
     e.preventDefault()
   }
-
+  
   const handleUserRegistration = useCallback(async (e) => {
+    e.preventDefault()
     try {
       setLoading(true);
       const user = await storage.getItem(USER_NAME);
@@ -214,7 +215,7 @@ const Content = () => {
       console.log("User form submit error", err);
       setLoading(false);
     }
-  }, []);
+  }, [firstName, lastName, phoneNumber, whatsappNumber, nameOfOrganization,  address]);
 
   const handleStrike = (e, i) => {
     if (e.target.checked) {
@@ -227,9 +228,6 @@ const Content = () => {
       setOptionsStrike(optionsStrike)
     }
   }
-
-
-
 
 
   const fetchSpecificBundle = useCallback(
@@ -1310,7 +1308,7 @@ const Content = () => {
                         </ul>
                         <div className="task-list p-t-0 p-r-20 p-b-20 p-l-20 clearfix flex-1">
                           {/* completed */}
-                          {todos.map((e, i) => {
+                          {todos && todos.map((e, i) => {
                             return (
                               <div key={e.id} className="task clearfix row">
                                 <div className="task-list-title col-10 justify-content-between">
