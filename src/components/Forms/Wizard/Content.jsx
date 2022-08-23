@@ -145,7 +145,7 @@ const content = ({ path }) => {
   const fetchSpecificBundle = async amountInputed => {
     if (amountInputed) {
       const url = `https://deda-crm-backend.herokuapp.com/unit/amount/calc?units=${amountInputed}`;
-      try {
+      try { 
         const rs = (await axios(url)).data;
         setSelectedBundle(rs.bundle);
         setBundleName(rs.bundle.name);

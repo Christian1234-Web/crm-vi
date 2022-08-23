@@ -46,7 +46,7 @@ import FormElement from "../components/Forms/Elements";
 import FormLayout from "../components/Forms/FormLayouts";
 import Landing from "../components/Landing";
 
-import FormWizard from "../components/Forms/Wizard-n";
+import FormWizard from "../components/Forms/Wizard";
 
 import TableBasic from "../components/Tables/Basic";
 import TableData from "../components/Tables/Data";
