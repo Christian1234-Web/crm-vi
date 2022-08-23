@@ -16,7 +16,7 @@ class WithoutMsgValidation extends ValidatorComponent {
     return (
       <React.Fragment>
         <div
-          className={`form-group  
+          className={`form-group   form-group-default 
                     ${this.props.require ? "required" : ""} ${
             this.state.isValid ? "" : "has-error"
           }`}
