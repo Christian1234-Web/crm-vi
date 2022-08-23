@@ -95,7 +95,7 @@ const Content = () => {
   const [loader, setLoader] = useState(false);
   const [loading_todo, setLoading_todo] = useState(false);
   const [error_todo, setError_todo] = useState(null);
-
+  const [userDetails, setUserDetails] = useState(null);
   const [bundles, setBundles] = useState([]);
   const [todos, setTodos] = useState(null);
   const [meta, setMeta] = useState(null);
@@ -157,7 +157,15 @@ const Content = () => {
     const url = `user/findone/${user.id}`;
     try {
       const rs = await request(url, 'GET', true);
-      // console.log(rs);
+      if (rs.success === true) {
+        const now_date = new Date().getTime();
+        const expired_date_time = new Date(rs.result.planExpiry).getTime();
+
+        const distance = expired_date_time - now_date;
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        setUserDetails(days);
+
+      }
     } catch (err) {
       console.log(rs);
     }
@@ -193,7 +201,7 @@ const Content = () => {
   let handleFormSubmit = (e) => {
     e.preventDefault()
   }
-  
+
   const handleUserRegistration = useCallback(async (e) => {
     e.preventDefault()
     try {
@@ -222,7 +230,7 @@ const Content = () => {
       console.log("User form submit error", err);
       setLoading(false);
     }
-  }, [firstName, lastName, phoneNumber, whatsappNumber, nameOfOrganization,  address]);
+  }, [firstName, lastName, phoneNumber, whatsappNumber, nameOfOrganization, address]);
 
   const handleStrike = (e, i) => {
     if (e.target.checked) {
@@ -465,7 +473,7 @@ const Content = () => {
                         type="submit"
                         onClick={e => handleUserRegistration(e)}
                       >
-                       { loader ? <ProgressTwo/> :"Update Profile"}
+                        {loader ? <ProgressTwo /> : "Update Profile"}
                       </button>
                     </div>
                   </div>
@@ -1030,7 +1038,7 @@ const Content = () => {
                       <i className="pg-icon">chevron_down</i>
                     </a>
                     <span className="hint-text ">
-                      Show more  
+                      Show more
                       <a href="javascript:void(0);"> Transactions  </a>
                     </span>
                   </p>
@@ -1100,7 +1108,7 @@ const Content = () => {
 
                                 <p className="small m-t-5 m-b-20">
                                   <span className="label label-white hint-text font-montserrat m-r-5">
-                                    27 days remaining
+                                    {userDetails} days remaining
                                   </span>
                                   {/* <span className="fs-12"> */}
                                   <Link to="#" onClick={() => renewSub()} style={{ textDecoration: "none", color: 'inherit' }}>Renew</Link>
