@@ -86,7 +86,15 @@ const tableThreeColumnsCbox = [
     headerStyle: { backgroundColor: '#f0f0f073' },
   }];
 
+const borderIcon = {
+  border: '1px solid gray',
+  borderRadius: '50%',
+  margin: '2px'
+};
+const iconSize = {
+  fontSize: '15px'
 
+}
 
 const Content = () => {
 
@@ -155,14 +163,17 @@ const Content = () => {
     return (
 
       <div>
-        <button aria-label="" className="btn btn-link">
-          <i className="pg-icon">trash_alt</i>
+        <button aria-label="" style={borderIcon} className="btn btn-link">
+          <i style={iconSize} className="pg-icon">trash_alt</i>
         </button>
-        <button aria-label="" className="btn btn-link">
-          <i className="pg-icon">edit</i>
+        <button aria-label="" style={borderIcon} className="btn btn-link">
+          <i style={iconSize} className="pg-icon">edit</i>
         </button>
-        <button aria-label="" className="btn btn-link">
-          <i className="pg-icon" onClick={() => setOpenPanel(true)}>eye</i>
+        <button aria-label="" style={borderIcon} className="btn btn-link"> 
+          {/* <i className="pg-icon">
+                    settings
+                    </i> */}
+          <i className="pg-icon" style={iconSize} onClick={() => setOpenPanel(true)}>external_link</i>
         </button>
       </div>
     );
