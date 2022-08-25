@@ -11,6 +11,7 @@ import InputWithLabel from "../../Landing/InputWithLabel";
 import WithoutMsgValidation from '../../Landing/InputWithLabel';
 import Alert from '../../UIElements/Alert';
 import { ValidatorForm } from "react-form-validator-core";
+import SlidingPanel from "react-sliding-side-panel";
 
 import { tableOneColumns, tableTwoColumns, tableThreeColumns } from "../../Tables/Data/Column";
 import { tableOneData, tableTwoData, tableThreeData } from "../../Tables/Data/data";
@@ -34,28 +35,16 @@ import "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.c
 import axios from "axios";
 
 
-function trashFormatter(column, colIndex) {
-  return (
 
-    <div>
-      <button aria-label="" className="btn btn-link">
-        <i className="pg-icon">trash_alt</i>
-      </button>
-      <button aria-label="" className="btn btn-link">
-        <i className="pg-icon">edit</i>
-      </button>
-    </div>
-  );
-}
 
 const selectRow = {
   mode: 'checkbox',
-  clickToSelect: true,
+  // clickToSelect: true,
   headerColumnStyle: {
     backgroundColor: '#f8f8f8'
   },
   onSelect: (row, isSelect, rowIndex, e) => {
-    console.log(row.id);
+    console.log(row.engineVersion);
     console.log(isSelect);
     console.log(rowIndex);
     console.log(e);
@@ -69,32 +58,32 @@ const selectRow = {
 
 
 const tableThreeColumnsCbox = [
-  
-{
-  dataField: 'renderingEngine',
-  text: 'NAME',
-  headerStyle: { backgroundColor: '#f0f0f073' },
-  sort: true
-}, {
-  dataField: 'browser',
-  text: 'EMAIL',
-  headerStyle: { backgroundColor: '#f0f0f073' },
-  sort: true
-}, {
-  dataField: 'platforms',
-  text: 'NUMBER',
-  headerStyle: { backgroundColor: '#f0f0f073' },
-  sort: true
-}, {
-  dataField: 'engineVersion',
-  text: 'FILE NUMBER',
-  headerStyle: { backgroundColor: '#f0f0f073' },
-  sort: true
-},
-{
-  dataField: 'actions',
-  text: 'ACTIONS',
-  headerStyle: { backgroundColor: '#f0f0f073' },
+
+  {
+    dataField: 'renderingEngine',
+    text: 'NAME',
+    headerStyle: { backgroundColor: '#f0f0f073' },
+    sort: true
+  }, {
+    dataField: 'browser',
+    text: 'EMAIL',
+    headerStyle: { backgroundColor: '#f0f0f073' },
+    sort: true
+  }, {
+    dataField: 'platforms',
+    text: 'NUMBER',
+    headerStyle: { backgroundColor: '#f0f0f073' },
+    sort: true
+  }, {
+    dataField: 'engineVersion',
+    text: 'FILE NUMBER',
+    headerStyle: { backgroundColor: '#f0f0f073' },
+    sort: true
+  },
+  {
+    dataField: 'actions',
+    text: 'ACTIONS',
+    headerStyle: { backgroundColor: '#f0f0f073' },
   }];
 
 
@@ -117,6 +106,7 @@ const Content = () => {
   const [group_name, setGroup_name] = useState('');
   const [groups, setGroups] = useState([]);
   const [is_create_g, setIs_create_g] = useState();
+  const [openPanel, setOpenPanel] = useState(false);
 
 
   const createGroup = async () => {
@@ -161,6 +151,22 @@ const Content = () => {
     [endDate, search, startDate]
   );
 
+  function trashFormatter(column, colIndex) {
+    return (
+
+      <div>
+        <button aria-label="" className="btn btn-link">
+          <i className="pg-icon">trash_alt</i>
+        </button>
+        <button aria-label="" className="btn btn-link">
+          <i className="pg-icon">edit</i>
+        </button>
+        <button aria-label="" className="btn btn-link">
+          <i className="pg-icon" onClick={() => setOpenPanel(true)}>eye</i>
+        </button>
+      </div>
+    );
+  }
   const fetchGroup = useCallback(async () => {
     const url = `group/all?page=1&limit=10`;
     try {
@@ -226,6 +232,34 @@ const Content = () => {
     { id: 1, name: 'Ict' },
     { id: 2, name: 'Web' }
   ];
+  const size = useWindowSize();
+  // Hook
+  function useWindowSize() {
+    const isClient = typeof window === "object";
+
+    function getSize() {
+      return {
+        width: isClient ? window.innerWidth : undefined,
+      };
+    }
+
+    const [windowSize, setWindowSize] = useState(getSize);
+
+    useEffect(() => {
+      if (!isClient) {
+        return false;
+      }
+
+      function handleResize() {
+        setWindowSize(getSize());
+      }
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []); // Empty array ensures that effect is only run on mount and unmount
+
+    return windowSize;
+  }
   return (
     <>
       <StickUpModal
@@ -297,6 +331,44 @@ const Content = () => {
         </div>
 
       </StickUpModal>
+      <SlidingPanel
+        type={"right"}
+        isOpen={openPanel}
+        size={
+          size.width < 480
+            ? 100
+            : size.width < 780
+              ? 30
+              : size.width < 1450
+                ? 20
+                : size.width > 1450
+                  ? 95
+                  : 20
+        }
+        backdropClicked={() => setOpenPanel(false)}
+      >
+        <div className="modal-content-wrapper full-height">
+          <div className="modal-content full-height">
+            <button
+              aria-label=""
+              type="button"
+              onClick={() => setOpenPanel(false)}
+              className="close p-t-10 text-right m-r-15"
+              data-dismiss="modal"
+              aria-hidden="true"
+            >
+              <i className="pg-icon">close</i>
+            </button>
+            <div className="container-xs-height full-height">
+              <div className="row-xs-height">
+                <div className="modal-body col-xs-height col-middle text-center   ">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </SlidingPanel>
       <div className="page-content-wrapper ">
         {/* START PAGE CONTENT */}
 
@@ -688,7 +760,7 @@ const Content = () => {
                               bordered={false}
                               condensed={true}
                               striped={true}
-                              selectRow={ selectRow }
+                              selectRow={selectRow}
                               pagination={paginationFactory({
                                 hideSizePerPage: true,
                                 hidePageListOnlyOnePage: true,
