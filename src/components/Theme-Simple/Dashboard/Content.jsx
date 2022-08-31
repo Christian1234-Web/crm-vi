@@ -959,7 +959,7 @@ const Content = () => {
                           <span className="hint-text small">14000 UNITS</span>
                         </td>
                         <td className="b-r b-dashed b-grey text-right">
-                          <span className="font-montserrat fs-18">₦110,114.00</span>
+                          <span className="font-montserrat fs-18">₦98,000.00</span>
                         </td>
                         <td className="text-left">
                           <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
@@ -1102,7 +1102,7 @@ const Content = () => {
                             <div className="col-sm-9">
                               <div className="p-l-20 full-height d-flex flex-column justify-content-between">
                                 <div className="d-flex align-items-center">
-                                  <h3 className="no-margin p-b-5">98,947.11</h3>
+                                  <h3 className="no-margin p-b-5">11,0114</h3>
                                   <Link className="small ml-2" to="/simple/form_wizard" style={{ textDecoration: "none", color: '#fff' }}>Buy Units</Link>
                                 </div>
 
