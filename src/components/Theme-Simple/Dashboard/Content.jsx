@@ -959,7 +959,7 @@ const Content = () => {
                           <span className="hint-text small">14000 UNITS</span>
                         </td>
                         <td className="b-r b-dashed b-grey text-right">
-                          <span className="font-montserrat fs-18">₦98,000.00</span>
+                          <span className="font-montserrat fs-18">₦110,114.00</span>
                         </td>
                         <td className="text-left">
                           <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
