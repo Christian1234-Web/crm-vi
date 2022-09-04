@@ -24,7 +24,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import axios from "axios";
 import { ProgressTwo } from "../../UIElements/ProgressAndActivity/Content";
 import plusSVG from "../../../assets/img/plus.svg";
-import { USER_NAME } from "../../../services/constants";
+import { TOKEN_COOKIE, USER_NAME } from "../../../services/constants";
 import SSRStorage from '../../../services/storage';
 import { setIn } from "formik";
 import { request } from "../../../services/utilities";
@@ -84,12 +84,14 @@ const Content = () => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [whatsappNumber, setWhatsappNumber] = useState('')
   const [address, setAddress] = useState('')
+  const [getToken, setGetToken] = useState('')
 
   // console.log(firstName, lastName, phoneNumber, whatsappNumber, address, nameOfOrganization )
 
   const [project, setProject] = useState("");
   const [investor, setInvestor] = useState("");
   const [deadline, setDeadline] = useState("");
+
 
   const [loading, setLoading] = useState(true);
   const [loader, setLoader] = useState(false);
@@ -125,7 +127,9 @@ const Content = () => {
   const fetchBundleList = useCallback(async (page) => {
     try {
       const user = await storage.getItem(USER_NAME);
+      const token = await storage.getItem(TOKEN_COOKIE);
       setUsername(user.username);
+      setGetToken(token)
       setVisibility(user.isUpdated)
       setAccountUser(user)
       const rs = await axios.get(
@@ -273,11 +277,15 @@ const Content = () => {
         setBundleUnitPrice(rs.data.bundle.amount);
         setTotalPrice(rs.data.result);
       } catch (err) {
-        console.log("fetch patients err", err);
+        console.log("fetch specific bundle err", err);
       }
     },
     [endDate, search, startDate]
   );
+
+ 
+
+ 
 
   const handleChange = (e) => {
     if (Number(e) < 5000) {
@@ -312,6 +320,7 @@ const Content = () => {
       Showing {from} to {to} of {size} entries
     </span>
   );
+
   return (
     <div className="page-content-wrapper ">
       {/* REGISTRATION MODAL */}

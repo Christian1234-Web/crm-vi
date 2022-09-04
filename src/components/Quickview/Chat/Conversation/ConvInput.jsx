@@ -18,7 +18,7 @@ const ConvInput = (props) => {
                     onChange={(event) => setInputValue(event.target.value)}/>
                 </div>
                 <div className="col-2 link text-color m-l-10 m-t-15 p-l-10 b-l b-grey col-top">
-                <a href="javascript:void(0);" className="link text-color"><i className="pg-icon">camera</i></a>
+                <a href="javascript:void(0);" className="link text-color"><i className="pg-icon">chevron_right</i></a>
                 </div>
             </div>
         </div>
