@@ -12,15 +12,10 @@ const Component = () => {
 	const [viewChat, setViewChat] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [contacts, setContacts] =useState([])
+	const [index, setIndex] =useState(null)
 
 
 const storage = new SSRStorage();
-
-
-
-
-
-
 
 const fetchContacts = useCallback(
 	async () => {
@@ -51,8 +46,6 @@ const fetchContacts = useCallback(
 		}
 	  }, [fetchContacts, loading]);
 
-		console.log('amala', contacts)
-
 	return (
 		<div className={`view-port clearfix ${viewChat ? " push-parrallax" : ""}`} id="chat">
 			<div className="view bg-white">
@@ -66,11 +59,12 @@ const fetchContacts = useCallback(
 					{
 						contacts?.map((contact, i) =>(
 							<ChatGroupItems key={i}
-						header={`${contact.contactName[0]}`}
+						header={`${contact.contactName[0].toLowerCase()}`}
 						chats={[
-							{ name: `${contact.contactName}`, image: `${process.env.PUBLIC_URL}/assets/img/profiles/1.jpg`, imageExt: `${process.env.PUBLIC_URL}/assets/img/profiles/1x.jpg`, message: "Hello there", click: setViewChat }
+							{ name: `${contact.contactName}`, image: `${process.env.PUBLIC_URL}/assets/img/profiles/1.jpg`, imageExt: `${process.env.PUBLIC_URL}/assets/img/profiles/1x.jpg`, message: "Hello there", click: setViewChat, setIndex: setIndex, key:`${i}` }
 						]}
-						click={setViewChat} />
+						click={setViewChat} 
+						/>
 						))
 					}
 					{/* BEGIN chat group a */}
@@ -87,7 +81,7 @@ const fetchContacts = useCallback(
 				</PerfectScrollbar>
 			</div>
 			{ /* BEGIN Conversation View  */}
-			<Conversation click={setViewChat} />
+			<Conversation click={setViewChat} contact={contacts[index]}/>
 			{ /* END Conversation View  */}
 		</div>
 	)

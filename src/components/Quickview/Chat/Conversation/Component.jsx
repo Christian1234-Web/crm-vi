@@ -1,11 +1,39 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 
 import Header from './Header';
 import ConvInput from './ConvInput';
 import MessageText from './MessageText';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import axios from 'axios';
 
 const Component = (props) => {
+    console.log('nnnnnn===', props.contact)
+
+    const [loading, setLoading] = useState(true);
+
+
+const fetchMessages = useCallback(
+	async () => {
+		  try {
+			const rs = await axios.get(
+			  `https://deda-crm-backend.herokuapp.com/whatsapp/messages/get?isSent=true&isDelivered=true&recipient=${props.contact.phone}&page=1&limit=50`
+			);
+			const { result, ...meta } = rs.data;
+            console.log('malik', rs)
+			
+		  } catch (err) {
+			console.log("fetch Messages err", err);
+			setLoading(false);
+		  }
+		},
+		[props.contact]
+	  );
+
+	  useEffect(() => {
+		if (loading) {
+            fetchMessages();
+		}
+	  }, [fetchMessages, loading]);
 
     const initialValues = [
         <MessageText from="self" message="Hello there" key={"key1"} />
@@ -49,7 +77,7 @@ const Component = (props) => {
     return (
         <div className="view chat-view bg-white clearfix">
             { /* BEGIN Header  */ }
-            <Header click={props.click}/>
+            <Header click={props.click} name={props.contact?.contactName}/>
             { /* END Header  */ }
             { /* BEGIN Conversation  */ }
             <PerfectScrollbar className="chat-inner" id="my-conversation">

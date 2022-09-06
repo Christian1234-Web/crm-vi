@@ -11,11 +11,13 @@ const ChatGroupItems = (props) => {
                     return (
                         <ChatItem 
                             key={index}
+                            chatIndex={chat.key}
                             name={chat.name}
                             image={chat.image}
                             imageExt={chat.imageExt}
                             message={chat.message}
                             click={chat.click}
+                            setIndex={chat.setIndex}
                         />
                     )
                 })}
