@@ -5,28 +5,36 @@ import ConvInput from './ConvInput';
 import MessageText from './MessageText';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import axios from 'axios';
+import { USER_NAME } from '../../../../services/constants';
+import SSRStorage from '../../../../services/storage';
 
 const Component = (props) => {
-    console.log('nnnnnn===', props.contact)
-
+    const storage = new SSRStorage();
+    
     const [loading, setLoading] = useState(true);
-
-
-const fetchMessages = useCallback(
-	async () => {
+    const [chatMessages, setChatMessages] = useState([]);
+    console.log('nnnnnn===', props.contact)
+    
+    
+    
+    const fetchMessages = useCallback(
+        async () => {
+            const user = await  storage.getItem(USER_NAME);
+            console.log('mmmmmmm===', user)
 		  try {
 			const rs = await axios.get(
-			  `https://deda-crm-backend.herokuapp.com/whatsapp/messages/get?isSent=true&isDelivered=true&recipient=${props.contact.phone}&page=1&limit=50`
+			  `https://deda-crm-backend.herokuapp.com/whatsapp/messages/get?isSent=true&isDelivered=true&recipient=${props.contact?.phone}&page=1&limit=50&userId=${user?.id}`
 			);
 			const { result, ...meta } = rs.data;
-            console.log('malik', rs)
+            console.log('malik', result)
+            setChatMessages(result)
 			
 		  } catch (err) {
 			console.log("fetch Messages err", err);
 			setLoading(false);
 		  }
 		},
-		[props.contact]
+		[props.contact?.phone]
 	  );
 
 	  useEffect(() => {
@@ -39,9 +47,16 @@ const fetchMessages = useCallback(
         <MessageText from="self" message="Hello there" key={"key1"} />
     ]
 
+    const filteredMessage = chatMessages?.map(message => ({
+        'message':   message.message,
+        'from':     message.in ? 'other' : 'self'
+    }))
+
+    console.log('display Me', filteredMessage)
+
     const messages = [
         {
-            'message': 'Hello',
+            'message': 'Hellosssssss',
             'from': 'other'
         }, 
         {
@@ -59,11 +74,11 @@ const fetchMessages = useCallback(
     ]
 
     let updateConv = [];
-    updateConv = messages.map((value, index) => {
+    updateConv = filteredMessage.map((value, index) => {
         return <MessageText from={value.from} message={value.message} key={index}/>
     })
 
-    const [chatConvs, setChatConvs] = useState(initialValues);
+    const [chatConvs, setChatConvs] = useState('');
     const [liveConvs, setLiveConvs] = useState([]);
 
     const handleSetLiveChat = (data) => {
@@ -71,7 +86,7 @@ const fetchMessages = useCallback(
     }
 
     useEffect(() => {
-        setChatConvs([...initialValues, ...updateConv]);
+        setChatConvs([...updateConv]);
     }, []);
 
     return (
@@ -82,13 +97,13 @@ const fetchMessages = useCallback(
             { /* BEGIN Conversation  */ }
             <PerfectScrollbar className="chat-inner" id="my-conversation">
                 {chatConvs}
-                {liveConvs.map((value, index) => {
-                    return <MessageText from="self" message={value} key={index} />
+                {filteredMessage.map((value, index) => {
+                    return <MessageText from={value.from}  message={value.message} key={index} />
                 })}
             </PerfectScrollbar>
             { /* END Conversation  */ }
             { /* BEGIN Chat Input  */ }
-            <ConvInput onSubmit={handleSetLiveChat} />
+            <ConvInput onSubmit={handleSetLiveChat} recipient={props?.contact?.whatsappNum} />
             { /* END Chat Input  */ }
         </div>
     )

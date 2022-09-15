@@ -29,7 +29,7 @@ const fetchContacts = useCallback(
 			  `https://deda-crm-backend.herokuapp.com/contact/all?page=1&limit=100`, config
 			);
 			const { result, ...meta } = rs.data;
-			let filtered = result.filter(contact => contact.whatsappNum != null)
+			let filtered = result.filter(contact => contact.whatsappNum != null && contact.whatsappNum.length > 12)
 			setContacts(filtered.sort((a, b) => (a.contactName > b.contactName ? 1 : -1)))
 			
 		  } catch (err) {
