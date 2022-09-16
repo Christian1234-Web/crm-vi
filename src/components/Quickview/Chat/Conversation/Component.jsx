@@ -23,7 +23,7 @@ const Component = (props) => {
             console.log('mmmmmmm===', user)
 		  try {
 			const rs = await axios.get(
-			  `https://deda-crm-backend.herokuapp.com/whatsapp/messages/get?isSent=true&isDelivered=true&recipient=${props.contact?.phone}&page=1&limit=50&userId=${user?.id}`
+			  `https://deda-crm-backend.herokuapp.com/whatsapp/messages/get?recipient=${props.contact?.phone}&page=1&limit=50&userId=${user?.id}`
 			);
 			const { result, ...meta } = rs.data;
             console.log('malik', result)

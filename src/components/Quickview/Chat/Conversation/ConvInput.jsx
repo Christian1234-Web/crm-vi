@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useCallback, useState } from 'react'
-import { TOKEN_COOKIE } from '../../../../services/constants';
+import { TOKEN_COOKIE, USER_NAME } from '../../../../services/constants';
 import SSRStorage from '../../../../services/storage';
 
 const ConvInput = (props) => {
@@ -11,6 +11,7 @@ const ConvInput = (props) => {
     const sendMessage = useCallback(
         async () => {
             const token = await  storage.getItem(TOKEN_COOKIE);
+            const user = await  storage.getItem(USER_NAME);
     
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -18,12 +19,12 @@ const ConvInput = (props) => {
 
         const payload = {
             "message": `${inputValue}`,
-            "template": "hello_world",
-            "recipient": `${props.recipient}`
+            "recipient": `${props.recipient}`,
+            "userId": user.id
         }
               try {
                 const rs = await axios.post(
-                  `https://deda-crm-backend.herokuapp.com/whatsapp/messages/send`,payload, config
+                  `https://deda-crm-backend.herokuapp.com/whatsapp/messages/send`, payload, config
                 );
                 const { result, ...meta } = rs.data;
                 console.log('happy', rs)
@@ -33,7 +34,7 @@ const ConvInput = (props) => {
                 setLoading(false);
               }
             },
-            []
+            [inputValue, props.recipient]
           );
     return (
         <div className="b-t b-grey bg-white clearfix p-l-10 p-r-10">
