@@ -14,7 +14,7 @@ const Header = (props) => {
                     <i className="pg-icon">chevron_left</i>
                 </a>
                 <div className="view-heading">
-                    John Smith
+                    {props.name}
                     <div className="fs-11 hint-text">Online</div>
                 </div>
                 <a href="javascript:void(0);" className="link text-color action p-r-10 pull-right ">

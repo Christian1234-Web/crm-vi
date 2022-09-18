@@ -2,7 +2,10 @@ import React from 'react'
 
 const ChatItemContent = (props) => {
     return (
-        <li className="chat-user-list clearfix" onClick={() => props.click(true)}>
+        <li className="chat-user-list clearfix" onClick={() => {
+            props.setIndex(props.chatIndex)
+            return props.click(true)
+        }}>
             <a data-view-animation="push-parrallax" data-view-port="#chat" data-navigate="view" className="" href="javascript:void(0);">
             <span className="col-xs-height col-middle">
             <span className="thumbnail-wrapper d32 circular bg-success">
