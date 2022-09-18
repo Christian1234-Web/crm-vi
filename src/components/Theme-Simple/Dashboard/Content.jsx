@@ -132,7 +132,7 @@ const Content = () => {
   }, [slideUpModalSize]);
 
 
-console.log('mallam', userDetails < 0)
+  console.log('mallam', userDetails < 0)
   const fetchBundleList = useCallback(async (page) => {
     try {
       const user = await storage.getItem(USER_NAME);
@@ -167,7 +167,8 @@ console.log('mallam', userDetails < 0)
 
   const fetchUser = useCallback(async () => {
     const user = await storage.getItem(USER_NAME);
-    const url = `user/findone/${user.id}`;
+    console.log(user)
+    const url = `user/findone/${user?.id}`;
     try {
       const rs = await request(url, 'GET', true);
       if (rs.success === true) {
@@ -293,9 +294,9 @@ console.log('mallam', userDetails < 0)
     [endDate, search, startDate]
   );
 
- 
 
- 
+
+
 
   const handleChange = (e) => {
     if (Number(e) < 5000) {
@@ -335,62 +336,62 @@ console.log('mallam', userDetails < 0)
     <div className="page-content-wrapper ">
       {/* RENEWAL MODAL */}
       <SlideUpModal
-          visible={slideUpVisible}
-          width={slideUpWidth}
-          effect="fadeInUp"
-          onClickAway={() => setSlideUpVisible(false)}
-        >
-          {slideUpModalSize[2] ? (
-            <div className="modal-content-wrapper">
-              <div className="modal-content">
-                <div className="modal-body text-center p-t-25">
-                  <h4 className="no-margin p-b-10">You have subscribed</h4>
-                  <button
-                    aria-label=""
-                    type="button"
-                    className="btn btn-primary btn-cons"
-                    data-dismiss="modal"
-                  >
-                    Continue
-                  </button>
-                </div>
+        visible={slideUpVisible}
+        width={slideUpWidth}
+        effect="fadeInUp"
+        onClickAway={() => setSlideUpVisible(false)}
+      >
+        {slideUpModalSize[2] ? (
+          <div className="modal-content-wrapper">
+            <div className="modal-content">
+              <div className="modal-body text-center p-t-25">
+                <h4 className="no-margin p-b-10">You have subscribed</h4>
+                <button
+                  aria-label=""
+                  type="button"
+                  className="btn btn-primary btn-cons"
+                  data-dismiss="modal"
+                >
+                  Continue
+                </button>
               </div>
             </div>
-          ) : (
-            <div className="modal-content-wrapper">
-              <div className="modal-content">
-                <div className="modal-top">
-                  <button
-                    aria-label=""
-                    type="button"
-                    className="close"
-                    // onClick={() => setSlideUpVisible(false)}
-                    data-dismiss="modal"
-                    aria-hidden="true"
-                  >
-                    {/* <i className="pg-icon">close</i> */}
-                  </button>
-                  <h5>
-                    Your subscription has expired, Please renew.
-                    {/* <span className="semi-bold">Information</span> */}
-                  </h5>
-                  <p className="p-b-10">
-                    {/* We need payment in order to process your messaging orders */}
-                  </p>
-                </div>
-                <div className="modal-body">
-                  <form role="form">
-                    <div className="form-group-attached">
-                      <div className="row">
-                        {/* <div className="col-md-12">
+          </div>
+        ) : (
+          <div className="modal-content-wrapper">
+            <div className="modal-content">
+              <div className="modal-top">
+                <button
+                  aria-label=""
+                  type="button"
+                  className="close"
+                  // onClick={() => setSlideUpVisible(false)}
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  {/* <i className="pg-icon">close</i> */}
+                </button>
+                <h5>
+                  Your subscription has expired, Please renew.
+                  {/* <span className="semi-bold">Information</span> */}
+                </h5>
+                <p className="p-b-10">
+                  {/* We need payment in order to process your messaging orders */}
+                </p>
+              </div>
+              <div className="modal-body">
+                <form role="form">
+                  <div className="form-group-attached">
+                    <div className="row">
+                      {/* <div className="col-md-12">
                           <div className="form-group form-group-default">
                             <label>Company Name</label>
                             <input type="email" className="form-control" />
                           </div>
                         </div> */}
-                      </div>
-                      <div className="row">
-                        {/* <div className="col-md-8">
+                    </div>
+                    <div className="row">
+                      {/* <div className="col-md-8">
                           <div className="form-group form-group-default">
                             <label>Card Number</label>
                             <input type="text" className="form-control" />
@@ -402,40 +403,40 @@ console.log('mallam', userDetails < 0)
                             <input type="text" className="form-control" />
                           </div>
                         </div> */}
-                      </div>
                     </div>
-                  </form>
-                  <div className="row">
-                    <div className="col-md-8">
-                      <div className="p-t-20 clearfix p-l-10 p-r-10">
-                        <div className="pull-left">
-                          <p className="bold font-montserrat text-uppercase">
-                            TOTAL
-                          </p>
-                        </div>
-                        <div className="pull-right">
-                          <p className="bold font-montserrat text-uppercase">
+                  </div>
+                </form>
+                <div className="row">
+                  <div className="col-md-8">
+                    <div className="p-t-20 clearfix p-l-10 p-r-10">
+                      <div className="pull-left">
+                        <p className="bold font-montserrat text-uppercase">
+                          TOTAL
+                        </p>
+                      </div>
+                      <div className="pull-right">
+                        <p className="bold font-montserrat text-uppercase">
                           ₦25,000.00
-                          </p>
-                        </div>
+                        </p>
                       </div>
                     </div>
-                    <div className="col-md-4 m-t-10 sm-m-t-10">
-                      <button
-                        aria-label=""
-                        type="button"
-                        className="btn btn-primary btn-block m-t-5"
-                        onClick={() => renewSub()}
-                      >
-                        Pay Now
-                      </button>
-                    </div>
+                  </div>
+                  <div className="col-md-4 m-t-10 sm-m-t-10">
+                    <button
+                      aria-label=""
+                      type="button"
+                      className="btn btn-primary btn-block m-t-5"
+                      onClick={() => renewSub()}
+                    >
+                      Pay Now
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-          )}
-        </SlideUpModal>
+          </div>
+        )}
+      </SlideUpModal>
       {/* REGISTRATION MODAL */}
       <StickUpModal
         visible={!visibility}

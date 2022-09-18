@@ -74,7 +74,7 @@ const Component = (props) => {
     ]
 
     let updateConv = [];
-    updateConv = filteredMessage.map((value, index) => {
+    updateConv = filteredMessage?.map((value, index) => {
         return <MessageText from={value.from} message={value.message} key={index}/>
     })
 
@@ -97,7 +97,7 @@ const Component = (props) => {
             { /* BEGIN Conversation  */ }
             <PerfectScrollbar className="chat-inner" id="my-conversation">
                 {chatConvs}
-                {filteredMessage.map((value, index) => {
+                {filteredMessage?.map((value, index) => {
                     return <MessageText from={value.from}  message={value.message} key={index} />
                 })}
             </PerfectScrollbar>
