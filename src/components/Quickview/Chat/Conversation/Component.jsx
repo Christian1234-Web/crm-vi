@@ -5,8 +5,18 @@ import ConvInput from './ConvInput';
 import MessageText from './MessageText';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import axios from 'axios';
-import { USER_NAME } from '../../../../services/constants';
+import { API_URI, USER_NAME } from '../../../../services/constants';
 import SSRStorage from '../../../../services/storage';
+import io  from 'socket.io-client';
+
+const connectionOptions = {
+    "force new connection": true,
+    "reconnectionAttempts": "Infinity", //avoid having user reconnect manually in order to prevent dead clients after a server restart
+    "timeout": 10000, //before connect_error and connect_timeout are emitted.
+    "transports": ["websocket"]
+  };
+
+const socket = io.connect(`${API_URI}/chat`, connectionOptions)
 
 const Component = (props) => {
     const storage = new SSRStorage();
@@ -15,7 +25,14 @@ const Component = (props) => {
     const [chatMessages, setChatMessages] = useState([]);
     console.log('nnnnnn===', props.contact)
     
-    
+       useEffect(() => {
+            socket.on('receive_chat', payload => {
+              console.log('amamamamamam', payload)
+              if(props.contact?.phone.includes(payload.recipient)){
+                setChatMessages([...chatMessages, payload])
+              }
+            });
+          }, []);
     
     const fetchMessages = useCallback(
         async () => {
@@ -27,7 +44,7 @@ const Component = (props) => {
 			);
 			const { result, ...meta } = rs.data;
             console.log('malik', result)
-            setChatMessages(result)
+            setChatMessages(result.reverse())
 			
 		  } catch (err) {
 			console.log("fetch Messages err", err);
@@ -74,7 +91,7 @@ const Component = (props) => {
     ]
 
     let updateConv = [];
-    updateConv = filteredMessage.map((value, index) => {
+    updateConv = filteredMessage?.map((value, index) => {
         return <MessageText from={value.from} message={value.message} key={index}/>
     })
 
@@ -97,7 +114,7 @@ const Component = (props) => {
             { /* BEGIN Conversation  */ }
             <PerfectScrollbar className="chat-inner" id="my-conversation">
                 {chatConvs}
-                {filteredMessage.map((value, index) => {
+                {filteredMessage?.map((value, index) => {
                     return <MessageText from={value.from}  message={value.message} key={index} />
                 })}
             </PerfectScrollbar>
