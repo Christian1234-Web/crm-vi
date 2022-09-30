@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef, useReducer } from 'react'
 
 import Header from './Header';
 import ConvInput from './ConvInput';
@@ -22,17 +22,53 @@ const Component = (props) => {
     const storage = new SSRStorage();
     
     const [loading, setLoading] = useState(true);
+    const [senderMessage, setSenderMessage] = useState(null);
     const [chatMessages, setChatMessages] = useState([]);
+
     console.log('nnnnnn===', props.contact)
+
+    const [ chat, setChat ] = useState([])
+
+	const socketRef = useRef()
+
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+	useEffect(
+		() => {
+			socketRef.current = io.connect(`${API_URI}/chat`, connectionOptions)
+			socketRef.current.on("receive_chat", (data) => {
+				// setChat([ ...chat, { name, message } ])
+                console.log('New approach', data)
+                console.log('New approach222222', data.recipient === props.contact?.phone)
+                if(data.recipient === props.contact?.phone){
+                    console.log('New hhshvsfvajh',data)
+                    if(data.in){
+                        setChatMessages([...chatMessages, data])
+                    } 
+                    console.log('help ooo', senderMessage)
+                    if(data.isSent){
+                        setChatMessages([...chatMessages, senderMessage])
+                    }
+                    forceUpdate()
+                }
+			})
+			return () => socketRef.current.disconnect()
+		},
+		[chatMessages]
+	)
     
-       useEffect(() => {
-            socket.on('receive_chat', payload => {
-              console.log('amamamamamam', payload)
-              if(props.contact?.phone.includes(payload.recipient)){
-                setChatMessages([...chatMessages, payload])
-              }
-            });
-          }, []);
+    //    useEffect(() => {a
+    //         socket.on('receive_chat', data => {
+    //             if(data){
+    //                 setChatMessages([...chatMessages, ...data]);
+    //                 console.log('receive_chat main', data)
+    //                 setFresh(!fresh)
+    //             }
+    //         //   if(props.contact?.phone.includes(payload.recipient)){
+    //         //     setChatMessages([...chatMessages, ...data])
+    //         //   }
+    //         });
+    //       }, [fresh]);
     
     const fetchMessages = useCallback(
         async () => {
@@ -40,7 +76,7 @@ const Component = (props) => {
             console.log('mmmmmmm===', user)
 		  try {
 			const rs = await axios.get(
-			  `https://deda-crm-backend.herokuapp.com/whatsapp/messages/get?recipient=${props.contact?.phone}&page=1&limit=50&userId=${user?.id}`
+			  `https://deda-crm-backend.herokuapp.com/whatsapp/messages/get?recipient=${props.contact?.phone}&page=1&limit=500&userId=${user?.id}`
 			);
 			const { result, ...meta } = rs.data;
             console.log('malik', result)
@@ -65,11 +101,16 @@ const Component = (props) => {
     ]
 
     const filteredMessage = chatMessages?.map(message => ({
-        'message':   message.message,
-        'from':     message.in ? 'other' : 'self'
+        'message':   message?.message,
+        'from':     message?.in ? 'other' : 'self'
     }))
 
+    useEffect(() => {
+        
+      }, []);
+
     console.log('display Me', filteredMessage)
+    console.log('My number', chatMessages.length)
 
     const messages = [
         {
@@ -113,14 +154,15 @@ const Component = (props) => {
             { /* END Header  */ }
             { /* BEGIN Conversation  */ }
             <PerfectScrollbar className="chat-inner" id="my-conversation">
-                {chatConvs}
+                {/* {chatConvs} */}
                 {filteredMessage?.map((value, index) => {
                     return <MessageText from={value.from}  message={value.message} key={index} />
                 })}
+                
             </PerfectScrollbar>
             { /* END Conversation  */ }
             { /* BEGIN Chat Input  */ }
-            <ConvInput onSubmit={handleSetLiveChat} recipient={props?.contact?.whatsappNum} />
+            <ConvInput onSubmit={handleSetLiveChat} recipient={props?.contact?.whatsappNum} setSenderMessage={setSenderMessage}/>
             { /* END Chat Input  */ }
         </div>
     )

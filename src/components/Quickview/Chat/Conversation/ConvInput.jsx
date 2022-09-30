@@ -39,6 +39,7 @@ const ConvInput = (props) => {
         }
               try {
 			socket.emit("send_chat", payload);
+            props.setSenderMessage(payload)
               } catch (err) {
                 console.log("send message err", err);
                 setLoading(false);
@@ -64,7 +65,7 @@ const ConvInput = (props) => {
                     type="text" 
                     className="form-control chat-input"  
                     placeholder="Say something"
-                    onKeyPress={(event) => event.key === 'Enter' ? props.onSubmit(inputValue): null} 
+                    onKeyPress={(event) => event.key === 'Enter' && inputValue !== '' ? (props.onSubmit(inputValue), sendMessage()): null} 
                     onKeyUp={(event) => event.key === 'Enter' ? event.target.value = "" : null}
                     onChange={(event) => setInputValue(event.target.value)}
                     value={inputValue}
@@ -72,9 +73,11 @@ const ConvInput = (props) => {
                 </div>
                 <div className="col-2 link text-color m-l-10 m-t-15 p-l-10 b-l b-grey col-top" >
                 <a href="javascript:void(0);" className="link text-color" onClick={() => {
+                   if(inputValue != ''){
                     props.onSubmit(inputValue)
                     sendMessage()
                     setInputValue('')
+                   }
                 }
                 }><i className="pg-icon">chevron_right</i></a>
                 </div>
