@@ -352,30 +352,12 @@ console.log('mallam', userDetails < 0)
   return (
     <div className="page-content-wrapper ">
       {/* RENEWAL MODAL */}
-      <SlideUpModal
-          visible={slideUpVisible}
-          width={slideUpWidth}
-          effect="fadeInUp"
-          onClickAway={() => setSlideUpVisible(false)}
-        >
-          {slideUpModalSize[2] ? (
-            <div className="modal-content-wrapper">
-              <div className="modal-content">
-                <div className="modal-body text-center p-t-25">
-                  <h4 className="no-margin p-b-10">You have subscribed</h4>
-                  <button
-                    aria-label=""
-                    type="button"
-                    className="btn btn-primary btn-cons"
-                    data-dismiss="modal"
-                  >
-                    Continue
-                  </button>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="modal-content-wrapper">
+      <StickUpModal
+            visible={slideUpVisible}
+            className="stickUpModalClass"
+            width={"600"}
+            >
+              <div className="modal-content-wrapper">
               <div className="modal-content">
                 <div className="modal-top">
                   <button
@@ -452,8 +434,8 @@ console.log('mallam', userDetails < 0)
                 </div>
               </div>
             </div>
-          )}
-        </SlideUpModal>
+            </StickUpModal>
+      
       {/* REGISTRATION MODAL */}
       <StickUpModal
         visible={!visibility}
