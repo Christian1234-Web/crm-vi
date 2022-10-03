@@ -1265,7 +1265,7 @@ console.log('mallam', userDetails < 0)
 
                                 <p className="small m-t-5 m-b-20">
                                   <span className="label label-white hint-text font-montserrat m-r-5">
-                                    {userDetails} days remaining
+                                    {userDetails < 0 ? "0": userDetails} days remaining
                                   </span>
                                   {/* <span className="fs-12"> */}
                                   <Link to="#" onClick={() => renewSub()} style={{ textDecoration: "none", color: 'inherit' }}>Renew</Link>
