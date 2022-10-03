@@ -1,13 +1,28 @@
 import axios from 'axios';
 import React, { useCallback, useState } from 'react'
-import { TOKEN_COOKIE, USER_NAME } from '../../../../services/constants';
+import { API_URI, TOKEN_COOKIE, USER_NAME } from '../../../../services/constants';
 import SSRStorage from '../../../../services/storage';
+import io  from 'socket.io-client';
+import { useEffect } from 'react';
+
+const connectionOptions = {
+    "force new connection": true,
+    "reconnectionAttempts": "Infinity", //avoid having user reconnect manually in order to prevent dead clients after a server restart
+    "timeout": 10000, //before connect_error and connect_timeout are emitted.
+    "transports": ["websocket"]
+  };
+
+const socket = io.connect(`${API_URI}/chat`, connectionOptions)
+
 
 const ConvInput = (props) => {
     const [inputValue, setInputValue] = useState(null)
 	const [loading, setLoading] = useState(true);
 
     const storage = new SSRStorage();
+
+    
+
     const sendMessage = useCallback(
         async () => {
             const token = await  storage.getItem(TOKEN_COOKIE);
@@ -23,12 +38,8 @@ const ConvInput = (props) => {
             "userId": user.id
         }
               try {
-                const rs = await axios.post(
-                  `https://deda-crm-backend.herokuapp.com/whatsapp/messages/send`, payload, config
-                );
-                const { result, ...meta } = rs.data;
-                console.log('happy', rs)
-                
+			socket.emit("send_chat", payload);
+            props.setSenderMessage(payload)
               } catch (err) {
                 console.log("send message err", err);
                 setLoading(false);
@@ -36,6 +47,13 @@ const ConvInput = (props) => {
             },
             [inputValue, props.recipient]
           );
+
+        //   useEffect(() => {
+        //     socket.on('receive_chat', payload => {
+        //       console.log('amamamamamam', payload)
+        //     });
+        //   }, []);
+
     return (
         <div className="b-t b-grey bg-white clearfix p-l-10 p-r-10">
             <div className="row">
@@ -47,7 +65,7 @@ const ConvInput = (props) => {
                     type="text" 
                     className="form-control chat-input"  
                     placeholder="Say something"
-                    onKeyPress={(event) => event.key === 'Enter' ? props.onSubmit(inputValue): null} 
+                    onKeyPress={(event) => event.key === 'Enter' && inputValue !== '' ? (props.onSubmit(inputValue), sendMessage()): null} 
                     onKeyUp={(event) => event.key === 'Enter' ? event.target.value = "" : null}
                     onChange={(event) => setInputValue(event.target.value)}
                     value={inputValue}
@@ -55,9 +73,11 @@ const ConvInput = (props) => {
                 </div>
                 <div className="col-2 link text-color m-l-10 m-t-15 p-l-10 b-l b-grey col-top" >
                 <a href="javascript:void(0);" className="link text-color" onClick={() => {
+                   if(inputValue != ''){
                     props.onSubmit(inputValue)
                     sendMessage()
                     setInputValue('')
+                   }
                 }
                 }><i className="pg-icon">chevron_right</i></a>
                 </div>

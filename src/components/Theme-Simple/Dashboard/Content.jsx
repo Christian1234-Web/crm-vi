@@ -29,6 +29,8 @@ import SSRStorage from '../../../services/storage';
 import { setIn } from "formik";
 import { request } from "../../../services/utilities";
 import SlideUpModal from "../Contact/SlideUpModal";
+import moment from "moment";
+import format from 'format-number'
 const storage = new SSRStorage();
 const tableThreeData = [
   {
@@ -114,6 +116,7 @@ const Content = () => {
   const [waiting, setWaiting] = useState(false);
   const [refreshSix, setRefreshSix] = useState(false);
   const [todo, setTodo] = useState(false);
+  const [userTransactions, setUserTransactions] = useState(null);
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const d = new Date();
   const flipBarNotifyArray = [{ type: 'success', desc: 'Your Todo has been created' }];
@@ -295,9 +298,22 @@ const Content = () => {
   );
 
 
+  const fetchUserTransactions = useCallback(
+    async () => {
+      try {
+    const user = await storage.getItem(USER_NAME);
 
-
-
+        const rs = await axios.get(
+          `https://deda-crm-backend.herokuapp.com/payment/filter?page=1&limit=10&userId=${user.id}`
+        );
+        const { result, ...meta } = rs.data;
+        setUserTransactions(result)
+      } catch (err) {
+        console.log("fetch user transactions err", err);
+      }
+    },
+    []
+  );
   const handleChange = (e) => {
     if (Number(e) < 5000) {
       setWaiting(true);
@@ -323,8 +339,9 @@ const Content = () => {
       fetchUser();
       fetchBundleList();
       fetchTodo();
+      fetchUserTransactions();
     }
-  }, [fetchBundleList, fetchTodo, loading]);
+  }, [fetchBundleList, fetchTodo, fetchUserTransactions, loading]);
 
   const customTotal = (from, to, size) => (
     <span className="react-bootstrap-table-pagination-total">
@@ -1073,6 +1090,23 @@ const Content = () => {
                 <div className="auto-overflow">
                   <table className="table table-condensed table-hover">
                     <tbody>
+                      {userTransactions?.map((transaction, index) => (
+                          <tr key={index}>
+                          <td className="" style={{overflow:'visible'}}>PAYMENT FOR {transaction.description.toUpperCase().split('_').join(' ')}</td>
+                          <td className="text-right">
+                            <span className="hint-text small">{moment(transaction.createdAt).format('DD-MM-YY')}</span>
+                          </td>
+                          <td className="text-right b-r b-dashed b-grey">
+                            <span className="hint-text small">{transaction.description.toUpperCase().split('_').join(' ')}</span>
+                          </td>
+                          <td className="b-r b-dashed b-grey text-right">
+                            <span className="font-montserrat fs-18">{format({prefix: '₦',})(transaction.amount, {noSeparator: false})}</span>
+                          </td>
+                          <td className="text-left">
+                            <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
+                          </td>
+                        </tr>
+                      ))}
                       <tr>
                         <td className=" fs-12">BUSINESS PLAN PURCHASE</td>
                         <td className="text-right">
@@ -1133,7 +1167,7 @@ const Content = () => {
                           <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
                         </td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td className=" fs-12">BUSINESS PLAN PURCHASE</td>
                         <td className="text-right">
                           <span className="hint-text small">04-05-2022</span>
@@ -1147,7 +1181,7 @@ const Content = () => {
                         <td className="text-left">
                           <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
                         </td>
-                      </tr>
+                      </tr> */}
                     </tbody>
                   </table>
                 </div>
