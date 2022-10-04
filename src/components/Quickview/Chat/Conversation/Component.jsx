@@ -7,56 +7,56 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import axios from 'axios';
 import { API_URI, USER_NAME } from '../../../../services/constants';
 import SSRStorage from '../../../../services/storage';
-import io  from 'socket.io-client';
+import io from 'socket.io-client';
 
 const connectionOptions = {
     "force new connection": true,
     "reconnectionAttempts": "Infinity", //avoid having user reconnect manually in order to prevent dead clients after a server restart
     "timeout": 10000, //before connect_error and connect_timeout are emitted.
     "transports": ["websocket"]
-  };
+};
 
 const socket = io.connect(`${API_URI}/chat`, connectionOptions)
 
 const Component = (props) => {
     const storage = new SSRStorage();
-    
+
     const [loading, setLoading] = useState(true);
     const [senderMessage, setSenderMessage] = useState(null);
     const [chatMessages, setChatMessages] = useState([]);
 
     console.log('nnnnnn===', props.contact)
 
-    const [ chat, setChat ] = useState([])
+    const [chat, setChat] = useState([])
 
-	const socketRef = useRef()
+    const socketRef = useRef()
 
     const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-	useEffect(
-		() => {
-			socketRef.current = io.connect(`${API_URI}/chat`, connectionOptions)
-			socketRef.current.on("receive_chat", (data) => {
-				// setChat([ ...chat, { name, message } ])
+    useEffect(
+        () => {
+            socketRef.current = io.connect(`${API_URI}/chat`, connectionOptions)
+            socketRef.current.on("receive_chat", (data) => {
+                // setChat([ ...chat, { name, message } ])
                 console.log('New approach', data)
                 console.log('New approach222222', data.recipient === props.contact?.phone)
-                if(data.recipient === props.contact?.phone){
-                    console.log('New hhshvsfvajh',data)
-                    if(data.in){
+                if (data.recipient === props.contact?.phone) {
+                    console.log('New hhshvsfvajh', data)
+                    if (data.in) {
                         setChatMessages([...chatMessages, data])
-                    } 
+                    }
                     console.log('help ooo', senderMessage)
-                    if(data.isSent){
+                    if (data.isSent) {
                         setChatMessages([...chatMessages, senderMessage])
                     }
                     forceUpdate()
                 }
-			})
-			return () => socketRef.current.disconnect()
-		},
-		[chatMessages]
-	)
-    
+            })
+            return () => socketRef.current.disconnect()
+        },
+        [chatMessages]
+    )
+
     //    useEffect(() => {a
     //         socket.on('receive_chat', data => {
     //             if(data){
@@ -69,45 +69,45 @@ const Component = (props) => {
     //         //   }
     //         });
     //       }, [fresh]);
-    
+
     const fetchMessages = useCallback(
         async () => {
-            const user = await  storage.getItem(USER_NAME);
+            const user = await storage.getItem(USER_NAME);
             console.log('mmmmmmm===', user)
-		  try {
-			const rs = await axios.get(
-			  `https://deda-crm-backend.herokuapp.com/whatsapp/messages/get?recipient=${props.contact?.phone}&page=1&limit=500&userId=${user?.id}`
-			);
-			const { result, ...meta } = rs.data;
-            console.log('malik', result)
-            setChatMessages(result.reverse())
-			
-		  } catch (err) {
-			console.log("fetch Messages err", err);
-			setLoading(false);
-		  }
-		},
-		[props.contact?.phone]
-	  );
+            try {
+                const rs = await axios.get(
+                    `https://deda-crm-backend.herokuapp.com/whatsapp/messages/get?recipient=${props.contact?.phone}&page=1&limit=500&userId=${user?.id}`
+                );
+                const { result, ...meta } = rs.data;
+                console.log('malik', result)
+                setChatMessages(result.reverse())
 
-	  useEffect(() => {
-		if (loading) {
+            } catch (err) {
+                console.log("fetch Messages err", err);
+                setLoading(false);
+            }
+        },
+        [props.contact?.phone]
+    );
+
+    useEffect(() => {
+        if (loading) {
             fetchMessages();
-		}
-	  }, [fetchMessages, loading]);
+        }
+    }, [fetchMessages, loading]);
 
     const initialValues = [
         <MessageText from="self" message="Hello there" key={"key1"} />
     ]
 
     const filteredMessage = chatMessages?.map(message => ({
-        'message':   message?.message,
-        'from':     message?.in ? 'other' : 'self'
+        'message': message?.message,
+        'from': message?.in ? 'other' : 'self'
     }))
 
     useEffect(() => {
-        
-      }, []);
+
+    }, []);
 
     console.log('display Me', filteredMessage)
     console.log('My number', chatMessages.length)
@@ -116,7 +116,7 @@ const Component = (props) => {
         {
             'message': 'Hellosssssss',
             'from': 'other'
-        }, 
+        },
         {
             'message': 'Did you check out Pages framework ?',
             'from': 'self'
@@ -133,7 +133,7 @@ const Component = (props) => {
 
     let updateConv = [];
     updateConv = filteredMessage?.map((value, index) => {
-        return <MessageText from={value.from} message={value.message} key={index}/>
+        return <MessageText from={value.from} message={value.message} key={index} />
     })
 
     const [chatConvs, setChatConvs] = useState('');
@@ -149,25 +149,23 @@ const Component = (props) => {
 
     return (
         <div className="view chat-view bg-white clearfix">
-            { /* BEGIN Header  */ }
-            <Header click={props.click} name={props.contact?.contactName}/>
-            { /* END Header  */ }
-            { /* BEGIN Conversation  */ }
+            { /* BEGIN Header  */}
+            <Header click={props.click} name={props.contact?.contactName} />
+            { /* END Header  */}
+            { /* BEGIN Conversation  */}
             <PerfectScrollbar className="chat-inner" id="my-conversation">
-<<<<<<< HEAD
+
                 {chatConvs}
-=======
                 {/* {chatConvs} */}
->>>>>>> 3e57f50e7caeb70c3e045cd39873b9f53d85ac33
                 {filteredMessage?.map((value, index) => {
-                    return <MessageText from={value.from}  message={value.message} key={index} />
+                    return <MessageText from={value.from} message={value.message} key={index} />
                 })}
-                
+
             </PerfectScrollbar>
-            { /* END Conversation  */ }
-            { /* BEGIN Chat Input  */ }
-            <ConvInput onSubmit={handleSetLiveChat} recipient={props?.contact?.whatsappNum} setSenderMessage={setSenderMessage}/>
-            { /* END Chat Input  */ }
+            { /* END Conversation  */}
+            { /* BEGIN Chat Input  */}
+            <ConvInput onSubmit={handleSetLiveChat} recipient={props?.contact?.whatsappNum} setSenderMessage={setSenderMessage} />
+            { /* END Chat Input  */}
         </div>
     )
 }
