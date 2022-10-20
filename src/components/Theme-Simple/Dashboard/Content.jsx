@@ -6,7 +6,7 @@ import { ValidatorForm } from "react-form-validator-core";
 //import ui widgets component
 import InputWithLabel from "../../Landing/InputWithLabel";
 import cellEditFactory from "react-bootstrap-table2-editor";
-import Alert from '../../UIElements/Alert'
+import Alert from "../../UIElements/Alert";
 import FlipBarNotifyModule from "../../UIElements/Notification/FlipBarNotification/FlipBarNotifyModule";
 import WithoutMsgValidation from "../../Forms/FormLayouts/WithoutMsgValidation";
 
@@ -25,12 +25,15 @@ import axios from "axios";
 import { ProgressTwo } from "../../UIElements/ProgressAndActivity/Content";
 import plusSVG from "../../../assets/img/plus.svg";
 import { TOKEN_COOKIE, USER_NAME } from "../../../services/constants";
-import SSRStorage from '../../../services/storage';
+import SSRStorage from "../../../services/storage";
 import { setIn } from "formik";
 import { request } from "../../../services/utilities";
 import SlideUpModal from "../Contact/SlideUpModal";
 import moment from "moment";
-import format from 'format-number'
+import format from "format-number";
+import Dropdown from "react-dropdown";
+import { tabSelectOne } from "../../UIElements/TabsAndAccordion/dropdownData";
+
 const storage = new SSRStorage();
 const tableThreeData = [
   {
@@ -51,21 +54,25 @@ const Content = () => {
       ></div>
     </React.Fragment>
   );
+  const [simpleTabs, setSimpleTabs] = useState([true, false, false]);
+  const [tableFour, setTableFour] = useState([false, false, false, false]);
+
   const [slideUpVisible, setSlideUpVisible] = useState(false);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const [refreshOne, setRefreshOne] = useState(false);
   const [projectUrl, setProjectUrl] = useState("");
   const [projectName, setProjectName] = useState("");
   const [startingDate, setStartingDate] = useState("");
   const [website, setWebsite] = useState("");
-  const [classs, setClasss] = useState('');
+  const [classs, setClasss] = useState("");
   const [show, setShow] = useState(false);
   const [dataThree] = useState(tableThreeData);
   const [columnsThree] = useState(tableThreeColumns);
   const [refreshEight, setRefreshEight] = useState(false);
   const [checkedOption, setCheckedOption] = useState(true);
   const [stickUpVisible, setStickUpVisible] = useState(false);
-  const [visibility, setVisibility] = useState(null)
+  const [showRenewModal, setShowRenewModal] = useState(false);
+  const [visibility, setVisibility] = useState(null);
   const [stickUpModalSize, setStickUpModalSize] = useState([
     false,
     true,
@@ -78,23 +85,22 @@ const Content = () => {
     if (stickUpModalSize[2]) setStickUpWidth("sm");
   }, [stickUpModalSize]);
 
-  const [optionsStrike, setOptionsStrike] = useState([])
-  const [strike, setStrike] = useState('')
-  const [accountUser, setAccountUser] = useState(null)
-  const [nameOfOrganization, setNameOfOrganization] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [whatsappNumber, setWhatsappNumber] = useState('')
-  const [address, setAddress] = useState('')
-  const [getToken, setGetToken] = useState('')
+  const [optionsStrike, setOptionsStrike] = useState([]);
+  const [strike, setStrike] = useState("");
+  const [accountUser, setAccountUser] = useState(null);
+  const [nameOfOrganization, setNameOfOrganization] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [getToken, setGetToken] = useState("");
 
   // console.log(firstName, lastName, phoneNumber, whatsappNumber, address, nameOfOrganization )
 
   const [project, setProject] = useState("");
   const [investor, setInvestor] = useState("");
   const [deadline, setDeadline] = useState("");
-
 
   const [loading, setLoading] = useState(true);
   const [loader, setLoader] = useState(false);
@@ -117,9 +123,24 @@ const Content = () => {
   const [refreshSix, setRefreshSix] = useState(false);
   const [todo, setTodo] = useState(false);
   const [userTransactions, setUserTransactions] = useState(null);
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
   const d = new Date();
-  const flipBarNotifyArray = [{ type: 'success', desc: 'Your Todo has been created' }];
+  const flipBarNotifyArray = [
+    { type: "success", desc: "Your Todo has been created" },
+  ];
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -134,16 +155,14 @@ const Content = () => {
     if (slideUpModalSize[2]) setSlideUpWidth("300");
   }, [slideUpModalSize]);
 
-
-console.log('mallam', userDetails < 0)
   const fetchBundleList = useCallback(async (page) => {
     try {
       const user = await storage.getItem(USER_NAME);
       const token = await storage.getItem(TOKEN_COOKIE);
       setUsername(user.username);
-      setGetToken(token)
-      setVisibility(user.isUpdated)
-      setAccountUser(user)
+      setGetToken(token);
+      setVisibility(user.isUpdated);
+      setAccountUser(user);
       const rs = await axios.get(
         `https://deda-crm-backend.herokuapp.com/unit/all`
       );
@@ -160,10 +179,9 @@ console.log('mallam', userDetails < 0)
     const date = new Date().toLocaleDateString();
     const url = `todo?page=1&limit=10&term=&date=${date}`;
     try {
-      const rs = await request(url, 'GET', true);
+      const rs = await request(url, "GET", true);
       setTodos(rs.result);
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err);
     }
   }, []);
@@ -172,16 +190,15 @@ console.log('mallam', userDetails < 0)
     const user = await storage.getItem(USER_NAME);
     const url = `user/findone/${user.id}`;
     try {
-      const rs = await request(url, 'GET', true);
+      const rs = await request(url, "GET", true);
       if (rs.success === true) {
         const now_date = new Date().getTime();
         const expired_date_time = new Date(rs.result.planExpiry).getTime();
 
         const distance = expired_date_time - now_date;
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        days < 0 ? setSlideUpVisible(true) : null
+        days < 0 ? setSlideUpVisible(true) : null;
         setUserDetails(days);
-
       }
     } catch (err) {
       console.log(rs);
@@ -191,11 +208,13 @@ console.log('mallam', userDetails < 0)
   const saveTodo = async () => {
     setLoading_todo(true);
     const user = await storage.getItem(USER_NAME);
-    const data = [{ date: deadline, description: startDate, subject: investor }];
-    const url = `todo/add?userId=${user.id}`
+    const data = [
+      { date: deadline, description: startDate, subject: investor },
+    ];
+    const url = `todo/add?userId=${user.id}`;
     // console.log(data);
     try {
-      const rs = await request(url, 'POST', true, data);
+      const rs = await request(url, "POST", true, data);
       setLoading_todo(false);
       // console.log(rs);
       if (rs.success === false) {
@@ -205,79 +224,83 @@ console.log('mallam', userDetails < 0)
         handleCloseTodo();
         setError_todo(false);
       }
-    }
-    catch (err) {
+    } catch (err) {
       setLoading_todo(false);
       setError_todo(true);
       console.log(err);
-
     }
   };
 
-
   let handleFormSubmit = (e) => {
-    e.preventDefault()
-  }
+    e.preventDefault();
+  };
 
-  const handleUserRegistration = useCallback(async (e) => {
-    e.preventDefault()
-    try {
-      setLoader(true);
-      const user = await storage.getItem(USER_NAME);
-      const rs = await axios.patch(
-        `https://deda-crm-backend.herokuapp.com/user/prompt/update/${user.id}`, {
-        surname: firstName,
-        otherNames: lastName,
-        phone: phoneNumber,
-        whatsappNum: whatsappNumber,
-        address: address,
-        company: nameOfOrganization
-      }
-      );
+  const handleUserRegistration = useCallback(
+    async (e) => {
+      e.preventDefault();
+      try {
+        setLoader(true);
+        const user = await storage.getItem(USER_NAME);
+        const rs = await axios.patch(
+          `https://deda-crm-backend.herokuapp.com/user/prompt/update/${user.id}`,
+          {
+            surname: firstName,
+            otherNames: lastName,
+            phone: phoneNumber,
+            whatsappNum: whatsappNumber,
+            address: address,
+            company: nameOfOrganization,
+          }
+        );
 
-      if (rs.data.success) {
-        setVisibility(true)
-        setUsername(`${firstName}`)
+        if (rs.data.success) {
+          setVisibility(true);
+          setUsername(`${firstName}`);
+        }
+        setLoader(false);
+        // const { result, ...meta } = rs.data;
+        // setMeta(meta);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (err) {
+        console.log("User form submit error", err);
+        setLoading(false);
       }
-      setLoader(false);
-      // const { result, ...meta } = rs.data;
-      // setMeta(meta);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } catch (err) {
-      console.log("User form submit error", err);
-      setLoading(false);
-    }
-  }, [firstName, lastName, phoneNumber, whatsappNumber, nameOfOrganization, address]);
+    },
+    [
+      firstName,
+      lastName,
+      phoneNumber,
+      whatsappNumber,
+      nameOfOrganization,
+      address,
+    ]
+  );
 
   const handleStrike = (e, i) => {
     if (e.target.checked) {
-      setStrike('')
-      optionsStrike[i] = strike
-      setOptionsStrike(optionsStrike)
+      setStrike("");
+      optionsStrike[i] = strike;
+      setOptionsStrike(optionsStrike);
     } else {
-      setStrike('strikethrough')
-      optionsStrike[i] = strike
-      setOptionsStrike(optionsStrike)
+      setStrike("strikethrough");
+      optionsStrike[i] = strike;
+      setOptionsStrike(optionsStrike);
     }
-  }
-
-
+  };
 
   const renewSub = async () => {
     const user = await storage.getItem(USER_NAME);
-    const data = { userId: user.id, paymentMethod: 'paystack' };
+    const data = { userId: user.id, paymentMethod: "paystack" };
     const url = `payment/default/pay`;
     try {
-      const rs = await request(url, 'POST', true, data);
+      const rs = await request(url, "POST", true, data);
       if (rs.success === true) {
         location.href = rs.link;
       }
     } catch (err) {
       console.log(err);
     }
-  }
-
-
+  };
 
   const fetchSpecificBundle = useCallback(
     async (amountInputed) => {
@@ -296,23 +319,19 @@ console.log('mallam', userDetails < 0)
     [endDate, search, startDate]
   );
 
-  const fetchUserTransactions = useCallback(
-    async () => {
-      try {
-    const user = await storage.getItem(USER_NAME);
+  const fetchUserTransactions = useCallback(async () => {
+    try {
+      const user = await storage.getItem(USER_NAME);
 
-        const rs = await axios.get(
-          `https://deda-crm-backend.herokuapp.com/payment/filter?page=1&limit=10&userId=${user.id}`
-        );
-        const { result, ...meta } = rs.data;
-        setUserTransactions(result)
-      } catch (err) {
-        console.log("fetch user transactions err", err);
-      }
-    },
-    []
-  );
-
+      const rs = await axios.get(
+        `https://deda-crm-backend.herokuapp.com/payment/filter?page=1&limit=10&userId=${user.id}`
+      );
+      const { result, ...meta } = rs.data;
+      setUserTransactions(result);
+    } catch (err) {
+      console.log("fetch user transactions err", err);
+    }
+  }, []);
 
   const handleChange = (e) => {
     if (Number(e) < 5000) {
@@ -353,44 +372,44 @@ console.log('mallam', userDetails < 0)
     <div className="page-content-wrapper ">
       {/* RENEWAL MODAL */}
       <StickUpModal
-            visible={slideUpVisible}
-            className="stickUpModalClass"
-            width={"600"}
-            >
-              <div className="modal-content-wrapper">
-              <div className="modal-content">
-                <div className="modal-top">
-                  <button
-                    aria-label=""
-                    type="button"
-                    className="close"
-                    // onClick={() => setSlideUpVisible(false)}
-                    data-dismiss="modal"
-                    aria-hidden="true"
-                  >
-                    {/* <i className="pg-icon">close</i> */}
-                  </button>
-                  <h5>
-                    Your subscription has expired, Please renew.
-                    {/* <span className="semi-bold">Information</span> */}
-                  </h5>
-                  <p className="p-b-10">
-                    {/* We need payment in order to process your messaging orders */}
-                  </p>
-                </div>
-                <div className="modal-body">
-                  <form role="form">
-                    <div className="form-group-attached">
-                      <div className="row">
-                        {/* <div className="col-md-12">
+        visible={slideUpVisible}
+        className="stickUpModalClass"
+        width={"600"}
+      >
+        <div className="modal-content-wrapper">
+          <div className="modal-content">
+            <div className="modal-top">
+              <button
+                aria-label=""
+                type="button"
+                className="close"
+                // onClick={() => setSlideUpVisible(false)}
+                data-dismiss="modal"
+                aria-hidden="true"
+              >
+                {/* <i className="pg-icon">close</i> */}
+              </button>
+              <h5>
+                Your subscription has expired, Please renew.
+                {/* <span className="semi-bold">Information</span> */}
+              </h5>
+              <p className="p-b-10">
+                {/* We need payment in order to process your messaging orders */}
+              </p>
+            </div>
+            <div className="modal-body">
+              <form role="form">
+                <div className="form-group-attached">
+                  <div className="row">
+                    {/* <div className="col-md-12">
                           <div className="form-group form-group-default">
                             <label>Company Name</label>
                             <input type="email" className="form-control" />
                           </div>
                         </div> */}
-                      </div>
-                      <div className="row">
-                        {/* <div className="col-md-8">
+                  </div>
+                  <div className="row">
+                    {/* <div className="col-md-8">
                           <div className="form-group form-group-default">
                             <label>Card Number</label>
                             <input type="text" className="form-control" />
@@ -402,40 +421,40 @@ console.log('mallam', userDetails < 0)
                             <input type="text" className="form-control" />
                           </div>
                         </div> */}
-                      </div>
+                  </div>
+                </div>
+              </form>
+              <div className="row">
+                <div className="col-md-8">
+                  <div className="p-t-20 clearfix p-l-10 p-r-10">
+                    <div className="pull-left">
+                      <p className="bold font-montserrat text-uppercase">
+                        TOTAL
+                      </p>
                     </div>
-                  </form>
-                  <div className="row">
-                    <div className="col-md-8">
-                      <div className="p-t-20 clearfix p-l-10 p-r-10">
-                        <div className="pull-left">
-                          <p className="bold font-montserrat text-uppercase">
-                            TOTAL
-                          </p>
-                        </div>
-                        <div className="pull-right">
-                          <p className="bold font-montserrat text-uppercase">
-                          ₦25,000.00
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-4 m-t-10 sm-m-t-10">
-                      <button
-                        aria-label=""
-                        type="button"
-                        className="btn btn-primary btn-block m-t-5"
-                        onClick={() => renewSub()}
-                      >
-                        Pay Now
-                      </button>
+                    <div className="pull-right">
+                      <p className="bold font-montserrat text-uppercase">
+                        ₦25,000.00
+                      </p>
                     </div>
                   </div>
                 </div>
+                <div className="col-md-4 m-t-10 sm-m-t-10">
+                  <button
+                    aria-label=""
+                    type="button"
+                    className="btn btn-primary btn-block m-t-5"
+                    onClick={() => renewSub()}
+                  >
+                    Pay Now
+                  </button>
+                </div>
               </div>
             </div>
-            </StickUpModal>
-      
+          </div>
+        </div>
+      </StickUpModal>
+
       {/* REGISTRATION MODAL */}
       <StickUpModal
         visible={!visibility}
@@ -457,13 +476,14 @@ console.log('mallam', userDetails < 0)
               <div>
                 <ValidatorForm
                   instantValidate={true}
-                  onSubmit={e => handleFormSubmit(e)}
+                  onSubmit={(e) => handleFormSubmit(e)}
                 >
                   <h3 className="mw-80">Complete Your Profile</h3>
                   <p className="m-b-25">
                     Find your people. Engage your customers. Build your brand.
-                    We will continue to bridge the gap between you and your clients.
-                    Please learn how you can help us improve your experience. hello@anewit.com
+                    We will continue to bridge the gap between you and your
+                    clients. Please learn how you can help us improve your
+                    experience. hello@anewit.com
                   </p>
 
                   <div className="form-group-attached">
@@ -575,7 +595,6 @@ console.log('mallam', userDetails < 0)
                         required=""
                       />
                     </div>
-
                   </div>
                   <br />
                   <div className="row">
@@ -593,7 +612,7 @@ console.log('mallam', userDetails < 0)
                         aria-label=""
                         className="btn btn-primary pull-right"
                         type="submit"
-                        onClick={e => handleUserRegistration(e)}
+                        onClick={(e) => handleUserRegistration(e)}
                       >
                         {loader ? <ProgressTwo /> : "Update Profile"}
                       </button>
@@ -606,11 +625,336 @@ console.log('mallam', userDetails < 0)
         </div>
       </StickUpModal>
 
-
       {/* START PAGE CONTENT */}
 
+      {/* Renew Package */}
+      <StickUpModal
+        visible={showRenewModal}
+        width={"600"}
+        effect="fadeInUp"
+        className="stickUpModalClass"
+      >
+        <div className="modal-content-wrapper">
+          <div className="modal-content">
+            <div className="modal-top">
+              <div
+                className="pull-right"
+                style={{ cursor: "pointer" }}
+                onClick={() => setShowRenewModal(false)}
+              >
+                <i className="pg-icon">close</i>
+              </div>
+            </div>
+            <div className="modal-body">
+              <div>
+                <div className="col-lg-12">
+                  <div className="card card-borderless">
+                    <ul
+                      className="nav nav-tabs nav-tabs-simple d-none d-md-flex d-lg-flex d-xl-flex"
+                      role="tablist"
+                      data-init-reponsive-tabs="dropdownfx"
+                    >
+                      <li
+                        className="nav-item"
+                        onClick={() => setSimpleTabs([true, false, false])}
+                      >
+                        <a
+                          className={simpleTabs[0] ? "active" : ""}
+                          data-toggle="tab"
+                          role="tab"
+                          data-target="#tab2hellowWorld"
+                          aria-selected={simpleTabs[0] ? "true" : ""}
+                          href="javascript:void(0);"
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          Pay with Card
+                        </a>
+                      </li>
+                      <li
+                        className="nav-item"
+                        onClick={() => setSimpleTabs([false, true, false])}
+                      >
+                        <a
+                          className={simpleTabs[1] ? "active" : ""}
+                          href="javascript:void(0);"
+                          data-toggle="tab"
+                          role="tab"
+                          data-target="#tab2FollowUs"
+                          aria-selected={simpleTabs[1] ? "true" : ""}
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          Pay with Voucher
+                        </a>
+                      </li>
+                    </ul>
+                    <div className="nav-tab-dropdown cs-wrapper full-width d-lg-none d-xl-none d-md-none">
+                      <Dropdown
+                        options={tabSelectOne}
+                        defaultValue={tabSelectOne[0]}
+                        className="dropdown dropdown-default tabs-dropdown"
+                        onChange={(value) => {
+                          if (value.value === "0") {
+                            return setSimpleTabs([true, false, false]);
+                          }
+                          if (value.value === "1") {
+                            return setSimpleTabs([false, true, false]);
+                          }
+                          if (value.value === "2") {
+                            return setSimpleTabs([false, false, true]);
+                          }
+                        }}
+                      />
+                    </div>
+                    <div className="tab-content">
+                      <div
+                        className={`tab-pane ${simpleTabs[0] ? "active" : ""}`}
+                        id="tab2hellowWorld"
+                      >
+                        <div className="row">
+                          <div className="col-lg-12">
+                            <div className="card card-transparent">
+                              <div
+                                className="card-body"
+                                style={{ padding: "0px" }}
+                              >
+                                <div className="table-responsive">
+                                  <div
+                                    id="detailedTable_wrapper"
+                                    className="dataTables_wrapper no-footer"
+                                  >
+                                    <table
+                                      className="table table-hover table-condensed table-detailed dataTable no-footer"
+                                      id="detailedTable"
+                                      role="grid"
+                                    >
+                                      <thead>
+                                        <tr role="row">
+                                          <th
+                                            style={{ width: "166px" }}
+                                            className="sorting_disabled"
+                                            rowSpan="1"
+                                            colSpan="1"
+                                          >
+                                            Status
+                                          </th>
+                                          <th
+                                            style={{ width: "166px" }}
+                                            className="sorting_disabled"
+                                            rowSpan="1"
+                                            colSpan="1"
+                                          >
+                                            Price
+                                          </th>
+                                          <th
+                                            style={{ width: "165px" }}
+                                            className="sorting_disabled"
+                                            rowSpan="1"
+                                            colSpan="1"
+                                          >
+                                            Last Update
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr role="row">
+                                          <td className="v-align-middle semi-bold">
+                                            Revolution Begins
+                                          </td>
+                                          <td className="v-align-middle">
+                                            Active
+                                          </td>
+                                          <td className="v-align-middle semi-bold">
+                                            70,000 USD
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="row b-a b-grey no-margin">
+                                <div className="col-md-5 p-l-10 sm-padding-15 align-items-center d-flex">
+                                  <div>
+                                    <h5 className="font-montserrat all-caps small no-margin hint-text bold">
+                                      SubTotal
+                                    </h5>
+                                    <p className="no-margin"> ₦20.00</p>
+                                  </div>
+                                </div>
+                                <div className="col-md-3 col-middle sm-padding-15 align-items-center d-flex">
+                                  <div>
+                                    <h5 className="font-montserrat all-caps small no-margin hint-text bold">
+                                      Tax
+                                    </h5>
+                                    <p className="no-margin"> ₦0.00</p>
+                                  </div>
+                                </div>
+                                <div className="col-md-4 text-right bg-primary padding-10">
+                                  <h5 className="font-montserrat all-caps small no-margin hint-text text-white bold">
+                                    Total
+                                  </h5>
+                                  <h4 className="no-margin text-white">
+                                    {" "}
+                                    ₦0.00
+                                  </h4>
+                                </div>
+                              </div>
 
-      <StickUpModal visible={show} width={"600"} effect="fadeInUp"
+                              
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          aria-label=""
+                          type="button"
+                          className="btn btn-default btn-cons pull-right mt-2"
+                          onClick={() => renewSub()}
+                          // onClick={() => console.log('salam')}
+                        >
+                          Pay
+                        </button>
+                      </div>
+                      <div
+                        className={`tab-pane ${simpleTabs[1] ? "active" : ""}`}
+                        id="tab2FollowUs"
+                        style={{ padding: "0px" }}
+                      >
+                        <div className="row">
+                          <div className="col-lg-12">
+                            <div className="card card-transparent">
+                              <div
+                                className="card-body"
+                                style={{ padding: "0px" }}
+                              >
+                                <div className="table-responsive">
+                                  <div
+                                    id="detailedTable_wrapper"
+                                    className="dataTables_wrapper no-footer"
+                                  >
+                                    <table
+                                      className="table table-hover table-condensed table-detailed dataTable no-footer"
+                                      id="detailedTable"
+                                      role="grid"
+                                    >
+                                      <thead>
+                                        <tr role="row">
+                                          <th
+                                            style={{ width: "166px" }}
+                                            className="sorting_disabled"
+                                            rowSpan="1"
+                                            colSpan="1"
+                                          >
+                                            Status
+                                          </th>
+                                          <th
+                                            style={{ width: "166px" }}
+                                            className="sorting_disabled"
+                                            rowSpan="1"
+                                            colSpan="1"
+                                          >
+                                            Price
+                                          </th>
+                                          <th
+                                            style={{ width: "165px" }}
+                                            className="sorting_disabled"
+                                            rowSpan="1"
+                                            colSpan="1"
+                                          >
+                                            Last Update
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr role="row">
+                                          <td className="v-align-middle semi-bold">
+                                            Revolution Begins
+                                          </td>
+                                          <td className="v-align-middle">
+                                            Active
+                                          </td>
+                                          <td className="v-align-middle semi-bold">
+                                            70,000 USD
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="row b-a b-grey no-margin">
+                                <div className="col-md-5 p-l-10 sm-padding-15 align-items-center d-flex">
+                                  <div>
+                                    <h5 className="font-montserrat all-caps small no-margin hint-text bold">
+                                      SubTotal
+                                    </h5>
+                                    <p className="no-margin"> ₦20.00</p>
+                                  </div>
+                                </div>
+                                <div className="col-md-3 col-middle sm-padding-15 align-items-center d-flex">
+                                  <div>
+                                    <h5 className="font-montserrat all-caps small no-margin hint-text bold">
+                                      Tax
+                                    </h5>
+                                    <p className="no-margin"> ₦0.00</p>
+                                  </div>
+                                </div>
+                                <div className="col-md-4 text-right bg-primary padding-10">
+                                  <h5 className="font-montserrat all-caps small no-margin hint-text text-white bold">
+                                    Total
+                                  </h5>
+                                  <h4 className="no-margin text-white">
+                                    {" "}
+                                    ₦0.00
+                                  </h4>
+                                </div>
+                              </div>
+
+                              <div class="row mt-5">
+                                <div class="col-10">
+                                  <div class="form-check primary m-t-0">
+                                    <input
+                                      type="text"
+                                      id="voucher"
+                                      // value="AHHAKJADIUADKJDNKHB"
+                                      placeholder="Input Voucher Here"
+                                    />
+                                   
+                                  </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                  <button
+                                    aria-label=""
+                                    class="btn btn-primary "
+                                    type="submit"
+                                  >
+                                    Pay
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {/* <button
+                          aria-label=""
+                          type="button"
+                          className="btn btn-success btn-cons"
+                        >
+                          Success
+                        </button> */}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </StickUpModal>
+
+      <StickUpModal
+        visible={show}
+        width={"600"}
+        effect="fadeInUp"
         className="stickUpModalClass"
       >
         <div className="modal-content-wrapper">
@@ -632,7 +976,10 @@ console.log('mallam', userDetails < 0)
                 >
                   <h3 className="mw-80">Complete Your Profile</h3>
                   <p className="mw-80 m-b-25">
-                    Find your people. Engage your customers. Build your brand. We will continue to bridge the gap between you and your clients. Please learn how you can help us improve your experience. hello@anweit.com
+                    Find your people. Engage your customers. Build your brand.
+                    We will continue to bridge the gap between you and your
+                    clients. Please learn how you can help us improve your
+                    experience. hello@anweit.com
                   </p>
 
                   <div className="form-group-attached">
@@ -771,11 +1118,15 @@ console.log('mallam', userDetails < 0)
         </div>
       </StickUpModal>
 
-      {error_todo === false ? <FlipBarNotifyModule
-        notifications={flipBarNotifyArray}
-        position={'top-right'}
-        style={{ top: "59px" }}
-      /> : ''}
+      {error_todo === false ? (
+        <FlipBarNotifyModule
+          notifications={flipBarNotifyArray}
+          position={"top-right"}
+          style={{ top: "59px" }}
+        />
+      ) : (
+        ""
+      )}
 
       <StickUpModal visible={todo} width={"600"} effect="fadeInUp">
         <div className="modal-content-wrapper">
@@ -790,22 +1141,29 @@ console.log('mallam', userDetails < 0)
               </div>
             </div>
             <div className="modal-body">
-              {loading_todo ? <div className="pull-right"><ProgressTwo /></div> : ''}
-
+              {loading_todo ? (
+                <div className="pull-right">
+                  <ProgressTwo />
+                </div>
+              ) : (
+                ""
+              )}
 
               <div>
-                <ValidatorForm
-                  instantValidate={true}
-                  onSubmit={saveTodo}
-                >
-                  {error_todo === true ? <Alert type="danger">
-                    <strong>Error: </strong>Failed to save todo please try again later
-                    <button
-                      aria-label=""
-                      className="close"
-                      data-dismiss="alert"
-                    ></button>
-                  </Alert> : ''}
+                <ValidatorForm instantValidate={true} onSubmit={saveTodo}>
+                  {error_todo === true ? (
+                    <Alert type="danger">
+                      <strong>Error: </strong>Failed to save todo please try
+                      again later
+                      <button
+                        aria-label=""
+                        className="close"
+                        data-dismiss="alert"
+                      ></button>
+                    </Alert>
+                  ) : (
+                    ""
+                  )}
                   <h3 className="mw-80">Todo</h3>
 
                   <div className="">
@@ -817,7 +1175,10 @@ console.log('mallam', userDetails < 0)
                           value={investor}
                           type="text"
                           validators={["required", "maxStringLength:22"]}
-                          errorMessages={["This field is required", "Maximum of 22 characters"]}
+                          errorMessages={[
+                            "This field is required",
+                            "Maximum of 22 characters",
+                          ]}
                           className={"form-control"}
                           label={"Subject"}
                           placeholder="Maximum of 22 characters"
@@ -838,7 +1199,6 @@ console.log('mallam', userDetails < 0)
                       </div>
                     </div>
 
-
                     <div className="row">
                       <div className="col-md-12">
                         <TextValidator
@@ -847,14 +1207,16 @@ console.log('mallam', userDetails < 0)
                           value={startDate}
                           type="text"
                           validators={["required", "maxStringLength:22"]}
-                          errorMessages={["This field is required", "Maximum of 22 characters"]}
+                          errorMessages={[
+                            "This field is required",
+                            "Maximum of 22 characters",
+                          ]}
                           className={"form-control"}
                           label={"Description"}
                           placeholder="Maximum of 22 characters"
                         />
                       </div>
                     </div>
-
                   </div>
                   <br />
                   <div className="row">
@@ -903,12 +1265,23 @@ console.log('mallam', userDetails < 0)
                         <div className="card-title">Getting started</div>
                       </div>
                       <div className="card-body">
-                        <h1>Bonjour! <span class="text-success text-capitalize">{accountUser?.surname == null ? username : accountUser.surname}</span></h1>
+                        <h1>
+                          Bonjour!{" "}
+                          <span class="text-success text-capitalize">
+                            {accountUser?.surname == null
+                              ? username
+                              : accountUser.surname}
+                          </span>
+                        </h1>
                         <p>
-                          Find your people. Engage your customers. Build your brand. We
-                          will continue to bridge the gap between you and your clients.
-                          Please learn how you can help us improve your experience.{" "}
-                          <span className="text-success"> hello@anewit.com</span>
+                          Find your people. Engage your customers. Build your
+                          brand. We will continue to bridge the gap between you
+                          and your clients. Please learn how you can help us
+                          improve your experience.{" "}
+                          <span className="text-success">
+                            {" "}
+                            hello@anewit.com
+                          </span>
                         </p>
                         <br />
 
@@ -945,7 +1318,9 @@ console.log('mallam', userDetails < 0)
                             </td>
                             <td className="text-right hidden-lg"></td>
                             <td className="text-right b-r b-dashed b-grey w-25">
-                              <span className="hint-text small">MIN VOLUME</span>
+                              <span className="hint-text small">
+                                MIN VOLUME
+                              </span>
                             </td>
                             <td className="w-15">
                               <span className="font-montserrat fs-12 w-50">
@@ -957,8 +1332,7 @@ console.log('mallam', userDetails < 0)
                         <tbody>
                           {bundles.map((bundle) => (
                             <tr key={bundle.id}>
-                              <td
-                                className="font-montserrat all-caps fs-12 w-50">
+                              <td className="font-montserrat all-caps fs-12 w-50">
                                 {bundle.name}
                               </td>
                               <td className="text-right hidden-lg"></td>
@@ -985,7 +1359,12 @@ console.log('mallam', userDetails < 0)
                             <td className="font-montserrat all-caps fs-12 w-25">
                               VOLUME
                             </td>
-                            <td className="font-montserrat all-caps fs-12" style={{ width: '38%' }}>BUNDLE</td>
+                            <td
+                              className="font-montserrat all-caps fs-12"
+                              style={{ width: "38%" }}
+                            >
+                              BUNDLE
+                            </td>
                             <td className="text-right b-r b-dashed b-grey w-25">
                               <span className="hint-text small"> PRICE</span>
                             </td>
@@ -997,12 +1376,16 @@ console.log('mallam', userDetails < 0)
                         <tbody>
                           <tr>
                             <td
-                              contenteditable="true" style={{ outline: 'none' }}
-                              onInput={(e) => handleChange(e.currentTarget.textContent)}
-                              className="font-montserrat all-caps fs-12 w-25">
+                              contenteditable="true"
+                              style={{ outline: "none" }}
+                              onInput={(e) =>
+                                handleChange(e.currentTarget.textContent)
+                              }
+                              className="font-montserrat all-caps fs-12 w-25"
+                            >
                               0
                             </td>
-                            <td className="hidden-lg" style={{ width: '37%' }}>
+                            <td className="hidden-lg" style={{ width: "37%" }}>
                               <span className="hint-text all-caps small">
                                 {waiting ? <ProgressTwo /> : bundleName}
                               </span>
@@ -1012,7 +1395,7 @@ console.log('mallam', userDetails < 0)
                                 {waiting ? <ProgressTwo /> : totalPrice}
                               </span>
                             </td>
-                            <td className="text-right b-r b-dashed b-grey" >
+                            <td className="text-right b-r b-dashed b-grey">
                               <span className="hint-text small">
                                 {waiting ? (
                                   <div>
@@ -1039,8 +1422,9 @@ console.log('mallam', userDetails < 0)
                       <li>
                         <a
                           data-toggle="refresh"
-                          className={`card-refresh ${refreshOne ? "refreshing" : ""
-                            }`}
+                          className={`card-refresh ${
+                            refreshOne ? "refreshing" : ""
+                          }`}
                           href="#"
                           onClick={(e) => {
                             e.preventDefault();
@@ -1051,12 +1435,14 @@ console.log('mallam', userDetails < 0)
                           }}
                         >
                           <i
-                            className={`card-icon card-icon-refresh ${refreshOne ? "fade" : ""
-                              }`}
+                            className={`card-icon card-icon-refresh ${
+                              refreshOne ? "fade" : ""
+                            }`}
                           ></i>
                           <i
-                            className={`card-icon-refresh-lg-white-animated ${refreshOne ? "active" : ""
-                              }`}
+                            className={`card-icon-refresh-lg-white-animated ${
+                              refreshOne ? "active" : ""
+                            }`}
                             style={{
                               position: "absolute",
                               top: "14px",
@@ -1073,19 +1459,38 @@ console.log('mallam', userDetails < 0)
                   <table className="table table-condensed table-hover">
                     <tbody>
                       {userTransactions?.map((transaction, index) => (
-                          <tr key={index}>
-                          <td className="" style={{overflow:'visible'}}>PAYMENT FOR {transaction.description.toUpperCase().split('_').join(' ')}</td>
+                        <tr key={index}>
+                          <td className="" style={{ overflow: "visible" }}>
+                            PAYMENT FOR{" "}
+                            {transaction.description
+                              .toUpperCase()
+                              .split("_")
+                              .join(" ")}
+                          </td>
                           <td className="text-right">
-                            <span className="hint-text small">{moment(transaction.createdAt).format('DD-MM-YY')}</span>
+                            <span className="hint-text small">
+                              {moment(transaction.createdAt).format("DD-MM-YY")}
+                            </span>
                           </td>
                           <td className="text-right b-r b-dashed b-grey">
-                            <span className="hint-text small">{transaction.description.toUpperCase().split('_').join(' ')}</span>
+                            <span className="hint-text small">
+                              {transaction.description
+                                .toUpperCase()
+                                .split("_")
+                                .join(" ")}
+                            </span>
                           </td>
                           <td className="b-r b-dashed b-grey text-right">
-                            <span className="font-montserrat fs-18">{format({prefix: '₦',})(transaction.amount, {noSeparator: false})}</span>
+                            <span className="font-montserrat fs-18">
+                              {format({ prefix: "₦" })(transaction.amount, {
+                                noSeparator: false,
+                              })}
+                            </span>
                           </td>
                           <td className="text-left">
-                            <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
+                            <span className="hint-text small">
+                              <i className="pg-icon m-20">printer</i>
+                            </span>
                           </td>
                         </tr>
                       ))}
@@ -1098,10 +1503,14 @@ console.log('mallam', userDetails < 0)
                           <span className="hint-text small">14000 UNITS</span>
                         </td>
                         <td className="b-r b-dashed b-grey text-right">
-                          <span className="font-montserrat fs-18">₦98,000.00</span>
+                          <span className="font-montserrat fs-18">
+                            ₦98,000.00
+                          </span>
                         </td>
                         <td className="text-left">
-                          <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
+                          <span className="hint-text small">
+                            <i className="pg-icon m-20">printer</i>
+                          </span>
                         </td>
                       </tr>
                       <tr>
@@ -1113,10 +1522,14 @@ console.log('mallam', userDetails < 0)
                           <span className="hint-text small">AUGUST</span>
                         </td>
                         <td className="b-r b-dashed b-grey text-right">
-                          <span className="font-montserrat fs-18">₦25,000.00</span>
+                          <span className="font-montserrat fs-18">
+                            ₦25,000.00
+                          </span>
                         </td>
                         <td className="text-left">
-                          <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
+                          <span className="hint-text small">
+                            <i className="pg-icon m-20">printer</i>
+                          </span>
                         </td>
                       </tr>
                       <tr>
@@ -1128,10 +1541,14 @@ console.log('mallam', userDetails < 0)
                           <span className="hint-text small">JULY</span>
                         </td>
                         <td className="b-r b-dashed b-grey text-right">
-                          <span className="font-montserrat fs-18">₦25,000.00</span>
+                          <span className="font-montserrat fs-18">
+                            ₦25,000.00
+                          </span>
                         </td>
                         <td className="text-left">
-                          <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
+                          <span className="hint-text small">
+                            <i className="pg-icon m-20">printer</i>
+                          </span>
                         </td>
                       </tr>
                       <tr>
@@ -1143,10 +1560,14 @@ console.log('mallam', userDetails < 0)
                           <span className="hint-text small">17000 UNITS</span>
                         </td>
                         <td className="b-r b-dashed b-grey text-right">
-                          <span className="font-montserrat fs-18">₦154,000.00</span>
+                          <span className="font-montserrat fs-18">
+                            ₦154,000.00
+                          </span>
                         </td>
                         <td className="text-left">
-                          <span className="hint-text small"><i className="pg-icon m-20">printer</i></span>
+                          <span className="hint-text small">
+                            <i className="pg-icon m-20">printer</i>
+                          </span>
                         </td>
                       </tr>
                       {/* <tr>
@@ -1170,15 +1591,12 @@ console.log('mallam', userDetails < 0)
 
                 <div className="p-t-15 p-b-15 p-l-20 p-r-20">
                   <p className="small no-margin">
-                    <a
-                      href="#"
-                      className="btn-circle-arrow b-grey"
-                    >
+                    <a href="#" className="btn-circle-arrow b-grey">
                       <i className="pg-icon">chevron_down</i>
                     </a>
                     <span className="hint-text ">
                       Show more
-                      <a href="javascript:void(0);"> Transactions  </a>
+                      <a href="javascript:void(0);"> Transactions </a>
                     </span>
                   </p>
                 </div>
@@ -1204,8 +1622,9 @@ console.log('mallam', userDetails < 0)
                                 <li>
                                   <a
                                     data-toggle="refresh"
-                                    className={`card-refresh ${refreshSix ? "refreshing" : ""
-                                      }`}
+                                    className={`card-refresh ${
+                                      refreshSix ? "refreshing" : ""
+                                    }`}
                                     href="#"
                                     onClick={(e) => {
                                       e.preventDefault();
@@ -1216,12 +1635,14 @@ console.log('mallam', userDetails < 0)
                                     }}
                                   >
                                     <i
-                                      className={`card-icon card-icon-refresh ${refreshSix ? "fade" : ""
-                                        }`}
+                                      className={`card-icon card-icon-refresh ${
+                                        refreshSix ? "fade" : ""
+                                      }`}
                                     ></i>
                                     <i
-                                      className={`card-icon-refresh-lg-white-animated ${refreshSix ? "active" : ""
-                                        }`}
+                                      className={`card-icon-refresh-lg-white-animated ${
+                                        refreshSix ? "active" : ""
+                                      }`}
                                       style={{
                                         position: "absolute",
                                         top: "14px",
@@ -1242,15 +1663,36 @@ console.log('mallam', userDetails < 0)
                               <div className="p-l-20 full-height d-flex flex-column justify-content-between">
                                 <div className="d-flex align-items-center">
                                   <h3 className="no-margin p-b-5">98,947.11</h3>
-                                  <Link className="small ml-2" to="/simple/form_wizard" style={{ textDecoration: "none", color: '#fff' }}>Buy Units</Link>
+                                  <Link
+                                    className="small ml-2"
+                                    to="/simple/form_wizard"
+                                    style={{
+                                      textDecoration: "none",
+                                      color: "#fff",
+                                    }}
+                                  >
+                                    Buy Units
+                                  </Link>
                                 </div>
 
                                 <p className="small m-t-5 m-b-20">
                                   <span className="label label-white hint-text font-montserrat m-r-5">
-                                    {userDetails < 0 ? "0": userDetails} days remaining
+                                    {userDetails < 0 ? "0" : userDetails} days
+                                    remaining
                                   </span>
                                   {/* <span className="fs-12"> */}
-                                  <Link to="#" onClick={() => renewSub()} style={{ textDecoration: "none", color: 'inherit' }}>Renew</Link>
+                                  <Link
+                                    to="#"
+                                    onClick={() => setShowRenewModal(true)}
+                                    style={{
+                                      textDecoration: "none",
+                                      color: "inherit",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    Renew
+                                  </Link>
+
                                   {/* </span> */}
                                 </p>
                               </div>
@@ -1420,7 +1862,10 @@ console.log('mallam', userDetails < 0)
               </div>
 
               <div class=" card   no-margin widget-loader-circle todolist-widget pending-projects-widget">
-                <div class="card-header" style={{ background: 'black', color: '#fff' }}>
+                <div
+                  class="card-header"
+                  style={{ background: "black", color: "#fff" }}
+                >
                   <div class="card-title">
                     <span class="d-flex align-items-center font-montserrat all-caps">
                       Your Organizer <i class="pg-icon">chevron_right</i>
@@ -1429,11 +1874,7 @@ console.log('mallam', userDetails < 0)
                   <div class="card-controls">
                     <ul>
                       <li>
-                        <a
-                          data-toggle="refresh"
-                          class="card-refresh "
-                          href="#"
-                        >
+                        <a data-toggle="refresh" class="card-refresh " href="#">
                           <i class="card-icon card-icon-refresh "></i>
                           <i
                             class="card-icon-refresh-lg-white-animated "
@@ -1476,60 +1917,66 @@ console.log('mallam', userDetails < 0)
                       </a>
                     </li>
                   </ul>
-                  <div className="tab-content no-padding">
-                    <div className="tab-pane active" id="pending" style={{ padding: '0px' }}>
-                      <div className=" card no-border no-margin widget-loader-circle todolist-widget align-self-stretch" style={{ boxShadow: 'none' }}>
+                  <div className="tab-content no-padding" style={{ padding: "0px" }}>
+                    <div
+                      className="tab-pane active"
+                      id="pending"
+                      style={{ padding: "0px" }}
+                    >
+                      <div
+                        className=" card no-border no-margin widget-loader-circle todolist-widget align-self-stretch"
+                        style={{ boxShadow: "none" }}
+                      >
                         <ul className="list-unstyled p-l-20 p-r-20 p-t-10 m-b-20">
                           <li>
                             <h5 className="pull-left normal no-margin">
-                              {d.getDate()}th  {months[d.getMonth()]} {d.getFullYear()}
+                              {d.getDate()}th {months[d.getMonth()]}{" "}
+                              {d.getFullYear()}
                             </h5>
-
                           </li>
                           <div className="clearfix"></div>
                         </ul>
                         <div className="task-list p-t-0 p-r-20 p-b-20 p-l-20 clearfix flex-1">
                           {/* completed */}
-                          {todos && todos.map((e, i) => {
-                            return (
-                              <div key={e.id} className="task clearfix row">
-                                <div className="task-list-title col-10 justify-content-between">
-                                  <a
-                                    href="#"
-                                    // className={`text-color subject_  capitalize`}
+                          {todos &&
+                            todos.map((e, i) => {
+                              return (
+                                <div key={e.id} className="task clearfix row">
+                                  <div className="task-list-title col-10 justify-content-between">
+                                    <a
+                                      href="#"
+                                      // className={`text-color subject_  capitalize`}
 
-                                    className={`text-color ${optionsStrike[i]}`}
-                                    data-task="name"
-                                  >
-                                    {e.subject}
-                                  </a>
-                                  <i className="fs-14 pg-close hidden"></i>
-                                </div>
-                                {/* <input type='checkbox' onClick={() => checkInput(i) }  className="strike_line"
+                                      className={`text-color ${optionsStrike[i]}`}
+                                      data-task="name"
+                                    >
+                                      {e.subject}
+                                    </a>
+                                    <i className="fs-14 pg-close hidden"></i>
+                                  </div>
+                                  {/* <input type='checkbox' onClick={() => checkInput(i) }  className="strike_line"
                                 /> */}
-                                <div className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center"
-                                // onClick={() => checkInput(i)}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    value="1"
-                                    id={`todocheck${i}`}
-                                    data-toggler="task"
-                                    className="form-check checkbox-circle"
-                                    onClick={(e) => handleStrike(e, i)}
-                                  // onClick={() => setClasss('strikethrough')}
-                                  />
-                                  <label
-                                    htmlFor={`todocheck${i}`}
-                                    className=" no-margin no-padding absolute"
-                                  ></label>
+                                  <div
+                                    className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center"
+                                    // onClick={() => checkInput(i)}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      value="1"
+                                      id={`todocheck${i}`}
+                                      data-toggler="task"
+                                      className="form-check checkbox-circle"
+                                      onClick={(e) => handleStrike(e, i)}
+                                      // onClick={() => setClasss('strikethrough')}
+                                    />
+                                    <label
+                                      htmlFor={`todocheck${i}`}
+                                      className=" no-margin no-padding absolute"
+                                    ></label>
+                                  </div>
                                 </div>
-                              </div>
-                            )
-                          })}
-
-
-
+                              );
+                            })}
                         </div>
                         <div className="clearfix"></div>
                         <div className="bg-master-light padding-20 full-width ">
@@ -1546,21 +1993,18 @@ console.log('mallam', userDetails < 0)
                                 />
                               </div>
                             </div>
-                            <div className="col-2 text-center" onClick={handleShowTodo}>
-                              <Link
-                                to='#'
-                                className="block m-t-15"
-                              >
+                            <div
+                              className="col-2 text-center"
+                              onClick={handleShowTodo}
+                            >
+                              <Link to="#" className="block m-t-15">
                                 <img src={plusSVG} />
                               </Link>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <a
-                        href="#"
-                        className="btn btn-block m-t-30"
-                      >
+                      <a href="#" className="btn btn-block m-t-30">
                         See all projects
                       </a>
                     </div>
@@ -1627,10 +2071,7 @@ console.log('mallam', userDetails < 0)
                           ></div>
                         </div>
                       </div>
-                      <a
-                        href="#"
-                        className="btn btn-block m-t-30"
-                      >
+                      <a href="#" className="btn btn-block m-t-30">
                         See all projects
                       </a>
                     </div>
@@ -1638,7 +2079,6 @@ console.log('mallam', userDetails < 0)
                   {refreshEight ? progress : null}
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -1653,8 +2093,6 @@ console.log('mallam', userDetails < 0)
         policy={"Privacy Policy"}
       />
       {/* END COPYRIGHT */}
-
-
     </div>
   );
 };

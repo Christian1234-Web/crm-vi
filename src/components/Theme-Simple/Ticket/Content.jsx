@@ -290,10 +290,7 @@ const Content = () => {
                     <div className="pull-left">
                       <h3 className="text-primary no-margin">Tickets</h3>
                     </div>
-                    <h4 className="pull-right semi-bold no-margin"><sup>
-                      <small className="semi-bold">$</small>
-                    </sup> 102,967
-                    </h4>
+                    
                   </div>
                 </div>
 
