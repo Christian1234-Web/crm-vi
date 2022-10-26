@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 // import footer component
 import Copyright from "../../ui/Footer/Copyright/Component";
+import Select, { components } from "react-select";
 
 //import ui widgets component
 
@@ -14,6 +15,56 @@ import PageBreadcrumb from "../../UIElements/Breadcrumb";
 // import "./css/FullWindowModalStyle.css";
 
 import "./style.css";
+import {
+  alaskanOptions,
+  colourOptions,
+  timezonegroupedOptions,
+} from "../../Forms/Elements/selectData";
+import GroupSelect from "../../Forms/Elements/GroupSelect";
+import { Label } from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect } from "react";
+import SSRStorage from "../../../services/storage";
+import { TOKEN_COOKIE, USER_NAME } from "../../../services/constants";
+import axios from "axios";
+
+const storage = new SSRStorage();
+
+const Checkbox = ({ children, ...props }) => (
+  <label style={{ marginRight: "1em" }}>
+    <input type="checkbox" {...props} />
+    {children}
+  </label>
+);
+
+const alaskaOptions = [
+  { value: "AK", label: "Alaska" },
+  { value: "HW", label: "Hawaii" },
+];
+
+const timeOptions = [
+  {
+    label: "Complain",
+  },
+  {
+    label: "Enquiry",
+  },
+  {
+    label: "Request",
+  },
+];
+
+const categoryOptions = [
+  {
+    label: "Complain",
+  },
+  {
+    label: "Enquiry",
+  },
+  {
+    label: "Request",
+  },
+];
 
 const Content = () => {
   const progress = (
@@ -42,20 +93,80 @@ const Content = () => {
   const [modalOne, setModalOne] = useState(false);
   const [modalTwo, setModalTwo] = useState(false);
 
+  const [typeheadTextFields, setTypeHeadTextFields] = useState([
+    false,
+    false,
+    false,
+  ]);
+
+  const [usersToTag, setUsersToTag] = useState(null)
+
+  const formatGroupLabel = (data) => (
+    <div style={groupStyles}>
+      <span>{data.label}</span>
+    </div>
+  );
+
+  const CaretDownIcon = () => {
+    return <FontAwesomeIcon icon="caret-down" />;
+  };
+
+  const DropdownIndicator = (props) => {
+    return (
+      <components.DropdownIndicator {...props}>
+        <CaretDownIcon />
+      </components.DropdownIndicator>
+    );
+  };
+
+  const groupStyles = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  };
+
+  let focusColor = "1px solid #7252D3";
+  function setFocusColor(theme) {
+    focusColor = theme;
+  }
+
+  useEffect(() => {
+    const fetchUserTag = async () => {
+      try {
+        const user = await storage.getItem(USER_NAME);
+        const token = await storage.getItem(TOKEN_COOKIE);
+        const company = await axios.get(
+          `https://deda-crm-backend.herokuapp.com/user/findone/${user.id}`
+        );
+
+        if(company?.data.success){
+            const rs = await axios.get(
+          `https://deda-crm-backend.herokuapp.com/company/${company?.data?.result?.company?.id}`
+        );
+        setUsersToTag(rs?.data?.result.users.map(user => ({
+          label: user.userName
+        })))
+        }
+      } catch (err) {
+        console.log("fetch bundle err", err);
+      }
+    }
+    fetchUserTag()
+  }, [])
+
   return (
     <div className="page-content-wrapper ">
       {/* START PAGE CONTENT */}
-      <StickUpModal
-        visible={modalOne}
-        width={'600'}
-        effect="fadeInUp"
-      >
+      <StickUpModal visible={modalOne} width={"600"} effect="fadeInUp">
         <div className="modal-content-wrapper">
           <div className="modal-content">
             <div className="modal-top">
-
-              <div className="pull-right" style={{ cursor: 'pointer' }} onClick={() => setModalOne(false)}>
-                <i className="pg-icon" >close</i>
+              <div
+                className="pull-right"
+                style={{ cursor: "pointer" }}
+                onClick={() => setModalOne(false)}
+              >
+                <i className="pg-icon">close</i>
               </div>
               <h5>
                 New <span className="semi-bold">Ticket</span>
@@ -70,22 +181,174 @@ const Content = () => {
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group form-group-default">
-                        <label>Company Name</label>
+                        <label>Patient ID</label>
                         <input type="email" className="form-control" />
                       </div>
                     </div>
                   </div>
                   <div className="row">
                     <div className="col-md-8">
-                      <div className="form-group form-group-default">
-                        <label>Card Number</label>
-                        <input type="text" className="form-control" />
+                      <div className=" form-control ">
+                        <label>Users to Tag</label>
+                        {/* <input type="text" className="form-control" /> */}
+                        <div
+                          className="col-md-12 form-group"
+                          style={{ padding: "0px" }}
+                        >
+                          <div
+                            onClick={() =>
+                              setTypeHeadTextFields([false, false, false])
+                            }
+                          >
+                            {/* <GroupSelect /> */}
+                            <Select
+                              // defaultValue={alaskaOptions[0]}
+                              options={usersToTag}
+                              formatGroupLabel={formatGroupLabel}
+                              components={{
+                                DropdownIndicator,
+                                IndicatorSeparator: () => null,
+                              }}
+                              styles={{
+                                dropdownIndicator: (provided, state) => ({
+                                  ...provided,
+                                  transform:
+                                    state.selectProps.menuIsOpen &&
+                                    "rotate(180deg)",
+                                  marginRight: "5px",
+                                }),
+                                control: (provided, state) => ({
+                                  ...provided,
+                                  borderRadius: "2px",
+                                  borderWidth: "1px",
+                                  border: state.isFocused
+                                    ? focusColor
+                                    : "default",
+                                  "&:hover": {
+                                    border: state.isFocused
+                                      ? focusColor
+                                      : "default",
+                                  },
+                                  boxShadow: "none",
+                                  maxHeight: "35px",
+                                  minHeight: "20px",
+                                }),
+                                groupHeading: (provided) => ({
+                                  ...provided,
+                                  color: "#212121",
+                                  fontSize: "13px",
+                                  fontWeight: "bold",
+                                  textTransform: "none",
+                                }),
+                                option: (provided, state) => ({
+                                  ...provided,
+                                  marginLeft: "10px",
+                                  width: "95%",
+                                  color: "default",
+                                  cursor: "pointer",
+                                  "&:active": {
+                                    backgroundColor: "rgba(33, 33, 33, 0.07)",
+                                  },
+                                  backgroundColor: state.isSelected
+                                    ? "rgba(33, 33, 33, 0.07)"
+                                    : "default",
+                                  backgroundColor: state.isFocused
+                                    ? "rgba(33, 33, 33, 0.07)"
+                                    : "default",
+                                  borderRadius: "3px",
+                                }),
+                                menu: (provided) => ({
+                                  ...provided,
+                                  marginTop: "1px",
+                                  borderTopLeftRadius: "0px",
+                                  borderTopRightRadius: "0px",
+                                }),
+                              }}
+                            />
+                          </div>
+                          <br />
+                        </div>
                       </div>
                     </div>
                     <div className="col-md-4">
-                      <div className="form-group form-group-default">
-                        <label>Card Holder</label>
-                        <input type="text" className="form-control" />
+                      <div className="form-control">
+                        <label>Category</label>
+                        <div
+                          className="col-md-12 form-group"
+                          style={{ padding: "0px" }}
+                        >
+                          <div
+                            onClick={() =>
+                              setTypeHeadTextFields([false, false, false])
+                            }
+                          >
+                            <Select
+                              // defaultValue={alaskaOptions[0]}
+                              options={categoryOptions}
+                              formatGroupLabel={formatGroupLabel}
+                              components={{
+                                DropdownIndicator,
+                                IndicatorSeparator: () => null,
+                              }}
+                              styles={{
+                                dropdownIndicator: (provided, state) => ({
+                                  ...provided,
+                                  transform:
+                                    state.selectProps.menuIsOpen &&
+                                    "rotate(180deg)",
+                                  marginRight: "5px",
+                                }),
+                                control: (provided, state) => ({
+                                  ...provided,
+                                  borderRadius: "2px",
+                                  borderWidth: "1px",
+                                  border: state.isFocused
+                                    ? focusColor
+                                    : "default",
+                                  "&:hover": {
+                                    border: state.isFocused
+                                      ? focusColor
+                                      : "default",
+                                  },
+                                  boxShadow: "none",
+                                  maxHeight: "35px",
+                                  minHeight: "20px",
+                                }),
+                                groupHeading: (provided) => ({
+                                  ...provided,
+                                  color: "#212121",
+                                  fontSize: "13px",
+                                  fontWeight: "bold",
+                                  textTransform: "none",
+                                }),
+                                option: (provided, state) => ({
+                                  ...provided,
+                                  marginLeft: "10px",
+                                  width: "95%",
+                                  color: "default",
+                                  cursor: "pointer",
+                                  "&:active": {
+                                    backgroundColor: "rgba(33, 33, 33, 0.07)",
+                                  },
+                                  backgroundColor: state.isSelected
+                                    ? "rgba(33, 33, 33, 0.07)"
+                                    : "default",
+                                  backgroundColor: state.isFocused
+                                    ? "rgba(33, 33, 33, 0.07)"
+                                    : "default",
+                                  borderRadius: "3px",
+                                }),
+                                menu: (provided) => ({
+                                  ...provided,
+                                  marginTop: "1px",
+                                  borderTopLeftRadius: "0px",
+                                  borderTopRightRadius: "0px",
+                                }),
+                              }}
+                            />
+                          </div>
+                          <br />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -96,12 +359,12 @@ const Content = () => {
                   <div className="p-t-20 clearfix p-l-10 p-r-10">
                     <div className="pull-left">
                       <p className="bold font-montserrat text-uppercase">
-                        TOTAL
+                        
                       </p>
                     </div>
                     <div className="pull-right">
                       <p className="bold font-montserrat text-uppercase">
-                        $20.00
+                        
                       </p>
                     </div>
                   </div>
@@ -112,7 +375,7 @@ const Content = () => {
                     type="button"
                     className="btn btn-primary btn-block m-t-5"
                   >
-                    Pay Now
+                    Create Ticket
                   </button>
                 </div>
               </div>
@@ -121,17 +384,16 @@ const Content = () => {
         </div>
       </StickUpModal>
 
-      <StickUpModal
-        visible={modalTwo}
-        width={'600'}
-        effect="fadeInUp"
-      >
+      <StickUpModal visible={modalTwo} width={"600"} effect="fadeInUp">
         <div className="modal-content-wrapper">
           <div className="modal-content">
             <div className="modal-top">
-
-              <div className="pull-right" style={{ cursor: 'pointer' }} onClick={() => setModalTwo(false)}>
-                <i className="pg-icon" >close</i>
+              <div
+                className="pull-right"
+                style={{ cursor: "pointer" }}
+                onClick={() => setModalTwo(false)}
+              >
+                <i className="pg-icon">close</i>
               </div>
               <h5>
                 New <span className="semi-bold">Todo</span>
@@ -199,8 +461,7 @@ const Content = () => {
 
       <div className="content sm-gutter">
         <div className="sm-padding-10">
-
-          <PageBreadcrumb className='jumbotron mb-4'>
+          <PageBreadcrumb className="jumbotron mb-4">
             <li className="breadcrumb-item">
               <a href="javascript:void(0);">Home</a>
             </li>
@@ -221,7 +482,6 @@ const Content = () => {
                   </div>
                   <div className="clearfix"></div>
                 </div>
-
               </div>
             </div>
             <div className="col-lg-3">
@@ -238,7 +498,6 @@ const Content = () => {
                   </div>
                   <div className="clearfix"></div>
                 </div>
-
               </div>
             </div>
             <div className="col-lg-3">
@@ -255,7 +514,6 @@ const Content = () => {
                   </div>
                   <div className="clearfix"></div>
                 </div>
-
               </div>
             </div>
             <div className="col-lg-3">
@@ -272,28 +530,25 @@ const Content = () => {
                   </div>
                   <div className="clearfix"></div>
                 </div>
-
               </div>
             </div>
           </div>
           <div className="row p-2">
             <div className="col-lg-9 m-b-10">
-
               <div className="mx-2 widget-11 widget-11-3 card no-border  widget-loader-bar">
                 <div className="card-header">
                   <div className="card-title">Today's Table</div>
-                  <button aria-label="" onClick={() => setModalOne(true)}
-                    className="btn btn-default btn-rounded btn-icon pull-right">
+                  <button
+                    aria-label=""
+                    onClick={() => setModalOne(true)}
+                    className="btn btn-default btn-rounded btn-icon pull-right"
+                  >
                     <i className="pg-icon">add</i>
                   </button>
                   <div className="p-b-10 p-t-5">
                     <div className="pull-left">
                       <h3 className="text-primary no-margin">Tickets</h3>
                     </div>
-                    <h4 className="pull-right semi-bold no-margin"><sup>
-                      <small className="semi-bold">$</small>
-                    </sup> 102,967
-                    </h4>
                   </div>
                 </div>
 
@@ -346,11 +601,15 @@ const Content = () => {
 
                 <div className="p-t-15 p-b-15 p-l-20 p-r-20">
                   <p className="small no-margin">
-                    <a href="javascript:void(0);" className="btn-circle-arrow b-grey">
+                    <a
+                      href="javascript:void(0);"
+                      className="btn-circle-arrow b-grey"
+                    >
                       <i className="pg-icon">chevron_down</i>
                     </a>
                     <span className="hint-text ">
-                      Show more details of <a href="javascript:void(0);"> Revox pvt ltd </a>
+                      Show more details of{" "}
+                      <a href="javascript:void(0);"> Revox pvt ltd </a>
                     </span>
                   </p>
                 </div>
@@ -358,9 +617,7 @@ const Content = () => {
               </div>
             </div>
 
-
             <div className="col-lg-3">
-
               <div className=" card no-border  no-margin widget-loader-circle todolist-widget align-self-stretch">
                 <div className="card-header">
                   <div className="card-title">TODOLIST</div>
@@ -383,7 +640,6 @@ const Content = () => {
                     <h5 className="pull-left normal no-margin">
                       28th September
                     </h5>
-
                   </li>
                   <div className="clearfix"></div>
                 </ul>
@@ -406,10 +662,10 @@ const Content = () => {
                         id="todocheckbox"
                         data-toggler="task"
                         className="hidden"
-                      // onChange={() =>
-                      //   setCheckedOption((prevState) => !prevState)
-                      // }
-                      // checked={checkedOption}
+                        // onChange={() =>
+                        //   setCheckedOption((prevState) => !prevState)
+                        // }
+                        // checked={checkedOption}
                       />
                       <label
                         htmlFor="todocheckbox"
@@ -511,21 +767,18 @@ const Content = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-2 text-center" onClick={() => setModalTwo(true)}>
-                      <a
-                        href="#"
-                        className="block m-t-15"
-                      >
+                    <div
+                      className="col-2 text-center"
+                      onClick={() => setModalTwo(true)}
+                    >
+                      <a href="#" className="block m-t-15">
                         <img src={plusSVG} />
                       </a>
                     </div>
                   </div>
                 </div>
               </div>
-
             </div>
-
-
           </div>
         </div>
       </div>
