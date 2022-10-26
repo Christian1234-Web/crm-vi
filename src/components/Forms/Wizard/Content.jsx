@@ -11,11 +11,13 @@ import StageSelect from "./StageSelect";
 
 import Countries from "../Elements/countries";
 import { CountryCodes, MonthWithCodes, Years } from "./Codes";
-import axios from 'axios';
+import axios from "axios";
 import "./style.css";
 import { request } from "../../../services/utilities";
 import { USER_NAME } from "../../../services/constants";
 import SSRStorage from "../../../services/storage";
+import { Dropdown } from "reactstrap";
+import { tabSelectOne } from "../../UIElements/TabsAndAccordion/dropdownData";
 const storage = new SSRStorage();
 
 const content = ({ path }) => {
@@ -23,6 +25,7 @@ const content = ({ path }) => {
 
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
+  const [simpleTabs, setSimpleTabs] = useState([true, false, false]);
 
   const [countries] = useState(Countries);
   const [monthWithCodes] = useState(MonthWithCodes);
@@ -44,7 +47,7 @@ const content = ({ path }) => {
   const [item1Close, setItem1Close] = useState(false);
   const [item2Close, setItem2Close] = useState(false);
   const [payLoader, setPayLoader] = useState(false);
-  const [volume, setVolume] = useState('');
+  const [volume, setVolume] = useState("");
   // bundle state
   const [bundleName, setBundleName] = useState("");
   const [totalPrice, setTotalPrice] = useState("");
@@ -55,11 +58,18 @@ const content = ({ path }) => {
   const [selectedBundle, setSelectedBundle] = useState(null);
   const [bundleArr] = useState([]);
 
-  const total_Price = bundleArr.reduce((accumulator, current) => accumulator + current.price * 1, 0);
-  const sub_total_Price = bundleArr.reduce((accumulator, current) => accumulator + current.price + 1, 0);
-  const total_volume = bundleArr.reduce((accumulator, current) => accumulator + current.volume * 1, 0)
-
-
+  const total_Price = bundleArr.reduce(
+    (accumulator, current) => accumulator + current.price * 1,
+    0
+  );
+  const sub_total_Price = bundleArr.reduce(
+    (accumulator, current) => accumulator + current.price + 1,
+    0
+  );
+  const total_volume = bundleArr.reduce(
+    (accumulator, current) => accumulator + current.volume * 1,
+    0
+  );
 
   let countryOptionsList = () => {
     return (
@@ -128,10 +138,14 @@ const content = ({ path }) => {
   const onSubmitToPayStack = async () => {
     setPayLoader(true);
     const user = await storage.getItem(USER_NAME);
-    const data = { units: Number(total_volume), userId: user.id, paymentMethod: 'paystack' };
+    const data = {
+      units: Number(total_volume),
+      userId: user.id,
+      paymentMethod: "paystack",
+    };
     const url = `payment/units/buy`;
     try {
-      const rs = await request(url, 'POST', true, data);
+      const rs = await request(url, "POST", true, data);
       if (rs.success === true) {
         location.href = rs.link;
       }
@@ -139,26 +153,23 @@ const content = ({ path }) => {
       setPayLoader(false);
       console.log(err);
     }
-  }
+  };
 
-
-  const fetchSpecificBundle = async amountInputed => {
+  const fetchSpecificBundle = async (amountInputed) => {
     if (amountInputed) {
       const url = `https://deda-crm-backend.herokuapp.com/unit/amount/calc?units=${amountInputed}`;
-      try { 
+      try {
         const rs = (await axios(url)).data;
         setSelectedBundle(rs.bundle);
         setBundleName(rs.bundle.name);
         setBundleUnitPrice(rs.bundle.amount);
         setTotalPrice(rs.result);
         setWaiting(false);
-
       } catch (err) {
         console.log("fetch patients err", err);
       }
-    };
-  }
-
+    }
+  };
 
   const handleChange = (e) => {
     setVolume(Number(e));
@@ -167,7 +178,6 @@ const content = ({ path }) => {
       fetchSpecificBundle(Number(e));
     }
   };
-
 
   return (
     <div className="page-content-wrapper ">
@@ -191,8 +201,9 @@ const content = ({ path }) => {
                 onClick={() => setTabs([true, false, false, false])}
               >
                 <a
-                  className={`d-flex align-items-center ${tabs[0] ? "active" : ""
-                    }`}
+                  className={`d-flex align-items-center ${
+                    tabs[0] ? "active" : ""
+                  }`}
                   data-toggle="tab"
                   href="#"
                   onClick={(e) => e.preventDefault()}
@@ -211,8 +222,9 @@ const content = ({ path }) => {
                 onClick={() => setTabs([false, true, false, false])}
               >
                 <a
-                  className={`d-flex align-items-center ${tabs[1] ? "active" : ""
-                    }`}
+                  className={`d-flex align-items-center ${
+                    tabs[1] ? "active" : ""
+                  }`}
                   data-toggle="tab"
                   href="#"
                   onClick={(e) => e.preventDefault()}
@@ -230,8 +242,9 @@ const content = ({ path }) => {
                 onClick={() => setTabs([false, false, true, false])}
               >
                 <a
-                  className={`d-flex align-items-center ${tabs[2] ? "active" : ""
-                    }`}
+                  className={`d-flex align-items-center ${
+                    tabs[2] ? "active" : ""
+                  }`}
                   data-toggle="tab"
                   href="#"
                   onClick={(e) => e.preventDefault()}
@@ -252,8 +265,9 @@ const content = ({ path }) => {
                 onClick={() => setTabs([false, false, false, true])}
               >
                 <a
-                  className={`d-flex align-items-center ${tabs[3] ? "active" : ""
-                    }`}
+                  className={`d-flex align-items-center ${
+                    tabs[3] ? "active" : ""
+                  }`}
                   data-toggle="tab"
                   href="#"
                   onClick={(e) => e.preventDefault()}
@@ -289,36 +303,49 @@ const content = ({ path }) => {
                       <h2>Units Purchase Calculator!</h2>
                       <p>
                         <span class="text-success">TIP: </span>
-                        Patrela provides a complete help desk experience with a fully customizable
-                        knowledge base that’s available 24/7, even if your team isn’t.
+                        Patrela provides a complete help desk experience with a
+                        fully customizable knowledge base that’s available 24/7,
+                        even if your team isn’t.
                       </p>
                       <p className="small hint-text text-success">
-                        Type in the amount of units you wish to purchase and find the cost.
+                        Type in the amount of units you wish to purchase and
+                        find the cost.
                       </p>
                       <div>
                         <div className="d-flex justify-content-center align-items-center">
                           <table className="table table-condensed table-hover">
-                            <thead style={{ background: '#f4f4f4' }}>
+                            <thead style={{ background: "#f4f4f4" }}>
                               <tr>
                                 <td className="font-montserrat all-caps fs-12 w-25">
                                   VOLUME
                                 </td>
-                                <td className="font-montserrat all-caps fs-12" style={{ width: '60%', paddingLeft: '20px' }}>BUNDLE</td>
+                                <td
+                                  className="font-montserrat all-caps fs-12"
+                                  style={{ width: "60%", paddingLeft: "20px" }}
+                                >
+                                  BUNDLE
+                                </td>
                                 <td className="text-right  b-r b-dashed b-grey w-25">
-                                  <span className="hint-text small"> PRICE</span>
+                                  <span className="hint-text small">
+                                    {" "}
+                                    PRICE
+                                  </span>
                                 </td>
                                 <td className="text-right w-25">
                                   <span className="hint-text small">UNIT</span>
                                 </td>
-
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
                                 <td
-                                  contenteditable="true" style={{ outline: 'none' }}
-                                  onInput={(e) => handleChange(e.currentTarget.textContent)}
-                                  className="font-montserrat all-caps fs-12 w-25">
+                                  contenteditable="true"
+                                  style={{ outline: "none" }}
+                                  onInput={(e) =>
+                                    handleChange(e.currentTarget.textContent)
+                                  }
+                                  className="font-montserrat all-caps fs-12 w-25"
+                                >
                                   0
                                 </td>
                                 <td className="hidden-lg">
@@ -331,43 +358,50 @@ const content = ({ path }) => {
                                     {waiting ? <ProgressTwo /> : totalPrice}
                                   </span>
                                 </td>
-                                <td className="text-right" >
-                                  <span className="hint-text small d-flex justify-content-between"
-                                  >
+                                <td className="text-right">
+                                  <span className="hint-text small d-flex justify-content-between">
                                     <div>
                                       {waiting ? (
                                         <div>
                                           <ProgressTwo />
-
                                         </div>
                                       ) : (
                                         bundleUnitPrice
-
                                       )}
                                     </div>
-                                    <i className="pg-icon pull-right" style={{ cursor: 'pointer' }} onClick={() => {
-                                      let x = bundleArr.find(x => x.price === selectedBundle.price);
-                                      if (!x) {
-                                        bundleArr.push({ ...selectedBundle, price: totalPrice, volume });
-                                      }
-                                      setCount(count + 1);
-                                    }}>add</i>
+                                    <i
+                                      className="pg-icon pull-right"
+                                      style={{ cursor: "pointer" }}
+                                      onClick={() => {
+                                        let x = bundleArr.find(
+                                          (x) =>
+                                            x.price === selectedBundle.price
+                                        );
+                                        if (!x) {
+                                          bundleArr.push({
+                                            ...selectedBundle,
+                                            price: totalPrice,
+                                            volume,
+                                          });
+                                        }
+                                        setCount(count + 1);
+                                      }}
+                                    >
+                                      add
+                                    </i>
                                   </span>
                                 </td>
-
                               </tr>
                             </tbody>
                           </table>
                         </div>
                       </div>
                     </div>
-
                   </div>
                   <div className="col-md-6">
                     <div className="padding-30 sm-padding-5">
                       <table className="table table-condensed">
                         <tbody>
-
                           {bundleArr.map((e, i) => (
                             <tr key={i} className={item1Close ? `d-none` : ``}>
                               <td className="col-lg-5 col-md-6 col-sm-6 ">
@@ -378,7 +412,6 @@ const content = ({ path }) => {
                                     // let items = [...data];
                                     bundleArr.splice(i, 1);
                                     setCount(count - 1);
-
                                   }}
                                 >
                                   <i className="pg-icon">close</i>
@@ -392,8 +425,15 @@ const content = ({ path }) => {
                                 <span>Qty {e.unitQuantity}</span>
                               </td>
                               <td className=" col-lg-6 col-md-5 col-sm-2 text-right">
-                                <h4 className="text-primary no-margin font-montserrat" style={{ fontSize: '20px' }}>
-                                  ₦{new Intl.NumberFormat().format(parseInt(e.price))}.00
+                                <h4
+                                  className="text-primary no-margin font-montserrat"
+                                  style={{ fontSize: "20px" }}
+                                >
+                                  ₦
+                                  {new Intl.NumberFormat().format(
+                                    parseInt(e.price)
+                                  )}
+                                  .00
                                 </h4>
                               </td>
                             </tr>
@@ -407,8 +447,8 @@ const content = ({ path }) => {
                             Use the quick bulk buy and get 20% off .{" "}
                           </p>
                           <p className="small hint-text">
-                            If you're looking to buy above 800,000 units, please send us an
-                            email at.{" "}
+                            If you're looking to buy above 800,000 units, please
+                            send us an email at.{" "}
                             <a href="#">hello@patrela.com</a>
                           </p>
                         </div>
@@ -417,32 +457,59 @@ const content = ({ path }) => {
                             className="btn-group btn-group-toggle"
                             data-toggle="buttons"
                           >
-
                             <label className="btn btn-default">
                               <input type="radio" name="options" id="option2" />{" "}
-                              <span className="fs-16"
+                              <span
+                                className="fs-16"
                                 onClick={() => {
                                   // let x = bundleArr.find(x => x.price === selectedBundle.price);
                                   // if (!x) {
-                                  let ob60 = { amount: 7, id: 7, name: 'Business Premium', unitQuantity: 15000, price: 420000, volume: 60000 }
+                                  let ob60 = {
+                                    amount: 7,
+                                    id: 7,
+                                    name: "Business Premium",
+                                    unitQuantity: 15000,
+                                    price: 420000,
+                                    volume: 60000,
+                                  };
                                   bundleArr.push(ob60);
                                   // }
                                   setCount(count + 1);
                                 }}
-                              > 60,000 <span className="small hint-text text-success">units</span></span>
+                              >
+                                {" "}
+                                60,000{" "}
+                                <span className="small hint-text text-success">
+                                  units
+                                </span>
+                              </span>
                             </label>
                             <label className="btn btn-default">
                               <input type="radio" name="options" id="option3" />{" "}
-                              <span className="fs-16"
+                              <span
+                                className="fs-16"
                                 onClick={() => {
                                   // let x = bundleArr.find(x => x.price === x.price);
                                   // if (!x) {
-                                  let ob80 = { amount: 7, id: 7, name: 'Business Premium', unitQuantity: 15000, price: 560000, volume: 80000 };
+                                  let ob80 = {
+                                    amount: 7,
+                                    id: 7,
+                                    name: "Business Premium",
+                                    unitQuantity: 15000,
+                                    price: 560000,
+                                    volume: 80000,
+                                  };
                                   bundleArr.push(ob80);
                                   // }
                                   setCount(count + 1);
                                 }}
-                              > 80,000 <span className="small hint-text text-success">units</span></span>
+                              >
+                                {" "}
+                                80,000{" "}
+                                <span className="small hint-text text-success">
+                                  units
+                                </span>
+                              </span>
                             </label>
                           </div>
                         </div>
@@ -454,7 +521,14 @@ const content = ({ path }) => {
                             <h5 className="font-montserrat all-caps small no-margin hint-text bold">
                               SubTotal
                             </h5>
-                            <p className="no-margin"> ₦{new Intl.NumberFormat().format(parseInt(total_Price))}.00</p>
+                            <p className="no-margin">
+                              {" "}
+                              ₦
+                              {new Intl.NumberFormat().format(
+                                parseInt(total_Price)
+                              )}
+                              .00
+                            </p>
                           </div>
                         </div>
                         <div className="col-md-3 col-middle sm-padding-15 align-items-center d-flex">
@@ -469,7 +543,14 @@ const content = ({ path }) => {
                           <h5 className="font-montserrat all-caps small no-margin hint-text text-white bold">
                             Total
                           </h5>
-                          <h4 className="no-margin text-white"> ₦{new Intl.NumberFormat().format(parseInt(sub_total_Price))}.00</h4>
+                          <h4 className="no-margin text-white">
+                            {" "}
+                            ₦
+                            {new Intl.NumberFormat().format(
+                              parseInt(sub_total_Price)
+                            )}
+                            .00
+                          </h4>
                         </div>
                       </div>
                     </div>
@@ -648,8 +729,8 @@ const content = ({ path }) => {
                     <div className="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
                       <h2>We Secured Your Line</h2>
                       <p>
-                        Below is a tabular preview of your cart ,
-                        Please preview and proceed to make payment using our secure channel.
+                        Below is a tabular preview of your cart , Please preview
+                        and proceed to make payment using our secure channel.
                       </p>
                       <p className="small hint-text text-success">
                         TIP: Customers will be able to find what they’re looking
@@ -660,7 +741,6 @@ const content = ({ path }) => {
                           {bundleArr.map((e, i) => (
                             <tr key={i} className={item1Close ? `d-none` : ``}>
                               <td className="col-lg-6 col-md-6 col-sm-7 ">
-
                                 <span className="m-l-10 font-montserrat fs-11 all-caps">
                                   {e.name}
                                 </span>
@@ -670,8 +750,15 @@ const content = ({ path }) => {
                                 <span>Qty {e.unitQuantity}</span>
                               </td>
                               <td className=" col-lg-6 col-md-4 col-sm-2 text-right">
-                                <h4 className="text-primary no-margin font-montserrat" style={{ fontSize: '20px' }}>
-                                  ₦{new Intl.NumberFormat().format(parseInt(e.price))}.00
+                                <h4
+                                  className="text-primary no-margin font-montserrat"
+                                  style={{ fontSize: "20px" }}
+                                >
+                                  ₦
+                                  {new Intl.NumberFormat().format(
+                                    parseInt(e.price)
+                                  )}
+                                  .00
                                 </h4>
                               </td>
                             </tr>
@@ -680,7 +767,11 @@ const content = ({ path }) => {
                           <tr>
                             <td colSpan="3" className=" col-md-3 text-right">
                               <h4 className="text-primary no-margin font-montserrat ">
-                                ₦{new Intl.NumberFormat().format(parseInt(total_Price))}.00
+                                ₦
+                                {new Intl.NumberFormat().format(
+                                  parseInt(total_Price)
+                                )}
+                                .00
                               </h4>
                             </td>
                           </tr>
@@ -700,7 +791,312 @@ const content = ({ path }) => {
                     </div>
                   </div>
                   <div className="col-md-7">
-                    <div className="padding-30 sm-padding-5">
+                    <div>
+                      <div className="col-lg-12">
+                        <div className="card card-borderless">
+                          <ul
+                            className="nav nav-tabs nav-tabs-simple d-none d-md-flex d-lg-flex d-xl-flex"
+                            role="tablist"
+                            data-init-reponsive-tabs="dropdownfx"
+                          >
+                            <li
+                              className="nav-item"
+                              onClick={() =>
+                                setSimpleTabs([true, false, false])
+                              }
+                            >
+                              <a
+                                className={simpleTabs[0] ? "active" : ""}
+                                data-toggle="tab"
+                                role="tab"
+                                data-target="#tab2hellowWorld"
+                                aria-selected={simpleTabs[0] ? "true" : ""}
+                                href="javascript:void(0);"
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                Pay with Card
+                              </a>
+                            </li>
+                            <li
+                              className="nav-item"
+                              onClick={() =>
+                                setSimpleTabs([false, true, false])
+                              }
+                            >
+                              <a
+                                className={simpleTabs[1] ? "active" : ""}
+                                href="javascript:void(0);"
+                                data-toggle="tab"
+                                role="tab"
+                                data-target="#tab2FollowUs"
+                                aria-selected={simpleTabs[1] ? "true" : ""}
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                Pay with Voucher
+                              </a>
+                            </li>
+                          </ul>
+                          <div className="nav-tab-dropdown cs-wrapper full-width d-lg-none d-xl-none d-md-none">
+                            <Dropdown
+                              options={tabSelectOne}
+                              defaultValue={tabSelectOne[0]}
+                              className="dropdown dropdown-default tabs-dropdown"
+                              onChange={(value) => {
+                                if (value.value === "0") {
+                                  return setSimpleTabs([true, false, false]);
+                                }
+                                if (value.value === "1") {
+                                  return setSimpleTabs([false, true, false]);
+                                }
+                                if (value.value === "2") {
+                                  return setSimpleTabs([false, false, true]);
+                                }
+                              }}
+                            />
+                          </div>
+                          <div className="tab-content">
+                            <div
+                              className={`tab-pane ${
+                                simpleTabs[0] ? "active" : ""
+                              }`}
+                              id="tab2hellowWorld"
+                            >
+                              <div className="row">
+                                <div className="col-lg-12">
+                                  <div className="card card-transparent">
+                                    <div
+                                      className="card-body"
+                                      style={{ padding: "0px" }}
+                                    >
+                                      <div className="table-responsive">
+                                        <div
+                                          id="detailedTable_wrapper"
+                                          className="dataTables_wrapper no-footer"
+                                        >
+                                          <table
+                                            className="table table-hover table-condensed table-detailed dataTable no-footer"
+                                            id="detailedTable"
+                                            role="grid"
+                                          >
+                                            <thead>
+                                              <tr role="row">
+                                                <th
+                                                  style={{ width: "166px" }}
+                                                  className="sorting_disabled"
+                                                  rowSpan="1"
+                                                  colSpan="1"
+                                                >
+                                                  Status
+                                                </th>
+                                                <th
+                                                  style={{ width: "166px" }}
+                                                  className="sorting_disabled"
+                                                  rowSpan="1"
+                                                  colSpan="1"
+                                                >
+                                                  Price
+                                                </th>
+                                                <th
+                                                  style={{ width: "165px" }}
+                                                  className="sorting_disabled"
+                                                  rowSpan="1"
+                                                  colSpan="1"
+                                                >
+                                                  Last Update
+                                                </th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr role="row">
+                                                <td className="v-align-middle semi-bold">
+                                                  Revolution Begins
+                                                </td>
+                                                <td className="v-align-middle">
+                                                  Active
+                                                </td>
+                                                <td className="v-align-middle semi-bold">
+                                                  70,000 USD
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="row b-a b-grey no-margin">
+                                      <div className="col-md-5 p-l-10 sm-padding-15 align-items-center d-flex">
+                                        <div>
+                                          <h5 className="font-montserrat all-caps small no-margin hint-text bold">
+                                            SubTotal
+                                          </h5>
+                                          <p className="no-margin"> ₦20.00</p>
+                                        </div>
+                                      </div>
+                                      <div className="col-md-3 col-middle sm-padding-15 align-items-center d-flex">
+                                        <div>
+                                          <h5 className="font-montserrat all-caps small no-margin hint-text bold">
+                                            Tax
+                                          </h5>
+                                          <p className="no-margin"> ₦0.00</p>
+                                        </div>
+                                      </div>
+                                      <div className="col-md-4 text-right bg-primary padding-10">
+                                        <h5 className="font-montserrat all-caps small no-margin hint-text text-white bold">
+                                          Total
+                                        </h5>
+                                        <h4 className="no-margin text-white">
+                                          {" "}
+                                          ₦0.00
+                                        </h4>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              {/* <button
+                          aria-label=""
+                          type="button"
+                          className="btn btn-default btn-cons pull-right mt-2"
+                          onClick={() => renewSub()}
+                          // onClick={() => console.log('salam')}
+                        >
+                          Pay
+                        </button> */}
+                            </div>
+                            <div
+                              className={`tab-pane ${
+                                simpleTabs[1] ? "active" : ""
+                              }`}
+                              id="tab2FollowUs"
+                              style={{ padding: "0px" }}
+                            >
+                              <div className="row">
+                                <div className="col-lg-12">
+                                  <div className="card card-transparent">
+                                    <div
+                                      className="card-body"
+                                      style={{ padding: "0px" }}
+                                    >
+                                      <div className="table-responsive">
+                                        <div
+                                          id="detailedTable_wrapper"
+                                          className="dataTables_wrapper no-footer"
+                                        >
+                                          <table
+                                            className="table table-hover table-condensed table-detailed dataTable no-footer"
+                                            id="detailedTable"
+                                            role="grid"
+                                          >
+                                            <thead>
+                                              <tr role="row">
+                                                <th
+                                                  style={{ width: "166px" }}
+                                                  className="sorting_disabled"
+                                                  rowSpan="1"
+                                                  colSpan="1"
+                                                >
+                                                  Status
+                                                </th>
+                                                <th
+                                                  style={{ width: "166px" }}
+                                                  className="sorting_disabled"
+                                                  rowSpan="1"
+                                                  colSpan="1"
+                                                >
+                                                  Price
+                                                </th>
+                                                <th
+                                                  style={{ width: "165px" }}
+                                                  className="sorting_disabled"
+                                                  rowSpan="1"
+                                                  colSpan="1"
+                                                >
+                                                  Last Update
+                                                </th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr role="row">
+                                                <td className="v-align-middle semi-bold">
+                                                  Revolution Begins
+                                                </td>
+                                                <td className="v-align-middle">
+                                                  Active
+                                                </td>
+                                                <td className="v-align-middle semi-bold">
+                                                  70,000 USD
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="row b-a b-grey no-margin">
+                                      <div className="col-md-5 p-l-10 sm-padding-15 align-items-center d-flex">
+                                        <div>
+                                          <h5 className="font-montserrat all-caps small no-margin hint-text bold">
+                                            SubTotal
+                                          </h5>
+                                          <p className="no-margin"> ₦20.00</p>
+                                        </div>
+                                      </div>
+                                      <div className="col-md-3 col-middle sm-padding-15 align-items-center d-flex">
+                                        <div>
+                                          <h5 className="font-montserrat all-caps small no-margin hint-text bold">
+                                            Tax
+                                          </h5>
+                                          <p className="no-margin"> ₦0.00</p>
+                                        </div>
+                                      </div>
+                                      <div className="col-md-4 text-right bg-primary padding-10">
+                                        <h5 className="font-montserrat all-caps small no-margin hint-text text-white bold">
+                                          Total
+                                        </h5>
+                                        <h4 className="no-margin text-white">
+                                          {" "}
+                                          ₦0.00
+                                        </h4>
+                                      </div>
+                                    </div>
+
+                                    <div class="row mt-5">
+                                      <div class="col-10">
+                                        <div class="form-check primary m-t-0">
+                                          <input
+                                            type="text"
+                                            id="voucher"
+                                            // value="AHHAKJADIUADKJDNKHB"
+                                            placeholder="Input Voucher Here"
+                                          />
+                                        </div>
+                                      </div>
+                                      <div class="col-2 p-2">
+                                        {/* <button
+                                    aria-label=""
+                                    class="btn btn-primary "
+                                    type="submit"
+                                  >
+                                    Pay
+                                  </button> */}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              {/* <button
+                          aria-label=""
+                          type="button"
+                          className="btn btn-success btn-cons"
+                        >
+                          Success
+                        </button> */}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/* <div className="padding-30 sm-padding-5">
                       <ul className="list-unstyled list-inline m-l-30">
                         <li>
                           <a
@@ -893,7 +1289,7 @@ const content = ({ path }) => {
                           </div>
                         </div>
                       </ValidatorForm>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -905,12 +1301,15 @@ const content = ({ path }) => {
                 }
                 id="tab4"
               >
-                {payLoader === true ? <div className="pull-right">
-                  <ProgressTwo />
-                </div> : ''}
+                {payLoader === true ? (
+                  <div className="pull-right">
+                    <ProgressTwo />
+                  </div>
+                ) : (
+                  ""
+                )}
 
                 <h1>Thank you.</h1>
-
               </div>
               <div className="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
                 <ul className="pager wizard no-style">
@@ -999,9 +1398,11 @@ const content = ({ path }) => {
                     </button>
                   </li>
                   <li
-                    className={`${tabs[0] ? "previous first hidden disabled" : ""
-                      } ${tabs[1] ? "previous first hidden" : ""} ${tabs[2] ? "previous first hidden" : ""
-                      } ${tabs[3] ? "previous first hidden" : ""}`}
+                    className={`${
+                      tabs[0] ? "previous first hidden disabled" : ""
+                    } ${tabs[1] ? "previous first hidden" : ""} ${
+                      tabs[2] ? "previous first hidden" : ""
+                    } ${tabs[3] ? "previous first hidden" : ""}`}
                   >
                     <button
                       aria-label=""
@@ -1019,8 +1420,9 @@ const content = ({ path }) => {
                     </button>
                   </li>
                   <li
-                    className={`${tabs[0] ? "previous disabled" : ""} ${tabs[1] ? "previous" : ""
-                      } ${tabs[2] ? "previous" : ""}`}
+                    className={`${tabs[0] ? "previous disabled" : ""} ${
+                      tabs[1] ? "previous" : ""
+                    } ${tabs[2] ? "previous" : ""}`}
                   >
                     <button
                       aria-label=""
@@ -1032,8 +1434,9 @@ const content = ({ path }) => {
                           if (prevState[3]) return [false, false, true, false];
                         })
                       }
-                      className={`btn btn-default btn-cons from-left pull-right ${tabs[1] || tabs[2] || tabs[3] ? "btn-animated" : ""
-                        }`}
+                      className={`btn btn-default btn-cons from-left pull-right ${
+                        tabs[1] || tabs[2] || tabs[3] ? "btn-animated" : ""
+                      }`}
                       type="button"
                     >
                       <span>Previous</span>

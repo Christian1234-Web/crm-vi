@@ -122,6 +122,7 @@ const Content = () => {
   const [waiting, setWaiting] = useState(false);
   const [refreshSix, setRefreshSix] = useState(false);
   const [todo, setTodo] = useState(false);
+  const [userObject, setUserObject] = useState(null)
   const [userTransactions, setUserTransactions] = useState(null);
   const months = [
     "January",
@@ -191,6 +192,7 @@ const Content = () => {
     const url = `user/findone/${user.id}`;
     try {
       const rs = await request(url, "GET", true);
+      setUserObject(rs?.result)
       if (rs.success === true) {
         const now_date = new Date().getTime();
         const expired_date_time = new Date(rs.result.planExpiry).getTime();
@@ -367,6 +369,8 @@ const Content = () => {
       Showing {from} to {to} of {size} entries
     </span>
   );
+
+  console.log('malik', userObject)
 
   return (
     <div className="page-content-wrapper ">
@@ -1662,7 +1666,7 @@ const Content = () => {
                             <div className="col-sm-9">
                               <div className="p-l-20 full-height d-flex flex-column justify-content-between">
                                 <div className="d-flex align-items-center">
-                                  <h3 className="no-margin p-b-5">98,947.11</h3>
+                                  <h3 className="no-margin p-b-5">{userObject?.unitBalance}</h3>
                                   <Link
                                     className="small ml-2"
                                     to="/simple/form_wizard"
