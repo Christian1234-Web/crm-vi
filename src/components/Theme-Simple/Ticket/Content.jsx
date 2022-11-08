@@ -257,7 +257,7 @@ const Content = () => {
                           />
                         </div>
                         <div className="row">
-                          <div className="col-md-12">
+                          <div className="col-md-12" style={{paddingRight:"0px"}}>
                             <div
                               className={`form-group p-3 form-group-default typehead typehead-select ${
                                 typeheadTextFields[1] ? "focused" : ""
@@ -270,7 +270,6 @@ const Content = () => {
                               <Label>Users To Tag</Label>
 
                               <Select
-                                // defaultValue={[persons[2]]}
                                 isMulti
                                 options={usersToTag}
                                 isClearable={false}
@@ -363,14 +362,18 @@ const Content = () => {
                               />
                             </div>
                           </div>
-                          <div className="col-md-12">
+                          <div className="col-md-12" style={{paddingLeft:"0px"}}
+                         
+                          >
                            
                               <div
+                               
                                 onClick={() =>
                                   setTypeHeadTextFields([false, false, false])
                                 }
                               >
                                 <Select
+                                
                                   // defaultValue={alaskaOptions[0]}
                                   options={categoryOptions}
                                   formatGroupLabel={formatGroupLabel}
