@@ -179,6 +179,8 @@ const content = ({ path }) => {
     }
   };
 
+  console.log("ahhhh", bundleArr);
+
   return (
     <div className="page-content-wrapper ">
       {/* START PAGE CONTENT */}
@@ -431,7 +433,7 @@ const content = ({ path }) => {
                                 >
                                   ₦
                                   {new Intl.NumberFormat().format(
-                                    parseInt(e.price)
+                                    parseInt(e?.price === "" ? 0 : e.price)
                                   )}
                                   .00
                                 </h4>
@@ -878,7 +880,7 @@ const content = ({ path }) => {
                                             id="detailedTable"
                                             role="grid"
                                           >
-                                            <thead>
+                                            {/* <thead>
                                               <tr role="row">
                                                 <th
                                                   style={{ width: "166px" }}
@@ -905,9 +907,27 @@ const content = ({ path }) => {
                                                   Last Update
                                                 </th>
                                               </tr>
-                                            </thead>
+                                            </thead> */}
                                             <tbody>
-                                              <tr role="row">
+                                              {bundleArr.map((e, i) => (
+                                                <tr role="row">
+                                                  <td className="v-align-middle semi-bold">
+                                                    {e.name}
+                                                  </td>
+                                                  <td className="v-align-middle">
+                                                    Qty {e.unitQuantity}
+                                                  </td>
+                                                  <td className="v-align-middle semi-bold">
+                                                    ₦
+                                                    {new Intl.NumberFormat().format(
+                                                      parseInt(e.price)
+                                                    )}
+                                                    .00
+                                                  </td>
+                                                </tr>
+                                              ))}
+
+                                              {/* <tr role="row">
                                                 <td className="v-align-middle semi-bold">
                                                   Revolution Begins
                                                 </td>
@@ -917,7 +937,7 @@ const content = ({ path }) => {
                                                 <td className="v-align-middle semi-bold">
                                                   70,000 USD
                                                 </td>
-                                              </tr>
+                                              </tr> */}
                                             </tbody>
                                           </table>
                                         </div>
@@ -929,7 +949,13 @@ const content = ({ path }) => {
                                           <h5 className="font-montserrat all-caps small no-margin hint-text bold">
                                             SubTotal
                                           </h5>
-                                          <p className="no-margin"> ₦20.00</p>
+                                          <p className="no-margin">
+                                            {" "}
+                                            ₦{" "}
+                                            {new Intl.NumberFormat().format(
+                                              parseInt(total_Price)
+                                            )}
+                                          </p>
                                         </div>
                                       </div>
                                       <div className="col-md-3 col-middle sm-padding-15 align-items-center d-flex">
@@ -946,7 +972,10 @@ const content = ({ path }) => {
                                         </h5>
                                         <h4 className="no-margin text-white">
                                           {" "}
-                                          ₦0.00
+                                          ₦{" "}
+                                          {new Intl.NumberFormat().format(
+                                            parseInt(total_Price)
+                                          )}
                                         </h4>
                                       </div>
                                     </div>
@@ -987,7 +1016,7 @@ const content = ({ path }) => {
                                             id="detailedTable"
                                             role="grid"
                                           >
-                                            <thead>
+                                            {/* <thead>
                                               <tr role="row">
                                                 <th
                                                   style={{ width: "166px" }}
@@ -1014,9 +1043,26 @@ const content = ({ path }) => {
                                                   Last Update
                                                 </th>
                                               </tr>
-                                            </thead>
+                                            </thead> */}
                                             <tbody>
-                                              <tr role="row">
+                                            {bundleArr.map((e, i) => (
+                                                <tr role="row">
+                                                  <td className="v-align-middle semi-bold">
+                                                    {e.name}
+                                                  </td>
+                                                  <td className="v-align-middle">
+                                                    Qty {e.unitQuantity}
+                                                  </td>
+                                                  <td className="v-align-middle semi-bold">
+                                                    ₦
+                                                    {new Intl.NumberFormat().format(
+                                                      parseInt(e.price)
+                                                    )}
+                                                    .00
+                                                  </td>
+                                                </tr>
+                                              ))}
+                                              {/* <tr role="row">
                                                 <td className="v-align-middle semi-bold">
                                                   Revolution Begins
                                                 </td>
@@ -1026,7 +1072,7 @@ const content = ({ path }) => {
                                                 <td className="v-align-middle semi-bold">
                                                   70,000 USD
                                                 </td>
-                                              </tr>
+                                              </tr> */}
                                             </tbody>
                                           </table>
                                         </div>

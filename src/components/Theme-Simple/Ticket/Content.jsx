@@ -201,8 +201,8 @@ const Content = () => {
     };
     fetchAllTickets();
   }, [showMore]);
-  // console.log("Malik", allTickets);
-  console.log("deyyyyyy", usersToTag);
+  console.log("Malik", allTickets);
+  // console.log("deyyyyyy", usersToTag);
 
   return (
     <div className="page-content-wrapper ">
@@ -644,7 +644,9 @@ const Content = () => {
                       {allTickets?.map((ticket, key) => (
                         <tr key={key}>
                           <td className=" fs-12">{ticket.type}</td>
-                          <td className=" fs-12">tags</td>
+                          <td className=" fs-12">{ticket?.users.map((user, i) =>(<Badge type="warning" key={i} className="text-danger mr-1">
+                                  {user.surname}{" "}
+                                </Badge>))}</td>
                           <td className="text-right">
                             <span className="hint-text small">
                               {moment(ticket.createdAt).format("DD-MM-YY")}
