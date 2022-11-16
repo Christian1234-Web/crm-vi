@@ -14,6 +14,8 @@ import PageBreadcrumb from "../../UIElements/Breadcrumb";
 // import "react-responsive-modal/styles.css";
 // import "./css/FullWindowModalStyle.css";
 
+import makeAnimated from "react-select/animated";
+
 import "./style.css";
 import {
   alaskanOptions,
@@ -21,12 +23,15 @@ import {
   timezonegroupedOptions,
 } from "../../Forms/Elements/selectData";
 import GroupSelect from "../../Forms/Elements/GroupSelect";
-import { Label } from "reactstrap";
+import { Badge, Input, Label } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect } from "react";
 import SSRStorage from "../../../services/storage";
 import { TOKEN_COOKIE, USER_NAME } from "../../../services/constants";
 import axios from "axios";
+import moment from "moment";
+import TypeHeadMultiSelect from "../../Forms/Elements/TypeHeadMultiSelect";
+import InputWithLabel from "../../Forms/Elements/InputWithLabel";
 
 const storage = new SSRStorage();
 
@@ -76,6 +81,14 @@ const Content = () => {
     </React.Fragment>
   );
 
+  const [defaultTextFields, setDefaultTextFields] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
   const [refreshOne, setRefreshOne] = useState(false);
   const [refreshTwo, setRefreshTwo] = useState(false);
   const [refreshThree, setRefreshThree] = useState(false);
@@ -99,7 +112,15 @@ const Content = () => {
     false,
   ]);
 
-  const [usersToTag, setUsersToTag] = useState(null)
+  const [usersToTag, setUsersToTag] = useState(null);
+  const [allTickets, setAllTickets] = useState(null);
+  const [showMore, setShowMore] = useState(10);
+  const [project, setProject] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password, setPassoword] = useState("");
+  const [email, setEmail] = useState("");
+  const [medium, setMedium] = useState("");
 
   const formatGroupLabel = (data) => (
     <div style={groupStyles}>
@@ -129,6 +150,13 @@ const Content = () => {
   function setFocusColor(theme) {
     focusColor = theme;
   }
+  const animatedComponents = makeAnimated();
+
+  const persons = [
+    { value: "Jim", label: "Jim" },
+    { value: "John", label: "John" },
+    { value: "Lucy", label: "Lucy" },
+  ];
 
   useEffect(() => {
     const fetchUserTag = async () => {
@@ -139,20 +167,42 @@ const Content = () => {
           `https://deda-crm-backend.herokuapp.com/user/findone/${user.id}`
         );
 
-        if(company?.data.success){
-            const rs = await axios.get(
-          `https://deda-crm-backend.herokuapp.com/company/${company?.data?.result?.company?.id}`
-        );
-        setUsersToTag(rs?.data?.result.users.map(user => ({
-          label: user.userName
-        })))
+        if (company?.data.success) {
+          const rs = await axios.get(
+            `https://deda-crm-backend.herokuapp.com/company/${company?.data?.result?.company?.id}`
+          );
+          // { value: "Jim", label: "Jim" },
+
+          setUsersToTag(
+            rs?.data?.result.users.map((user) => ({
+              value: user.userName,
+              label: user.userName,
+            }))
+          );
         }
       } catch (err) {
         console.log("fetch bundle err", err);
       }
-    }
-    fetchUserTag()
-  }, [])
+    };
+    fetchUserTag();
+  }, []);
+  useEffect(() => {
+    const fetchAllTickets = async () => {
+      try {
+        const user = await storage.getItem(USER_NAME);
+        const token = await storage.getItem(TOKEN_COOKIE);
+        const tickets = await axios.get(
+          `https://deda-crm-backend.herokuapp.com/ticket/all?page=1&limit=${showMore}&term=`
+        );
+        setAllTickets(tickets?.data?.result);
+      } catch (err) {
+        console.log("fetch Ticket err", err);
+      }
+    };
+    fetchAllTickets();
+  }, [showMore]);
+  console.log("Malik", allTickets);
+  // console.log("deyyyyyy", usersToTag);
 
   return (
     <div className="page-content-wrapper ">
@@ -172,201 +222,237 @@ const Content = () => {
                 New <span className="semi-bold">Ticket</span>
               </h5>
               <p className="p-b-10">
-                We need ticket information inorder to process your ticket
+                We need ticket information in order to process your ticket
               </p>
             </div>
             <div className="modal-body">
-              <form role="form">
-                <div className="form-group-attached">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="form-group form-group-default">
-                        <label>Patient ID</label>
-                        <input type="email" className="form-control" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-8">
-                      <div className=" form-control ">
-                        <label>Users to Tag</label>
-                        {/* <input type="text" className="form-control" /> */}
+              <div className="row">
+                <div className="col-lg-12">
+                  <div className="card card-default">
+                    <div className="card-body">
+                      <form className="" role="form">
                         <div
-                          className="col-md-12 form-group"
-                          style={{ padding: "0px" }}
+                          className={`form-group form-group-default required ${
+                            defaultTextFields[0] ? "focused" : ""
+                          }`}
+                          onClick={() =>
+                            setDefaultTextFields([
+                              true,
+                              false,
+                              false,
+                              false,
+                              false,
+                            ])
+                          }
                         >
-                          <div
-                            onClick={() =>
-                              setTypeHeadTextFields([false, false, false])
-                            }
-                          >
-                            {/* <GroupSelect /> */}
-                            <Select
-                              // defaultValue={alaskaOptions[0]}
-                              options={usersToTag}
-                              formatGroupLabel={formatGroupLabel}
-                              components={{
-                                DropdownIndicator,
-                                IndicatorSeparator: () => null,
-                              }}
-                              styles={{
-                                dropdownIndicator: (provided, state) => ({
-                                  ...provided,
-                                  transform:
-                                    state.selectProps.menuIsOpen &&
-                                    "rotate(180deg)",
-                                  marginRight: "5px",
-                                }),
-                                control: (provided, state) => ({
-                                  ...provided,
-                                  borderRadius: "2px",
-                                  borderWidth: "1px",
-                                  border: state.isFocused
-                                    ? focusColor
-                                    : "default",
-                                  "&:hover": {
-                                    border: state.isFocused
-                                      ? focusColor
-                                      : "default",
-                                  },
-                                  boxShadow: "none",
-                                  maxHeight: "35px",
-                                  minHeight: "20px",
-                                }),
-                                groupHeading: (provided) => ({
-                                  ...provided,
-                                  color: "#212121",
-                                  fontSize: "13px",
-                                  fontWeight: "bold",
-                                  textTransform: "none",
-                                }),
-                                option: (provided, state) => ({
-                                  ...provided,
-                                  marginLeft: "10px",
-                                  width: "95%",
-                                  color: "default",
-                                  cursor: "pointer",
-                                  "&:active": {
-                                    backgroundColor: "rgba(33, 33, 33, 0.07)",
-                                  },
-                                  backgroundColor: state.isSelected
-                                    ? "rgba(33, 33, 33, 0.07)"
-                                    : "default",
-                                  backgroundColor: state.isFocused
-                                    ? "rgba(33, 33, 33, 0.07)"
-                                    : "default",
-                                  borderRadius: "3px",
-                                }),
-                                menu: (provided) => ({
-                                  ...provided,
-                                  marginTop: "1px",
-                                  borderTopLeftRadius: "0px",
-                                  borderTopRightRadius: "0px",
-                                }),
-                              }}
-                            />
-                          </div>
-                          <br />
+                          <InputWithLabel
+                            onChange={(e) => setProject(e.target.value)}
+                            value={project}
+                            type="text"
+                            label="Patient ID"
+                            required=""
+                            className={`form-control ${
+                              defaultTextFields[1] ? "focus-visible" : ""
+                            }`}
+                          />
                         </div>
-                      </div>
-                    </div>
-                    <div className="col-md-4">
-                      <div className="form-control">
-                        <label>Category</label>
-                        <div
-                          className="col-md-12 form-group"
-                          style={{ padding: "0px" }}
-                        >
-                          <div
-                            onClick={() =>
-                              setTypeHeadTextFields([false, false, false])
-                            }
-                          >
-                            <Select
-                              // defaultValue={alaskaOptions[0]}
-                              options={categoryOptions}
-                              formatGroupLabel={formatGroupLabel}
-                              components={{
-                                DropdownIndicator,
-                                IndicatorSeparator: () => null,
-                              }}
-                              styles={{
-                                dropdownIndicator: (provided, state) => ({
-                                  ...provided,
-                                  transform:
-                                    state.selectProps.menuIsOpen &&
-                                    "rotate(180deg)",
-                                  marginRight: "5px",
-                                }),
-                                control: (provided, state) => ({
-                                  ...provided,
-                                  borderRadius: "2px",
-                                  borderWidth: "1px",
-                                  border: state.isFocused
-                                    ? focusColor
-                                    : "default",
-                                  "&:hover": {
-                                    border: state.isFocused
-                                      ? focusColor
+                        <div className="row">
+                          <div className="col-md-12" style={{paddingRight:"0px"}}>
+                            <div
+                              className={`form-group p-3 form-group-default typehead typehead-select ${
+                                typeheadTextFields[1] ? "focused" : ""
+                              }`}
+                              onClick={() =>
+                                setTypeHeadTextFields([false, true, false])
+                              }
+                              id="sample-three"
+                            >
+                              <Label>Users To Tag</Label>
+
+                              <Select
+                                isMulti
+                                options={usersToTag}
+                                isClearable={false}
+                                placeholder=""
+                                components={{
+                                  animatedComponents,
+                                  DropdownIndicator: () => null,
+                                  IndicatorSeparator: () => null,
+                                }}
+                                styles={{
+                                  control: (provided) => ({
+                                    ...provided,
+                                    borderRadius: "2px",
+                                    borderWidth: "1px",
+                                    border: "none",
+                                    boxShadow: "none",
+                                    marginLeft: "-9px",
+                                    maxHeight: "25px",
+                                    minHeight: "20px",
+                                    paddingTop: "0px",
+                                    marginTop: "-2px",
+                                  }),
+                                  valueContainer: (provided) => ({
+                                    ...provided,
+                                    padding: "0px 8px",
+                                  }),
+                                  groupHeading: (provided) => ({
+                                    ...provided,
+                                    color: "#212121",
+                                    fontSize: "13px",
+                                    fontWeight: "bold",
+                                    textTransform: "none",
+                                  }),
+                                  option: (provided, state) => ({
+                                    ...provided,
+                                    marginLeft: "10px",
+                                    width: "95%",
+                                    color: "default",
+                                    cursor: "pointer",
+                                    "&:active": {
+                                      backgroundColor: "rgba(33, 33, 33, 0.07)",
+                                    },
+                                    backgroundColor: state.isSelected
+                                      ? "rgba(33, 33, 33, 0.07)"
                                       : "default",
-                                  },
-                                  boxShadow: "none",
-                                  maxHeight: "35px",
-                                  minHeight: "20px",
-                                }),
-                                groupHeading: (provided) => ({
-                                  ...provided,
-                                  color: "#212121",
-                                  fontSize: "13px",
-                                  fontWeight: "bold",
-                                  textTransform: "none",
-                                }),
-                                option: (provided, state) => ({
-                                  ...provided,
-                                  marginLeft: "10px",
-                                  width: "95%",
-                                  color: "default",
-                                  cursor: "pointer",
-                                  "&:active": {
-                                    backgroundColor: "rgba(33, 33, 33, 0.07)",
-                                  },
-                                  backgroundColor: state.isSelected
-                                    ? "rgba(33, 33, 33, 0.07)"
-                                    : "default",
-                                  backgroundColor: state.isFocused
-                                    ? "rgba(33, 33, 33, 0.07)"
-                                    : "default",
-                                  borderRadius: "3px",
-                                }),
-                                menu: (provided) => ({
-                                  ...provided,
-                                  marginTop: "1px",
-                                  borderTopLeftRadius: "0px",
-                                  borderTopRightRadius: "0px",
-                                }),
-                              }}
-                            />
+                                    backgroundColor: state.isFocused
+                                      ? "rgba(33, 33, 33, 0.07)"
+                                      : "default",
+                                    borderRadius: "3px",
+                                  }),
+                                  menu: (provided) => ({
+                                    ...provided,
+                                    marginTop: "5px",
+                                    width: "105%",
+                                    marginLeft: "-9px",
+                                    borderTopLeftRadius: "0px",
+                                    borderTopRightRadius: "0px",
+                                  }),
+                                  multiValue: (provided, state) => ({
+                                    ...provided,
+                                    backgroundColor: "#e0e0e0",
+                                    backgroundImage: "none",
+                                    border: "none",
+                                    boxShadow: "none",
+                                    color: "inherit",
+                                    borderRadius: "99px",
+                                    margin: "0px 6px 0px 0",
+                                    padding: "0 2px 0 2px",
+                                    lineHeight: "21px",
+                                  }),
+                                  multiValueLabel: (provided, state) => ({
+                                    ...provided,
+                                    padding: "0 2px 0 2px",
+                                    fontSize: "13px",
+                                  }),
+                                  multiValueRemove: (provided, state) => ({
+                                    ...provided,
+                                    backgroundColor: "none",
+                                    cursor: "pointer",
+                                    border: "none",
+                                    paddingRight: "2px",
+                                    paddingTop: "0px",
+                                    paddingBottom: "0px",
+                                    paddingLeft: "0px",
+                                    "&:hover": {
+                                      backgroundColor: "transparent",
+                                    },
+                                  }),
+                                }}
+                              />
+                            </div>
                           </div>
-                          <br />
+                          <div className="col-md-12" style={{paddingLeft:"0px"}}
+                         
+                          >
+                           
+                              <div
+                               
+                                onClick={() =>
+                                  setTypeHeadTextFields([false, false, false])
+                                }
+                              >
+                                <Select
+                                
+                                  // defaultValue={alaskaOptions[0]}
+                                  options={categoryOptions}
+                                  formatGroupLabel={formatGroupLabel}
+                                  components={{
+                                    DropdownIndicator,
+                                    IndicatorSeparator: () => null,
+                                  }}
+                                  styles={{
+                                    dropdownIndicator: (provided, state) => ({
+                                      ...provided,
+                                      transform:
+                                        state.selectProps.menuIsOpen &&
+                                        "rotate(180deg)",
+                                      marginRight: "5px",
+                                    }),
+                                    control: (provided, state) => ({
+                                      ...provided,
+                                      borderRadius: "2px",
+                                      borderWidth: "1px",
+                                      border: state.isFocused
+                                        ? focusColor
+                                        : "default",
+                                      "&:hover": {
+                                        border: state.isFocused
+                                          ? focusColor
+                                          : "default",
+                                      },
+                                      boxShadow: "none",
+                                      maxHeight: "35px",
+                                      minHeight: "20px",
+                                    }),
+                                    groupHeading: (provided) => ({
+                                      ...provided,
+                                      color: "#212121",
+                                      fontSize: "13px",
+                                      fontWeight: "bold",
+                                      textTransform: "none",
+                                    }),
+                                    option: (provided, state) => ({
+                                      ...provided,
+                                      marginLeft: "10px",
+                                      width: "95%",
+                                      color: "default",
+                                      cursor: "pointer",
+                                      "&:active": {
+                                        backgroundColor:
+                                          "rgba(33, 33, 33, 0.07)",
+                                      },
+                                      backgroundColor: state.isSelected
+                                        ? "rgba(33, 33, 33, 0.07)"
+                                        : "default",
+                                      backgroundColor: state.isFocused
+                                        ? "rgba(33, 33, 33, 0.07)"
+                                        : "default",
+                                      borderRadius: "3px",
+                                    }),
+                                    menu: (provided) => ({
+                                      ...provided,
+                                      marginTop: "1px",
+                                      borderTopLeftRadius: "0px",
+                                      borderTopRightRadius: "0px",
+                                    }),
+                                  }}
+                                />
+                              </div>
+                              <br />
+                          </div>
                         </div>
-                      </div>
+                      </form>
                     </div>
                   </div>
                 </div>
-              </form>
+              </div>
+              
               <div className="row">
                 <div className="col-md-8">
-                  <div className="p-t-20 clearfix p-l-10 p-r-10">
-                    <div className="pull-left">
-                      <p className="bold font-montserrat text-uppercase">
-                        
-                      </p>
-                    </div>
-                    <div className="pull-right">
-                      <p className="bold font-montserrat text-uppercase">
-                        
-                      </p>
-                    </div>
+                  <div className="">
+                   
+                    
                   </div>
                 </div>
                 <div className="col-md-4 m-t-10 sm-m-t-10">
@@ -555,7 +641,36 @@ const Content = () => {
                 <div className="auto-overflow">
                   <table className="table table-condensed table-hover">
                     <tbody>
-                      <tr>
+                      {allTickets?.map((ticket, key) => (
+                        <tr key={key}>
+                          <td className=" fs-12">{ticket.type}</td>
+                          <td className=" fs-12">{ticket?.users.map((user, i) =>(<Badge type="warning" key={i} className="text-danger mr-1">
+                                  {user.surname}{" "}
+                                </Badge>))}</td>
+                          <td className="text-right">
+                            <span className="hint-text small">
+                              {moment(ticket.createdAt).format("DD-MM-YY")}
+                            </span>
+                          </td>
+                          <td className="text-right b-r b-dashed b-grey">
+                            <span className="hint-text small">
+                              {ticket.isAdminClosed ? (
+                                <Badge type="success" className="text-primary">
+                                  Closed
+                                </Badge>
+                              ) : (
+                                <Badge type="warning" className="text-danger">
+                                  Open
+                                </Badge>
+                              )}
+                            </span>
+                          </td>
+                          <td>
+                            <span className="font-montserrat fs-18">$27</span>
+                          </td>
+                        </tr>
+                      ))}
+                      {/* <tr>
                         <td className=" fs-12">Purchase CODE #2345</td>
                         <td className="text-right">
                           <span className="hint-text small">dewdrops</span>
@@ -570,7 +685,7 @@ const Content = () => {
                       <tr>
                         <td className=" fs-12">Purchase CODE #2345</td>
                         <td className="text-right">
-                          <span className="hint-text small">johnsmith</span>
+                          <span className="hint-text small">johnsmithssss</span>
                         </td>
                         <td className="text-right b-r b-dashed b-grey">
                           <span className="hint-text small">Qty 1</span>
@@ -594,7 +709,7 @@ const Content = () => {
                             $1000
                           </span>
                         </td>
-                      </tr>
+                      </tr> */}
                     </tbody>
                   </table>
                 </div>
@@ -604,6 +719,7 @@ const Content = () => {
                     <a
                       href="javascript:void(0);"
                       className="btn-circle-arrow b-grey"
+                      onClick={() => setShowMore(showMore + 10)}
                     >
                       <i className="pg-icon">chevron_down</i>
                     </a>
