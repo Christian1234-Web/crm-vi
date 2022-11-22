@@ -291,11 +291,14 @@ const Content = () => {
   };
 
   const renewSub = async () => {
+    console.log('u click me')
     const user = await storage.getItem(USER_NAME);
     const data = { userId: user.id, paymentMethod: "paystack" };
     const url = `payment/default/pay`;
     try {
-      const rs = await request(url, "POST", true, data);
+      const rs = await request(url, "PATCH", true, data);
+      console.log(rs)
+
       if (rs.success === true) {
         location.href = rs.link;
       }
@@ -334,6 +337,15 @@ const Content = () => {
       console.log("fetch user transactions err", err);
     }
   }, []);
+  
+  const fetchDefaultPlan = async () => {
+    let url = ``;
+    try {
+      const rs = await request(url, 'GET', true);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const handleChange = (e) => {
     if (Number(e) < 5000) {
@@ -394,7 +406,7 @@ const Content = () => {
                 {/* <i className="pg-icon">close</i> */}
               </button>
               <h5>
-                Your subscription has expired, Please renew.
+                Your subscription is expired, Please renew.
                 {/* <span className="semi-bold">Information</span> */}
               </h5>
               <p className="p-b-10">
@@ -804,7 +816,7 @@ const Content = () => {
                                 </div>
                               </div>
 
-                              
+
                             </div>
                           </div>
                         </div>
@@ -813,7 +825,7 @@ const Content = () => {
                           type="button"
                           className="btn btn-default btn-cons pull-right mt-2"
                           onClick={() => renewSub()}
-                          // onClick={() => console.log('salam')}
+                        // onClick={() => console.log('salam')}
                         >
                           Pay
                         </button>
@@ -922,7 +934,7 @@ const Content = () => {
                                       // value="AHHAKJADIUADKJDNKHB"
                                       placeholder="Input Voucher Here"
                                     />
-                                   
+
                                   </div>
                                 </div>
                                 <div class="col-2 p-2">
@@ -1426,9 +1438,8 @@ const Content = () => {
                       <li>
                         <a
                           data-toggle="refresh"
-                          className={`card-refresh ${
-                            refreshOne ? "refreshing" : ""
-                          }`}
+                          className={`card-refresh ${refreshOne ? "refreshing" : ""
+                            }`}
                           href="#"
                           onClick={(e) => {
                             e.preventDefault();
@@ -1439,14 +1450,12 @@ const Content = () => {
                           }}
                         >
                           <i
-                            className={`card-icon card-icon-refresh ${
-                              refreshOne ? "fade" : ""
-                            }`}
+                            className={`card-icon card-icon-refresh ${refreshOne ? "fade" : ""
+                              }`}
                           ></i>
                           <i
-                            className={`card-icon-refresh-lg-white-animated ${
-                              refreshOne ? "active" : ""
-                            }`}
+                            className={`card-icon-refresh-lg-white-animated ${refreshOne ? "active" : ""
+                              }`}
                             style={{
                               position: "absolute",
                               top: "14px",
@@ -1626,9 +1635,8 @@ const Content = () => {
                                 <li>
                                   <a
                                     data-toggle="refresh"
-                                    className={`card-refresh ${
-                                      refreshSix ? "refreshing" : ""
-                                    }`}
+                                    className={`card-refresh ${refreshSix ? "refreshing" : ""
+                                      }`}
                                     href="#"
                                     onClick={(e) => {
                                       e.preventDefault();
@@ -1639,14 +1647,12 @@ const Content = () => {
                                     }}
                                   >
                                     <i
-                                      className={`card-icon card-icon-refresh ${
-                                        refreshSix ? "fade" : ""
-                                      }`}
+                                      className={`card-icon card-icon-refresh ${refreshSix ? "fade" : ""
+                                        }`}
                                     ></i>
                                     <i
-                                      className={`card-icon-refresh-lg-white-animated ${
-                                        refreshSix ? "active" : ""
-                                      }`}
+                                      className={`card-icon-refresh-lg-white-animated ${refreshSix ? "active" : ""
+                                        }`}
                                       style={{
                                         position: "absolute",
                                         top: "14px",
@@ -1962,7 +1968,7 @@ const Content = () => {
                                 /> */}
                                   <div
                                     className="form-check checkbox-circle no-margin text-center col-2 d-flex justify-content-center align-items-center"
-                                    // onClick={() => checkInput(i)}
+                                  // onClick={() => checkInput(i)}
                                   >
                                     <input
                                       type="checkbox"
@@ -1971,7 +1977,7 @@ const Content = () => {
                                       data-toggler="task"
                                       className="form-check checkbox-circle"
                                       onClick={(e) => handleStrike(e, i)}
-                                      // onClick={() => setClasss('strikethrough')}
+                                    // onClick={() => setClasss('strikethrough')}
                                     />
                                     <label
                                       htmlFor={`todocheck${i}`}
