@@ -33,6 +33,7 @@ import moment from "moment";
 import format from "format-number";
 import Dropdown from "react-dropdown";
 import { tabSelectOne } from "../../UIElements/TabsAndAccordion/dropdownData";
+import { Input, Label } from "reactstrap";
 
 const storage = new SSRStorage();
 const tableThreeData = [
@@ -95,12 +96,18 @@ const Content = () => {
   const [whatsappNumber, setWhatsappNumber] = useState("");
   const [address, setAddress] = useState("");
   const [getToken, setGetToken] = useState("");
+  const [displayInput, setDisplayInput] = useState(false);
+  const [voucherText, setVoucherText] = useState("");
+  const [errorText, setErrorText] = useState("");
+  const [displayErrorText, setDisplayErrorText] = useState(false);
+  const [label, setLabel] = useState('');
 
   // console.log(firstName, lastName, phoneNumber, whatsappNumber, address, nameOfOrganization )
 
   const [project, setProject] = useState("");
   const [investor, setInvestor] = useState("");
   const [deadline, setDeadline] = useState("");
+  const [radioBtnGroup, setRadioBtnGroup] = useState([true, false, false]);
 
   const [loading, setLoading] = useState(true);
   const [loader, setLoader] = useState(false);
@@ -122,7 +129,7 @@ const Content = () => {
   const [waiting, setWaiting] = useState(false);
   const [refreshSix, setRefreshSix] = useState(false);
   const [todo, setTodo] = useState(false);
-  const [userObject, setUserObject] = useState(null)
+  const [userObject, setUserObject] = useState(null);
   const [userTransactions, setUserTransactions] = useState(null);
   const months = [
     "January",
@@ -192,7 +199,7 @@ const Content = () => {
     const url = `user/findone/${user.id}`;
     try {
       const rs = await request(url, "GET", true);
-      setUserObject(rs?.result)
+      setUserObject(rs?.result);
       if (rs.success === true) {
         const now_date = new Date().getTime();
         const expired_date_time = new Date(rs.result.planExpiry).getTime();
@@ -304,6 +311,36 @@ const Content = () => {
     }
   };
 
+  const payWithVoucher = async () => {
+    console.log("paying with voucher");
+    const user = await storage.getItem(USER_NAME);
+    const url = `payment/voucher/use`;
+    const payload = {
+      token: Number(voucherText),
+      user_id: user.id,
+    };
+    try {
+      const rs = await request(url, "POST", true, payload);
+      console.log("mallam malik", rs);
+      if(!rs.success){
+        setErrorText(rs.message)
+        setLabel('important')
+        setDisplayErrorText(true)
+      }
+
+      if(rs.success){
+        setErrorText(rs.message)
+        setLabel('info')
+        setDisplayErrorText(true)
+        setTimeout(() => {
+          setSlideUpVisible(false)
+        }, 2000);
+      }
+    } catch (error) {
+      console.log("Pay with Voucher error", error);
+    }
+  };
+
   const fetchSpecificBundle = useCallback(
     async (amountInputed) => {
       try {
@@ -370,8 +407,6 @@ const Content = () => {
     </span>
   );
 
-  console.log('malik', userObject)
-
   return (
     <div className="page-content-wrapper ">
       {/* RENEWAL MODAL */}
@@ -405,6 +440,37 @@ const Content = () => {
               <form role="form">
                 <div className="form-group-attached">
                   <div className="row">
+                    <div className="form-check col-lg-6 complete">
+                      <Input
+                        type="radio"
+                        name="texture"
+                        id="radio1"
+                        value="Medium"
+                        onClick={() => {
+                          setRadioBtnGroup([false, true, false]);
+                          setDisplayInput(false);
+                        }}
+                        checked={radioBtnGroup[1]}
+                        onChange={() => {}}
+                      />
+                      <Label htmlFor="radio1">Pay with Card</Label>
+                    </div>
+                    <div className="form-check col-lg-6 primary">
+                      <Input
+                        type="radio"
+                        name="texture"
+                        id="radio2"
+                        value="Verbose"
+                        onClick={() => {
+                          setRadioBtnGroup([false, false, true]);
+                          setDisplayInput(true);
+                        }}
+                        checked={radioBtnGroup[2]}
+                        onChange={() => {}}
+                      />
+                      <Label htmlFor="radio2">Pay with Voucher</Label>
+                    </div>
+
                     {/* <div className="col-md-12">
                           <div className="form-group form-group-default">
                             <label>Company Name</label>
@@ -412,19 +478,35 @@ const Content = () => {
                           </div>
                         </div> */}
                   </div>
+                  {displayInput && (
+                    <div className="row">
+                      <div className="form-check col-lg-12 complete">
+                        <Input
+                          type="text"
+                          name="texture"
+                          id="radio1"
+                          // value="Medium"
+                          // onClick={() => setRadioBtnGroup([false, true, false])}
+                          // checked={radioBtnGroup[1]}
+                          onChange={(e) => setVoucherText(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  )}
+
                   <div className="row">
                     {/* <div className="col-md-8">
-                          <div className="form-group form-group-default">
-                            <label>Card Number</label>
-                            <input type="text" className="form-control" />
-                          </div>
-                        </div>
-                        <div className="col-md-4">
-                          <div className="form-group form-group-default">
-                            <label>Card Holder</label>
-                            <input type="text" className="form-control" />
-                          </div>
-                        </div> */}
+                      <div className="form-group form-group-default">
+                        <label>Card Number</label>
+                        <input type="text" className="form-control" />
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="form-group form-group-default">
+                        <label>Card Holder</label>
+                        <input type="text" className="form-control" />
+                      </div>
+                    </div> */}
                   </div>
                 </div>
               </form>
@@ -444,16 +526,32 @@ const Content = () => {
                   </div>
                 </div>
                 <div className="col-md-4 m-t-10 sm-m-t-10">
-                  <button
-                    aria-label=""
-                    type="button"
-                    className="btn btn-primary btn-block m-t-5"
-                    onClick={() => renewSub()}
-                  >
-                    Pay Now
-                  </button>
+                  {displayInput ? (
+                    <button
+                      aria-label=""
+                      type="button"
+                      className="btn btn-primary btn-block m-t-5"
+                      onClick={() => payWithVoucher()}
+                    >
+                      Pay Now
+                    </button>
+                  ) : (
+                    <button
+                      aria-label=""
+                      type="button"
+                      className="btn btn-primary btn-block m-t-5"
+                      onClick={() => renewSub()}
+                    >
+                      Pay Now
+                    </button>
+                  )}
                 </div>
               </div>
+              {displayErrorText && (
+                <span className={`label label-${label}`}>{errorText}</span>
+              )}
+                    {/* <span className="label label-info">SUCCESS</span> */}
+                
             </div>
           </div>
         </div>
@@ -803,8 +901,6 @@ const Content = () => {
                                   </h4>
                                 </div>
                               </div>
-
-                              
                             </div>
                           </div>
                         </div>
@@ -922,7 +1018,6 @@ const Content = () => {
                                       // value="AHHAKJADIUADKJDNKHB"
                                       placeholder="Input Voucher Here"
                                     />
-                                   
                                   </div>
                                 </div>
                                 <div class="col-2 p-2">
@@ -1666,7 +1761,9 @@ const Content = () => {
                             <div className="col-sm-9">
                               <div className="p-l-20 full-height d-flex flex-column justify-content-between">
                                 <div className="d-flex align-items-center">
-                                  <h3 className="no-margin p-b-5">{userObject?.unitBalance}</h3>
+                                  <h3 className="no-margin p-b-5">
+                                    {userObject?.unitBalance}
+                                  </h3>
                                   <Link
                                     className="small ml-2"
                                     to="/simple/form_wizard"
@@ -1921,7 +2018,10 @@ const Content = () => {
                       </a>
                     </li>
                   </ul>
-                  <div className="tab-content no-padding" style={{ padding: "0px" }}>
+                  <div
+                    className="tab-content no-padding"
+                    style={{ padding: "0px" }}
+                  >
                     <div
                       className="tab-pane active"
                       id="pending"
