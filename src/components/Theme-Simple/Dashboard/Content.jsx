@@ -299,7 +299,7 @@ const Content = () => {
 
   const renewSub = async () => {
     const user = await storage.getItem(USER_NAME);
-    const data = { userId: user.id, paymentMethod: "paystack" };
+    const data = { userId: user.id, paymentMethod: "paypal" };
     const url = `payment/default/pay`;
     try {
       const rs = await request(url, "POST", true, data);
