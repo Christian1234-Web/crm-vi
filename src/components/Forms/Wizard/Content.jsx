@@ -141,7 +141,7 @@ const content = ({ path }) => {
     const data = {
       units: Number(total_volume),
       userId: user.id,
-      paymentMethod: "paystack",
+      paymentMethod: "paypal",
     };
     const url = `payment/units/buy`;
     try {
