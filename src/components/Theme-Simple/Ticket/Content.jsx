@@ -201,7 +201,7 @@ const Content = () => {
     };
     fetchAllTickets();
   }, [showMore]);
-  console.log("Malik", allTickets);
+  // console.log("Malik", allTickets);
   // console.log("deyyyyyy", usersToTag);
 
   return (

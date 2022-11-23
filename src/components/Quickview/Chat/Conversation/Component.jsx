@@ -25,7 +25,7 @@ const Component = (props) => {
     const [senderMessage, setSenderMessage] = useState(null);
     const [chatMessages, setChatMessages] = useState([]);
 
-    console.log('nnnnnn===', props.contact)
+    // console.log('nnnnnn===', props.contact)
 
     const [ chat, setChat ] = useState([])
 
@@ -73,13 +73,12 @@ const Component = (props) => {
     const fetchMessages = useCallback(
         async () => {
             const user = await  storage.getItem(USER_NAME);
-            console.log('mmmmmmm===', user)
 		  try {
 			const rs = await axios.get(
 			  `https://deda-crm-backend.herokuapp.com/whatsapp/messages/get?recipient=${props.contact?.phone}&page=1&limit=500&userId=${user?.id}`
 			);
 			const { result, ...meta } = rs.data;
-            console.log('malik', result)
+            // console.log('malik', result)
             setChatMessages(result.reverse())
 			
 		  } catch (err) {
@@ -109,8 +108,8 @@ const Component = (props) => {
         
       }, []);
 
-    console.log('display Me', filteredMessage)
-    console.log('My number', chatMessages.length)
+    // console.log('display Me', filteredMessage)
+    // console.log('My number', chatMessages.length)
 
     const messages = [
         {
