@@ -9,6 +9,7 @@ import cellEditFactory from "react-bootstrap-table2-editor";
 import Alert from "../../UIElements/Alert";
 import FlipBarNotifyModule from "../../UIElements/Notification/FlipBarNotification/FlipBarNotifyModule";
 import WithoutMsgValidation from "../../Forms/FormLayouts/WithoutMsgValidation";
+import ProgressCircle from '../../UIElements/ProgressCircle/index'
 
 import TextValidator from "./FormValidation";
 import { Link } from "react-router-dom";
@@ -101,6 +102,7 @@ const Content = () => {
   const [errorText, setErrorText] = useState("");
   const [displayErrorText, setDisplayErrorText] = useState(false);
   const [label, setLabel] = useState('');
+  const [subscriptionDollarRate, setSubscriptionDollarRate] = useState('');
 
   // console.log(firstName, lastName, phoneNumber, whatsappNumber, address, nameOfOrganization )
 
@@ -324,7 +326,6 @@ const Content = () => {
     };
     try {
       const rs = await request(url, "POST", true, payload);
-      console.log("mallam malik", rs);
       if(!rs.success){
         setErrorText(rs.message)
         setLabel('important')
@@ -384,6 +385,20 @@ const Content = () => {
     }
   }
 
+  const fetchDollarRate = useCallback(async () => {
+    try {
+      const user = await storage.getItem(USER_NAME);
+
+      const rs = await axios.get(
+        `https://deda-crm-backend.herokuapp.com/plan/3?dollar=1`
+      );
+      const { result } = rs.data;
+      setSubscriptionDollarRate(result.amount)
+    } catch (err) {
+      console.log("fetch dollar rate error", err);
+    }
+  }, []);
+
   const handleChange = (e) => {
     if (Number(e) < 5000) {
       setWaiting(true);
@@ -410,6 +425,7 @@ const Content = () => {
       fetchBundleList();
       fetchTodo();
       fetchUserTransactions();
+      fetchDollarRate()
     }
   }, [fetchBundleList, fetchTodo, fetchUserTransactions, loading]);
 
@@ -532,7 +548,7 @@ const Content = () => {
                     </div>
                     <div className="pull-right">
                       <p className="bold font-montserrat text-uppercase">
-                        ₦25,000.00
+                        ${subscriptionDollarRate}
                       </p>
                     </div>
                   </div>
@@ -545,7 +561,7 @@ const Content = () => {
                       className="btn btn-primary btn-block m-t-5"
                       onClick={() => payWithVoucher()}
                     >
-                      Pay Now
+                      Pay Now 
                     </button>
                   ) : (
                     <button
